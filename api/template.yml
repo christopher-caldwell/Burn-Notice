@@ -1,0 +1,277 @@
+Transform: "AWS::Serverless-2016-10-31"
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    Timeout: 30
+    Environment:
+      Variables:
+        CORS_URL: !Ref CorsUrl
+        # These will eventually be only in the dynamo lambdas
+        TABLE_NAME: !Ref TableName
+        TABLE_PARTITION_KEY: !Ref TablePartitionKey
+        TABLE_RANGE_KEY: !Ref TableRangeKey
+        # These will eventually be only in the authorizer
+        SIGNING_KEY_NAME: !Ref SigningKeyName
+        SECRET_NAME: !Ref SecretName
+
+Parameters:
+  TokenDuration:
+    Description: Name of the table
+    Type: String
+  TableName:
+    Description: Name of the table
+    Type: String
+  SigningKeyName:
+    Description: Name of the key used to sign / validate tokens
+    Type: String
+  SecretName:
+    Description: Name of the secret pair used to sign / validate tokens
+    Type: String
+  TablePartitionKey:
+    Description: Name of the tables partition key
+    Type: String
+  TableRangeKey:
+    Description: Name of the tables range key
+    Type: String
+  CorsUrl:
+    Description: URL that will be used for CORS
+    Type: String
+  S3Bucket:
+    Description: Bucket that will contain the build artifacts
+    Type: String
+  Stage:
+    Description: Env stage stack is deployed to
+    Type: String
+  ApiName:
+    Description: Name of the API
+    Type: String
+  GoogleClientId:
+    Description: Client ID of Google API
+    Type: String
+
+Resources:
+  LambdaLocalCorsStub:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/options/
+      Handler: index.handler
+      Role: arn:aws:iam::867997404618:role/lambda-dynamo-xray
+      FunctionName: !Sub ${Stage}-${ApiName}-cors_handler
+      Timeout: 30
+      Events:
+        ClockInOptions:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExamTipsAPI
+            Path: /{cors+}
+            Method: OPTIONS
+
+# Register
+  LoginUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/user/login
+      Handler: index.handler
+      Role: !ref LoginUserRole
+      Events:
+        TestSetup:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExamTipsAPI
+            Path: /login
+            Method: post
+
+  RegisterUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/user/register/standard
+      Handler: index.handler
+      Environment:
+        Variables:
+          TOKEN_DURATION: !Ref TokenDuration
+      Role: !Ref RegisterUserRole
+      Events:
+        TestSetup:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExamTipsAPI
+            Path: /register
+            Method: post
+
+  GoogleOauthRegister:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/user/register/oauth/google
+      Handler: index.handler
+      Environment:
+        Variables:
+          TOKEN_DURATION: !Ref TokenDuration
+      Role: !Ref RegisterUserRole
+      Events:
+        TestSetup:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExamTipsAPI
+            Path: /register/oauth/google
+            Method: post
+
+# Questions
+  FetchQuestionSet:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/questions/set
+      Handler: index.handler
+      Role: !Ref DynamoSearchRole
+      Events:
+        TestSetup:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExamTipsAPI
+            Path: /question/set
+            Method: get
+
+######## API #########
+  ExamTipsAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Ref ApiName
+      StageName: !Sub Stage
+      DefinitionBody:
+        Fn::Transform:
+          Name: "AWS::Include"
+          Parameters:
+            Location: !Sub s3://${S3Bucket}/swagger-api-template.json
+
+######## DB #########
+  ExamTipsDb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${Stage}-${TableName}
+      AttributeDefinitions:
+        - AttributeName: !Ref TablePartitionKey
+          AttributeType: S
+        - AttributeName: !Ref TableRangeKey
+          AttributeType: S
+      KeySchema:
+        - AttributeName: !Ref TablePartitionKey
+          KeyType: HASH
+        - AttributeName: !Ref TableRangeKey
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+######## Roles #########
+
+  RegisterUserRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: !Sub ${Stage}-exam-tips-register-user-role
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Effect: Allow
+            Resource: '*'
+          # For signing tokens
+          - Action:
+            - secretsmanager:GetSecretValue
+            Effect: Allow
+            Resource:
+              Fn::Join:
+              - ''
+              - - 'arn:aws:secretsmanager:'
+                - Ref: AWS::Region
+                - ':'
+                - Ref: AWS::AccountId
+                - :secret/
+                - Ref: SigningKeyName
+          # For writing users
+          - Action:
+            - dynamodb:PutItem
+            Effect: Allow
+            Resource: !Ref ExamTipsDb.arn
+  
+  LoginUserRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: !Sub ${Stage}-exam-tips-register-user-role
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Effect: Allow
+            Resource: '*'
+          # For signing tokens
+          - Action:
+            - secretsmanager:GetSecretValue
+            Effect: Allow
+            Resource:
+              Fn::Join:
+              - ''
+              - - 'arn:aws:secretsmanager:'
+                - Ref: AWS::Region
+                - ':'
+                - Ref: AWS::AccountId
+                - :secret/
+                - Ref: SigningKeyName
+          # For writing users
+          - Action:
+            - dynamodb:GetItem
+            Effect: Allow
+            Resource: !Ref ExamTipsDb.arn
+
+  DynamoSearchRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: !Sub ${Stage}-exam-tips-dynamo-search-role
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Effect: Allow
+            Resource: '*'
+          - Action:
+            - dynamodb:GetItem
+            - dynamodb:Query
+            Effect: Allow
+            Resource: !Ref ExamTipsDb.arn

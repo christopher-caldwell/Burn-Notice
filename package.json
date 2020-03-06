@@ -1,0 +1,14 @@
+{
+	"name": "aws-exam-help",
+	"version": "1.0.0",
+	"description": "Crowd sourced AWS exam help and practice exams",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://caldwell8814@dev.azure.com/caldwell8814/AWS%20Exam%20Tips/_git/AWS%20Exam%20Tips"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {}
+}
