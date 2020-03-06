@@ -1,24 +1,43 @@
 Transform: "AWS::Serverless-2016-10-31"
 Globals:
   Function:
-    Runtime: nodejs10.x
+    Runtime: nodejs12.x
     Timeout: 30
     Environment:
       Variables:
         CORS_URL: !Ref CorsUrl
-        # These will eventually be only in the dynamo lambdas
-        TABLE_NAME: !Ref TableName
-        TABLE_PARTITION_KEY: !Ref TablePartitionKey
-        TABLE_RANGE_KEY: !Ref TableRangeKey
+        
+        DB_CLIENT: !Ref DatabaseClient
+        DB_HOST: !Ref DatabaseHost
+        DB_PORT: !Ref DatabasePort
+        DB_USER: !Ref DatabaseUser
+        DB_PASSWORD: !Ref DatabasePassword
+        DB_NAME: !Ref DatabaseName
+        
         # These will eventually be only in the authorizer
         SIGNING_KEY_NAME: !Ref SigningKeyName
         SECRET_NAME: !Ref SecretName
 
 Parameters:
-  TokenDuration:
-    Description: Name of the table
+  DatabaseClient:
+    Description: Name of the client used to interact with DB
     Type: String
-  TableName:
+  DatabaseHost: 
+    Description: Host name of the DB instance
+    Type: String
+  DatabasePort: 
+    Description: Port of the host DB is running on
+    Type: String
+  DatabaseUser:
+    Description: Username of the db
+    Type: String
+  DatabasePassword:
+    Description: Password of the db user
+    Type: String
+  DatabaseName: 
+    Description: Name oof db
+    Type: String
+  TokenDuration:
     Description: Name of the table
     Type: String
   SigningKeyName:
@@ -26,12 +45,6 @@ Parameters:
     Type: String
   SecretName:
     Description: Name of the secret pair used to sign / validate tokens
-    Type: String
-  TablePartitionKey:
-    Description: Name of the tables partition key
-    Type: String
-  TableRangeKey:
-    Description: Name of the tables range key
     Type: String
   CorsUrl:
     Description: URL that will be used for CORS
@@ -44,9 +57,6 @@ Parameters:
     Type: String
   ApiName:
     Description: Name of the API
-    Type: String
-  GoogleClientId:
-    Description: Client ID of Google API
     Type: String
 
 Resources:
@@ -62,11 +72,10 @@ Resources:
         ClockInOptions:
           Type: Api
           Properties:
-            RestApiId: !Ref ExamTipsAPI
+            RestApiId: !Ref FireAPI
             Path: /{cors+}
             Method: OPTIONS
 
-# Register
   LoginUser:
     Type: AWS::Serverless::Function
     Properties:
@@ -77,7 +86,7 @@ Resources:
         TestSetup:
           Type: Api
           Properties:
-            RestApiId: !Ref ExamTipsAPI
+            RestApiId: !Ref FireAPI
             Path: /login
             Method: post
 
@@ -94,44 +103,26 @@ Resources:
         TestSetup:
           Type: Api
           Properties:
-            RestApiId: !Ref ExamTipsAPI
+            RestApiId: !Ref FireAPI
             Path: /register
             Method: post
-
-  GoogleOauthRegister:
+            
+  GraphQL:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src/lambdas/user/register/oauth/google
+      CodeUri: src/lambdas/graphql
       Handler: index.handler
-      Environment:
-        Variables:
-          TOKEN_DURATION: !Ref TokenDuration
       Role: !Ref RegisterUserRole
       Events:
-        TestSetup:
+        http:
           Type: Api
           Properties:
-            RestApiId: !Ref ExamTipsAPI
-            Path: /register/oauth/google
+            RestApiId: !Ref FireAPI
+            Path: /graphql
             Method: post
 
-# Questions
-  FetchQuestionSet:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/lambdas/questions/set
-      Handler: index.handler
-      Role: !Ref DynamoSearchRole
-      Events:
-        TestSetup:
-          Type: Api
-          Properties:
-            RestApiId: !Ref ExamTipsAPI
-            Path: /question/set
-            Method: get
-
 ######## API #########
-  ExamTipsAPI:
+  FireAPI:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Ref ApiName
@@ -143,7 +134,7 @@ Resources:
             Location: !Sub s3://${S3Bucket}/swagger-api-template.json
 
 ######## DB #########
-  ExamTipsDb:
+  FireDb:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: !Sub ${Stage}-${TableName}
@@ -203,7 +194,7 @@ Resources:
           - Action:
             - dynamodb:PutItem
             Effect: Allow
-            Resource: !Ref ExamTipsDb.arn
+            Resource: !Ref FireDb.arn
   
   LoginUserRole:
     Type: AWS::IAM::Role
@@ -245,7 +236,7 @@ Resources:
           - Action:
             - dynamodb:GetItem
             Effect: Allow
-            Resource: !Ref ExamTipsDb.arn
+            Resource: !Ref FireDb.arn
 
   DynamoSearchRole:
     Type: AWS::IAM::Role
@@ -274,4 +265,4 @@ Resources:
             - dynamodb:GetItem
             - dynamodb:Query
             Effect: Allow
-            Resource: !Ref ExamTipsDb.arn
+            Resource: !Ref FireDb.arn
