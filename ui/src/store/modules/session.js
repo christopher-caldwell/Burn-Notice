@@ -10,12 +10,8 @@ export default {
 		expiredDate: null,
 		isAuthenticated: false,
 		isReadyToShow: false,
-		isInDarkMode: true
 	},
 	getters: {
-		isInDarkMode(state){
-			return state.isInDarkMode
-		},
 		authToken(state) {
 			return state.token
 		},
@@ -37,13 +33,6 @@ export default {
 			commit('UPDATE_SESSION', token)
 		},
 		restoreSessionFromLocalStorage({ commit, dispatch }) {
-			let isDarkMode = true
-			try {
-				isDarkMode = JSON.parse(window.localStorage.getItem('darkMode')).darkMode
-			} catch(error){
-				// no persistence of mode
-			}
-			commit('UPDATE_DARK_MODE', isDarkMode)
 			const previousSession = getItemFromLocalStorage('session')
 			if (previousSession && previousSession.expiredDate > Date.now()) {
 				// fetch new token - update with new
@@ -58,9 +47,6 @@ export default {
 		}
 	},
 	mutations: {
-		UPDATE_DARK_MODE(state, isInDarkMode){
-			state.isInDarkMode = isInDarkMode
-		},
 		UPDATE_SESSION(state, token) {
 			writeToLocalStorage('session', { token, expiredDate: Date.now() + timeSessionIsValid, isAuthenticated: true })
 			state.token = token
