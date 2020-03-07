@@ -2,7 +2,7 @@
 	v-container
 		v-row
 			v-col(align='center')
-				h1.amazon-orange Admin Dashboard
+				h1darkest-red Admin Dashboard
 </template>
 
 <script>

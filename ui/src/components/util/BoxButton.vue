@@ -1,11 +1,11 @@
 <template lang='pug'>
 	div(@click="emitClick").link-container.flex-centered
 		h3(v-if="!isLoading") {{ buttonText }}
-		v-progress-circular(v-else indeterminate :color="amazonOrange")
+		v-progress-circular(v-else indeterminate :color="blueColor")
 </template>
 
 <script>
-import { amazonOrange } from '@/data/constants'
+import { blueColor } from '@/data/constants'
 export default {
 	name: 'BoxButton',
 	props: {
@@ -21,7 +21,7 @@ export default {
 	},
 	data(){
 		return {
-			amazonOrange
+			blueColor
 		}
 	},
 	methods: {
@@ -37,8 +37,8 @@ export default {
 .link-container
 	width: 100%
 	padding: 10px
-	border: 3px $amazon-orange solid
-	color: $amazon-orange
+	border: 3px $red-0 solid
+	color: $red-0
 	border-radius: 5%
 	cursor: pointer
 	&:active

@@ -5,40 +5,35 @@ export default {
 	namespaced: true,
 	state: {
 		role: '',
-		givenName: '',
-		familyName: '',
-		pictureUrl: null,
+		firstName: '',
+		lastName: '',
 		locale: 'en',
-		email: '', 
-		id: '',
+		email: '',
+		sap: '',
+		id: ''
 	},
 	getters: {
 		allowedRoutes(state){
 			return state.allowedRoutes
 		},
 		usersName(state){
-			if(state.givenName && state.familyName){
-				return state.givenName + ' ' + state.familyName
+			if(state.firstName && state.lastName){
+				return state.firstName + ' ' + state.lastName
 			} else {
 				return ''
 			}
 		},
-		pictureUrl(state){
-			return state.pictureUrl
-		}
 	},
 	actions: {
 		async registerUser({ commit, dispatch }, userPayload){
-			const { userInformation, token } = await service.standardRegister(userPayload)
+			const { userProfile, token } = await service.standardRegister(userPayload)
 			dispatch('session/beginNewSession', token, { root: true })
-			commit('UPDATE_USER', userInformation)
+			commit('UPDATE_USER', userProfile)
 		},
-		async googleOauth({ commit, dispatch }, { codeToSend, isLogin }){
-			const { userInformation, token } = isLogin
-				? await service.googleOauthLogin(codeToSend)
-				: await service.googleOauthRegister(codeToSend)
-				dispatch('session/beginNewSession', token, { root: true })
-			commit('UPDATE_USER', userInformation)
+		async login({ commit, dispatch }, { sap, password }){			
+			const { userProfile, token } = await service.login(sap, password)
+			dispatch('session/beginNewSession', token, { root: true })
+			commit('UPDATE_USER', userProfile)
 		},
 		restoreUserToStore({ commit }){
 			const prevUser = getItemFromLocalStorage('user')

@@ -10,7 +10,7 @@
 					v-model="isDarkMode"
 					@change="saveDarkModeSetting"
 					label='Dark Mode'
-					:color="amazonOrange"
+					:color="lightRed"
 					hide-details
 				)
 		v-app-bar(app clipped-left)
@@ -19,31 +19,29 @@
 				v-row(justify='space-between' align='baseline')
 					v-col
 					v-col.flex-end(cols='2') 
-						Avatar
+						//- right sid content if any
 </template>
 
 <script>
 import NavMenuItem from '@/components/header/NavMenuItem.vue'
-import Avatar from '@/components/oauth/Avatar.vue'
 import { routes } from '@/router/routes'
-import { amazonOrange } from '@/data/constants'
+import { lightRed } from '@/data/constants'
 import { mapGetters } from 'vuex'
 export default {
 	components: {
 		NavMenuItem,
-		Avatar
 	},
 	data() {
 		return {
 			routes,
 			drawer: false,
-			isDarkMode: false,
-			amazonOrange
+			isDarkMode: true,
+			lightRed
 		}
 	},
 	computed: {
 		...mapGetters('user', ['usersName']),
-		...mapGetters('session', ['allowableRoutes']),
+		...mapGetters('session', ['allowableRoutes', 'isInDarkMode']),
 		isMobile(){
 			return window.innerWidth < 1264
 		},
@@ -60,19 +58,11 @@ export default {
 	},
 	methods: {
 		saveDarkModeSetting() {
-			window.localStorage.setItem( 'darkMode', JSON.stringify({ darkMode: !this.darkMode }))
-			this.$vuetify.theme.dark = this.isDarkMode
+			this.$vuetify.theme.dark = !this.$vuetify.theme.dark
 		},
 	},
 	mounted() {
-		try {
-			const isDarkMode = JSON.parse(window.localStorage.getItem('darkMode')).darkMode
-			this.isDarkMode = isDarkMode
-			this.$vuetify.theme.dark = isDarkMode
-		} catch (error) {
-			// setting it to true if not previusly set
-			this.$vuetify.theme.dark = true
-		}
+		this.$vuetify.theme.dark = true
 	}
 }
 </script>

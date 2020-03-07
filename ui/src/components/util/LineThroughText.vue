@@ -23,7 +23,7 @@ export default {
 	text-align: center
 	&::after,
 	&::before
-		border-top: 0.04px solid $amazon-orange
+		border-top: 0.04px solid $red-0
 		content: ''
 		display: table-cell
 		position: relative

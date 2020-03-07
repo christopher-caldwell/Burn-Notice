@@ -16,13 +16,7 @@ const routes = [
     path: '/register',
     name: 'Register',
 		component: () => import('@/views/visitor/Register.vue'),
-  },
-	{
-		path: '/register/standard',
-		name: 'RegisterStandard',
-		component: () => import('@/views/visitor/RegisterStandard.vue'),
-	},
-  
+  },  
   {
     path: '/login',
     name: 'Login',
@@ -51,23 +45,6 @@ const routes = [
 				name: 'UserHome',
 				component: () => import('@/views/authenticated/Home.vue'),
 			},
-			{
-				path: 'quiz',
-				name: 'Quiz',
-				component: () => import('@/views/authenticated/quiz/Quiz.vue'),
-				children: [
-					{
-						path: 'settings',
-						name: 'QuizSettings',
-						component: () => import('@/components/quiz/Settings.vue'),
-					},
-					{
-						path: 'begin',
-						name: 'QuizBegin',
-						component: () => import('@/components/quiz/Begin.vue'),
-					}
-				]
-			},
     ]
   },
   {
@@ -87,11 +64,6 @@ const routes = [
 				path: 'home',
 				name: 'AdminHome',
 				component: () => import('@/views/admin/Home.vue'),
-			},
-			{
-				path: 'questions/create',
-				name: 'CreateQuestion',
-				component: () => import('@/views/admin/CreateQuestion.vue'),
 			},
     ]
   },

@@ -2,31 +2,29 @@
 	v-container.splash-container
 		v-row
 			v-col
-				h1.amazon-orange Welcome!
+				h1.lightest-red SAFD
 		v-row
 			v-col
 				p.splash-text.
-					This platform is built entirely with AWS services, and is designed to help anyone and everyone on 
-					their way to getting an AWS certification.
+					Welcome to the vacancy transfer portal of the SAFD.
 				p.splash-text.
-					Through crowd sourcing and volunteering, we can all learn and take practice quizes to help 
-					get that certification you've been wanting.
+					Here you can view vacancies in other stations, make transfer requests, see your assignment history, and file reports.
 		v-row
 			v-col(cols='4' align='center')
 				router-link(to='/register')
 					v-btn Sign Up
 			v-col(cols='4' align='center')
 				router-link(to='/login')
-					v-btn(:color="amazonOrange") Login
+					v-btn(:color="blueColor") Login
 </template>
 
 <script>
-import { amazonOrange } from '@/data/constants'
+import { blueColor } from '@/data/constants'
 export default {
 	name: 'Home',
 	data(){
 		return {
-			amazonOrange
+			blueColor
 		}
 	}
 }

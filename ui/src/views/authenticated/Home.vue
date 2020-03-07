@@ -2,7 +2,7 @@
 	v-container
 		v-row
 			v-col(align='center')
-				h1.amazon-orange Welcome
+				h1.lightest-red Welcome
 		v-row.user-home-actions(justify='center')
 			v-col(cols=8 align='center')
 				router-link(to='/user/quiz/settings')
