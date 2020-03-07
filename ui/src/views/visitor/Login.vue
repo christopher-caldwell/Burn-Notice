@@ -4,21 +4,6 @@
 			v-col(align='center')
 				h1.amazon-orange Login
 		v-row.oauth-row
-			GoogleOauth(@toggleLoading="isLoading = !isLoading" :isLogin="true")
-			v-col(cols='4' align='center')
-				v-img.pointer-image(
-					:src="require(`@/assets/images/amazon-${isDarkMode}.png`)"
-					height='50px'
-					contain
-					alt='amazon sign in'
-				)
-			v-col(cols='4' align='center')
-				v-img.pointer-image(
-					:src="require(`@/assets/images/github-${isDarkMode}.png`)"
-					height='50px'
-					contain
-					alt='github sign in'
-				)
 		v-row.line-row(justify='center')
 			v-col(cols='10')
 				LineThroughText(text='or')
@@ -39,12 +24,11 @@
 <script>
 import { amazonOrange } from '@/data/constants'
 import LineThroughText from '@/components/util/LineThroughText.vue'
-import GoogleOauth from '@/components/oauth/Google.vue'
+
 export default {
 	name: 'Login',
 	components: {
 		LineThroughText,
-		GoogleOauth
 	},
 	data(){
 		return {
