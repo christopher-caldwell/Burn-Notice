@@ -95,7 +95,7 @@ Resources:
     Properties:
       CodeUri: src/lambdas/user/register
       Handler: index.handler
-      Role: !GetAtt "RegisterRole.Arn"
+      Role: !GetAtt "AuthRole.Arn"
       Environment:
         Variables:
           TOKEN_DURATION: !Ref TokenDuration
@@ -105,6 +105,23 @@ Resources:
           Properties:
             RestApiId: !Ref FireAPI
             Path: /register
+            Method: post
+  
+	Login:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/user/login
+      Handler: index.handler
+      Role: !GetAtt "AuthRole.Arn"
+      Environment:
+        Variables:
+          TOKEN_DURATION: !Ref TokenDuration
+      Events:
+        http:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FireAPI
+            Path: /login
             Method: post
 
   ######## API #########
@@ -144,7 +161,7 @@ Resources:
                 Effect: Allow
                 Resource: '*'
   
-  RegisterRole:
+  AuthRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
