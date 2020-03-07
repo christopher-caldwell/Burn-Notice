@@ -107,7 +107,7 @@ Resources:
             Path: /register
             Method: post
   
-	Login:
+  Login:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/lambdas/user/login
