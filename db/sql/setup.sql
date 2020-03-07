@@ -15,11 +15,11 @@ CREATE TABLE account (
   "email" varchar,
   "phone" varchar,
   "created_at" date DEFAULT (now()),
-  "last_logged_in" date DEFAULT (now()),
+  "last_logged_in_at" date DEFAULT null,
   "first_name" varchar,
   "last_name" varchar,
   "password" varchar,
-  "acount_role" account_role
+  "account_role" account_role
 );
 
 -- CREATE TABLE team (
@@ -70,7 +70,7 @@ CREATE TABLE transfer_request (
 
 CREATE TABLE report (
   "id" SERIAL PRIMARY KEY NOT NULL,
-  "submittor" int NOT NULL REFERENCES account(id),
+  "submitter" int NOT NULL REFERENCES account(id),
   "type_of_incident" type_of_incident,
   "created_at" date DEFAULT (now()),
   "time_dispatched" date DEFAULT (now()),

@@ -33,7 +33,7 @@ INSERT INTO transfer_request (vacancy, request_submitter)
   VALUES
    (1, 2);
 
-INSERT INTO report (submittor, type_of_incident, was_exposed_to_chem, was_fire_retardant_present, actions_of_primary_team, actions_of_secondary_team, 
+INSERT INTO report (submitter, type_of_incident, was_exposed_to_chem, was_fire_retardant_present, actions_of_primary_team, actions_of_secondary_team, 
 description_of_events, team_one_members, team_two_members)
   VALUES
    (1, 'fire', true, false, 'Excellent show of fire fighting', 'Eh, they suck', 'Big fire', '{1,2,3}', '{6,5}');
