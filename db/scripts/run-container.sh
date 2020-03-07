@@ -1,7 +1,5 @@
 #!/bin/sh
 
-source .env.local
-
 # mkdir -p data/
 
 # -p: Expose the containers port to your own localhost

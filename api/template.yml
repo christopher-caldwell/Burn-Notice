@@ -35,10 +35,10 @@ Parameters:
     Description: Password of the db user
     Type: String
   DatabaseName:
-    Description: Name oof db
+    Description: Name of db
     Type: String
   TokenDuration:
-    Description: Name of the table
+    Description: Length of life for normal token
     Type: String
   SigningKeyName:
     Description: Name of the key used to sign / validate tokens
@@ -96,6 +96,9 @@ Resources:
       CodeUri: src/lambdas/user/register
       Handler: index.handler
       Role: !GetAtt "RegisterRole.Arn"
+      Environment:
+        Variables:
+          TOKEN_DURATION: !Ref TokenDuration
       Events:
         http:
           Type: Api

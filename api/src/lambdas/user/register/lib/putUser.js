@@ -11,7 +11,7 @@ const knex = require('knex')({
 	...knexSnakeCaseMappers()
 })
 
-const role = 'fireFighter'
+const role = 'fire_fighter'
 
 const constructWriteParams = ( hashedPassword, userInformation) => {
 	const params = {

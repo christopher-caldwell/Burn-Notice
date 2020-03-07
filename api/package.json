@@ -27,5 +27,6 @@
 		"jest": "^24.8.0",
 		"simple-lambda-actions": "^1.2.56",
 		"uuid": "^3.4.0"
-	}
+	},
+	"dependencies": {}
 }

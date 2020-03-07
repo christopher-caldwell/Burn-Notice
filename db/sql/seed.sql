@@ -1,5 +1,5 @@
 
-INSERT INTO account (sap, email, phone, first_name, last_name, acount_role)
+INSERT INTO account (sap, email, phone, first_name, last_name, account_role)
   VALUES
    (123456, 'mail@mail.com', '(123) 456-2345)', 'Jim', 'Bob', 'fire_fighter'), --1
    (923456, 'mail@mail.com', '(123) 456-2345)', 'Christopher', 'Wallace', 'fire_fighter'), --2

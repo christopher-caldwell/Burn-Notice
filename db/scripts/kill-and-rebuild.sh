@@ -8,7 +8,8 @@ sh scripts/build-container.sh
 
 sh scripts/run-container.sh
 
-sleep 2
+# Waiting for the db in the container to start
+sleep 4
 
 sh scripts/setup-db.sh
 
