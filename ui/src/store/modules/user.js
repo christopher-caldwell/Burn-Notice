@@ -26,7 +26,7 @@ export default {
 	},
 	actions: {
 		async registerUser({ commit, dispatch }, userPayload){
-			const { userProfile, token } = await service.standardRegister(userPayload)
+			const { userProfile, token } = await service.register(userPayload)
 			dispatch('session/beginNewSession', token, { root: true })
 			commit('UPDATE_USER', userProfile)
 		},

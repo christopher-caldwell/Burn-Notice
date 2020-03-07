@@ -5,7 +5,7 @@ export default {
 		const { data } = await client.post('/login', { sap, password })
 		return data
 	},
-	async standardRegister(userPayload){
+	async register(userPayload){
 		const { data } = await client.post('/register', userPayload)
 		return data
 	}
