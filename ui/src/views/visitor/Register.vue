@@ -2,18 +2,15 @@
 	v-container
 		v-row(align='center')
 			v-col(align='center')
-				h1darkest-red Register
+				h1.lightest-red Register
 			v-col(align='center')
-		v-row
-			v-col
-				v-divider
 		v-row(justify='center')
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Email' :color="blueColor" :disabled="isLoading" v-model="emailAddress")
+				v-text-field(outlined label='SAP' v-model="sap" :color="lightRed" :disabled="isLoading" required)
 			v-col(cols='10' align='center')
 				v-text-field(
 						outlined
-						:color="blueColor"
+						:color="lightRed"
 						v-model="password"
 						:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 						:type="showPassword ? 'text' : 'password'"
@@ -22,38 +19,36 @@
 						@click:append="showPassword = !showPassword"
 				)
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Given Name' :color="blueColor" :disabled="isLoading" v-model="givenName")
+				v-text-field(outlined label='First Name' :color="lightRed" :disabled="isLoading" v-model="firstName")
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Family Name' :color="blueColor" :disabled="isLoading" v-model="familyName")
+				v-text-field(outlined label='Last Name' :color="lightRed" :disabled="isLoading" v-model="lastName")
 			v-col(cols='10' align='center')
-				v-autocomplete(
-					:disabled="isLoading"
-					v-model="chosenLocale"
-					:items="supportedLocales"
-					label='Locale'
-					:color="blueColor"
-					outlined
-				)
+				v-text-field(outlined label='Email' :color="lightRed" :disabled="isLoading" v-model="email")
+			v-col(cols='10' align='center')
+				v-text-field(outlined label='Phone' :color="lightRed" :disabled="isLoading" v-model="phone")
 		v-row
 			v-col(align='center')
-				v-btn(:color="blueColor" :loading="isLoading" @click="beginSignUp") Sign Up
+				v-btn(:color="lightRed" :loading="isLoading" @click="beginSignUp") Sign Up
 		
 </template>
 
 <script>
-import { blueColor, supportedLocales } from '@/data/constants'
+import { lightRed, supportedLocales } from '@/data/constants'
 import { mapActions } from 'vuex'
 export default {
-	name: 'RegisterStandard',	
+	name: 'Register',	
 	data(){
 		return {
-			emailAddress: null,
+			sap: null,
 			password: null,
-			givenName: null,
-			familyName: null,
-			chosenLocale: 'English',
-			blueColor,
-			supportedLocales,
+			firstName: null,
+			lastName: null,
+			station: null,
+			phone: null,
+			email: null,
+			preferredLanguage: 'English',
+			lightRed,
+			supportedLocales: Object.values(supportedLocales),
 			isLoading: false,
 			showPassword: false,
 		}
@@ -63,12 +58,14 @@ export default {
 		async beginSignUp(){
 			this.isLoading = true
 			const params = {
-				emailAddress: this.emailAddress,
+				sap: this.sap,
 				password: this.password,
-				givenName: this.givenName,
-				familyName: this.familyName,
-				chosenLocale: this.chosenLocale,
+				firstName: this.firstName,
+				lastName: this.lastName,
+				phone: this.phone,
+				email: this.email
 			}
+			
 			try {
 				await this.registerUser(params)
 				this.$router.push('/user/home')
