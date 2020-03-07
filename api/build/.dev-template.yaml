@@ -1,0 +1,137 @@
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    Timeout: 30
+    Environment:
+      Variables:
+        CORS_URL:
+          Ref: CorsUrl
+        DB_CLIENT:
+          Ref: DatabaseClient
+        DB_HOST:
+          Ref: DatabaseHost
+        DB_PORT:
+          Ref: DatabasePort
+        DB_USER:
+          Ref: DatabaseUser
+        DB_PASSWORD:
+          Ref: DatabasePassword
+        DB_NAME:
+          Ref: DatabaseName
+        SIGNING_KEY_NAME:
+          Ref: SigningKeyName
+        SECRET_NAME:
+          Ref: SecretName
+Parameters:
+  DatabaseClient:
+    Description: Name of the client used to interact with DB
+    Type: String
+  DatabaseHost:
+    Description: Host name of the DB instance
+    Type: String
+  DatabasePort:
+    Description: Port of the host DB is running on
+    Type: String
+  DatabaseUser:
+    Description: Username of the db
+    Type: String
+  DatabasePassword:
+    Description: Password of the db user
+    Type: String
+  DatabaseName:
+    Description: Name oof db
+    Type: String
+  TokenDuration:
+    Description: Name of the table
+    Type: String
+  SigningKeyName:
+    Description: Name of the key used to sign / validate tokens
+    Type: String
+  SecretName:
+    Description: Name of the secret pair used to sign / validate tokens
+    Type: String
+  CorsUrl:
+    Description: URL that will be used for CORS
+    Type: String
+  S3Bucket:
+    Description: Bucket that will contain the build artifacts
+    Type: String
+  Stage:
+    Description: Env stage stack is deployed to
+    Type: String
+  ApiName:
+    Description: Name of the API
+    Type: String
+Resources:
+  LambdaLocalCorsStub:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://safd-builds/6c0c12b490275e34e0882cef1b7bcada
+      Handler: index.handler
+      Role: arn:aws:iam::867997404618:role/lambda-dynamo-xray
+      FunctionName:
+        Fn::Sub: ${Stage}-${ApiName}-cors_handler
+      Timeout: 30
+      Events:
+        ClockInOptions:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: FireAPI
+            Path: /{cors+}
+            Method: OPTIONS
+  GraphQL:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://safd-builds/9912ac4ec40e838029cff65d38540607
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+        - GraphQLRole
+        - Arn
+      Events:
+        http:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: FireAPI
+            Path: /graphql
+            Method: post
+  FireAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name:
+        Ref: ApiName
+      StageName:
+        Fn::Sub: ${Stage}-new-new
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location:
+              Fn::Sub: s3://${S3Bucket}/swagger-api-template.json
+  GraphQLRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName:
+          Fn::Sub: ${Stage}-fire-graphql-role
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Effect: Allow
+            Resource: '*'

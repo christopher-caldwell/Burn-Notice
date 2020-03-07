@@ -81,7 +81,7 @@ Resources:
     Properties:
       CodeUri: src/lambdas/graphql
       Handler: index.handler
-      Role: !Ref GraphQLRole
+      Role: !GetAtt "GraphQLRole.Arn"
       Events:
         http:
           Type: Api
@@ -89,13 +89,27 @@ Resources:
             RestApiId: !Ref FireAPI
             Path: /graphql
             Method: post
+ 
+  Register:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/lambdas/user/register
+      Handler: index.handler
+      Role: !GetAtt "RegisterRole.Arn"
+      Events:
+        http:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FireAPI
+            Path: /register
+            Method: post
 
   ######## API #########
   FireAPI:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Ref ApiName
-      StageName: !Sub Stage
+      StageName: !Sub ${Stage}-new-new
       DefinitionBody:
         Fn::Transform:
           Name: 'AWS::Include'
@@ -103,91 +117,6 @@ Resources:
             Location: !Sub s3://${S3Bucket}/swagger-api-template.json
 
   ######## Roles #########
-
-  RegisterUserRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Action:
-              - sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-      Policies:
-        - PolicyName: !Sub ${Stage}-exam-tips-register-user-role
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Effect: Allow
-                Resource: '*'
-              # For signing tokens
-              - Action:
-                  - secretsmanager:GetSecretValue
-                Effect: Allow
-                Resource:
-                  Fn::Join:
-                    - ''
-                    - - 'arn:aws:secretsmanager:'
-                      - Ref: AWS::Region
-                      - ':'
-                      - Ref: AWS::AccountId
-                      - :secret/
-                      - Ref: SigningKeyName
-              # For writing users
-              - Action:
-                  - dynamodb:PutItem
-                Effect: Allow
-                Resource: !Ref FireDb.arn
-
-  LoginUserRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Action:
-              - sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-      Policies:
-        - PolicyName: !Sub ${Stage}-exam-tips-register-user-role
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Effect: Allow
-                Resource: '*'
-              # For signing tokens
-              - Action:
-                  - secretsmanager:GetSecretValue
-                Effect: Allow
-                Resource:
-                  Fn::Join:
-                    - ''
-                    - - 'arn:aws:secretsmanager:'
-                      - Ref: AWS::Region
-                      - ':'
-                      - Ref: AWS::AccountId
-                      - :secret/
-                      - Ref: SigningKeyName
-              # For writing users
-              - Action:
-                  - dynamodb:GetItem
-                Effect: Allow
-                Resource: !Ref FireDb.arn
-
   GraphQLRole:
     Type: AWS::IAM::Role
     Properties:
@@ -211,3 +140,40 @@ Resources:
                   - logs:PutLogEvents
                 Effect: Allow
                 Resource: '*'
+  
+  RegisterRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      Policies:
+        - PolicyName: !Sub ${Stage}-fire-graphql-role
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Effect: Allow
+                Resource: '*'
+              # For signing tokens
+              - Action:
+                - secretsmanager:GetSecretValue
+                Effect: Allow
+                Resource:
+                  Fn::Join:
+                  - ''
+                  - - 'arn:aws:secretsmanager:'
+                    - Ref: AWS::Region
+                    - ':'
+                    - Ref: AWS::AccountId
+                    - :secret/
+                    - Ref: SigningKeyName

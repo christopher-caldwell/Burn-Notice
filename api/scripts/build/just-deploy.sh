@@ -11,22 +11,24 @@ printf "\n\n$BICyan$( echo Deploying the latest artifact to the $STAGE bucket.. 
 printf "\n\n"
 
 sam deploy \
-  --template-file build/.$STAGE-iheart-challenge.yaml \
+  --template-file build/.$STAGE-template.yaml \
   --no-fail-on-empty-changeset \
-  --stack-name $STAGE-iheart-challenge \
+  --stack-name $STAGE-safd \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides \
 			Stage=$STAGE \
 			CorsUrl=$CORS_URL \
 			S3Bucket=$S3_BUCKET \
 			TokenDuration=$TOKEN_DURATION \
-			TableName=$TABLE_NAME \
 			SigningKeyName=$SIGNING_KEY_NAME \
 			SecretName=$SECRET_NAME \
-			TablePartitionKey=$TABLE_PARTITION_KEY \
-			TableRangeKey=$TABLE_RANGE_KEY \
 			ApiName=$API_NAME \
-			GoogleClientId=$GOOGLE_CLIENT_ID
+			DatabaseClient=$DB_CLIENT \
+			DatabaseHost=$DB_HOST \
+			DatabasePort=$DB_PORT \
+			DatabaseUser=$DB_USER \
+			DatabasePassword=$DB_PASSWORD \
+			DatabaseName=$DB_NAME
 
 
 if [ $? == 0 ]
