@@ -11,13 +11,15 @@ const corsUrl = process.env.CORS_URL
 exports.handler = async event => {
 	const ResponseHandler = new Responder(corsUrl, event.httpMethod)
 	try {
-		const { password, userInformation } = bodyParser(event.body)
+		const userProfile = bodyParser(event.body)
+		const { password } = userProfile
 		const hashedPassword = await hash(password, numberOfSaltRounds)
-		const tokenParams = { id: userInformation.sap, role }
+		const tokenParams = { id: userProfile.sap, role }
 		const [ token ] = await Promise.all([
 			generateToken(tokenParams),
-			putUser(hashedPassword, userInformation)
+			putUser(hashedPassword, userProfile)
 		])
+		delete userProfile.password
 		return ResponseHandler.respond({ userInformation, token }, 200)
 	} catch (error) {
 		console.log('error: ', error)

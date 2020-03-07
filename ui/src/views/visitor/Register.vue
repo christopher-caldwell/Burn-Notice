@@ -28,12 +28,12 @@
 				v-text-field(outlined label='Phone' :color="lightRed" :disabled="isLoading" v-model="phone")
 		v-row
 			v-col(align='center')
-				v-btn(:color="lightRed" :loading="isLoading" @click="beginSignUp") Sign Up
+				v-btn(:color="blueColor" :loading="isLoading" @click="beginSignUp") Sign Up
 		
 </template>
 
 <script>
-import { lightRed, supportedLocales } from '@/data/constants'
+import { lightRed, blueColor } from '@/data/constants'
 import { mapActions } from 'vuex'
 export default {
 	name: 'Register',	
@@ -46,9 +46,8 @@ export default {
 			station: null,
 			phone: null,
 			email: null,
-			preferredLanguage: 'English',
+			blueColor,
 			lightRed,
-			supportedLocales: Object.values(supportedLocales),
 			isLoading: false,
 			showPassword: false,
 		}
@@ -65,7 +64,6 @@ export default {
 				phone: this.phone,
 				email: this.email
 			}
-			
 			try {
 				await this.registerUser(params)
 				this.$router.push('/user/home')

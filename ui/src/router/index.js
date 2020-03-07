@@ -44,6 +44,13 @@ const routes = [
 				path: 'home',
 				name: 'UserHome',
 				component: () => import('@/views/authenticated/Home.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
+				path: 'vacancy/:id',
+				name: 'Vacancy',
+				component: () => import('@/views/authenticated/vacancy/Vacancy.vue'),
+				meta: { transitionName: 'slide' }
 			},
     ]
   },

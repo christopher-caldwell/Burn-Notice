@@ -55,7 +55,8 @@ CREATE TABLE vacancy (
   "is_engine" boolean,
   "is_temporary" boolean,
   "post_date" date DEFAULT (now()),
-  "fill_date" date DEFAULT null
+  "fill_date" date DEFAULT null,
+	"num_of_applicants" int DEFAULT 0
 );
 
 CREATE TABLE transfer_request (

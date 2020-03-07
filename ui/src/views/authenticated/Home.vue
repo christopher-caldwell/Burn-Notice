@@ -2,20 +2,22 @@
 	v-container
 		v-row
 			v-col(align='center')
-				h1.lightest-red Welcome
-		v-row.user-home-actions(justify='center')
-			v-col(cols=8 align='center')
-				router-link(to='/user/quiz/settings')
-					h4.text--primary Take a Quiz
-		v-row.user-home-action(justify='center')
-			v-col(cols=8 align='center')
-				router-link(to='/user/flash-cards/settings')
-					h4.text--primary Practice with Flash Cards
+				Vacancy( v-for="vacancy in vacancies" :vacancy="vacancy" :key="vacancy.id")
 </template>
 
 <script>
+import Vacancy from '@/components/vacancies/Vacancy.vue'
+import { vacancies } from '@/data/mockData'
 export default {
 	Name: 'UserHome',
+	components: {
+		Vacancy
+	},
+	data(){
+		return {
+			vacancies: vacancies,
+		}
+	}
 }
 </script>
 
