@@ -2,15 +2,15 @@
 	v-container
 		v-row(align='center')
 			v-col(align='center')
-				h1.lightest-red Register
+				h1 Register
 			v-col(align='center')
 		v-row(justify='center')
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='SAP' v-model="sap" :color="lightRed" :disabled="isLoading" required)
+				v-text-field(outlined label='SAP' v-model="sap" :color="lightBlueColor" :disabled="isLoading" required)
 			v-col(cols='10' align='center')
 				v-text-field(
 						outlined
-						:color="lightRed"
+						:color="lightBlueColor"
 						v-model="password"
 						:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 						:type="showPassword ? 'text' : 'password'"
@@ -19,21 +19,21 @@
 						@click:append="showPassword = !showPassword"
 				)
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='First Name' :color="lightRed" :disabled="isLoading" v-model="firstName")
+				v-text-field(outlined label='First Name' :color="lightBlueColor" :disabled="isLoading" v-model="firstName")
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Last Name' :color="lightRed" :disabled="isLoading" v-model="lastName")
+				v-text-field(outlined label='Last Name' :color="lightBlueColor" :disabled="isLoading" v-model="lastName")
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Email' :color="lightRed" :disabled="isLoading" v-model="email")
+				v-text-field(outlined label='Email' :color="lightBlueColor" :disabled="isLoading" v-model="email")
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Phone' :color="lightRed" :disabled="isLoading" v-model="phone")
+				v-text-field(outlined label='Phone' :color="lightBlueColor" :disabled="isLoading" v-model="phone")
 		v-row
 			v-col(align='center')
-				v-btn(:color="blueColor" :loading="isLoading" @click="beginSignUp") Sign Up
+				v-btn(:color="lightBlueColor" :loading="isLoading" @click="beginSignUp") Sign Up
 		
 </template>
 
 <script>
-import { lightRed, blueColor } from '@/data/constants'
+import { lightRed, lightBlueColor } from '@/data/constants'
 import { mapActions } from 'vuex'
 export default {
 	name: 'Register',	
@@ -46,7 +46,7 @@ export default {
 			station: null,
 			phone: null,
 			email: null,
-			blueColor,
+			lightBlueColor,
 			lightRed,
 			isLoading: false,
 			showPassword: false,

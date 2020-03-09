@@ -1,30 +1,32 @@
 <template lang='pug'>
 	v-col
-		router-link(:to="`/user/vacancy/${vacancy.id}`")
-			v-card(
-				class="mx-auto"
-				max-width="345"
-			)
-				v-container
-					v-row(align='center')
-						v-col(cols=10 align='start')
-							h2.card-header {{ vacancy.station.name }}
-						v-col(cols=2 align='start')
-							v-menu(bottom left)
-								template(v-slot:activator="{ on }")
-									v-btn( dark icon v-on="on")
-										v-icon mdi-dots-vertical
-								v-list
-									v-list-item(
-										v-for="(item, i) in menuOptions"
-										:key="i"
-										@click="takeMenuAction(item)"
-									)
-										v-list-item-title {{ item }}          
-						v-col(cols=6 align='start').
-							#[h4 Posted:] {{ formattedDate }}
-						v-col( align='start').
-							#[h4 Applicants:] {{ vacancy.numOfApplicants }}
+		v-card(
+			class="mx-auto"
+			max-width="345"
+		)
+			v-container
+				v-row(align='center')
+					v-col(cols=10 align='start')
+						h3.card-header {{ vacancy.station.name }}
+					v-col(cols=2 align='start')
+						v-menu.menu-icon(bottom left)
+							template(v-slot:activator="{ on }")
+								v-btn( dark icon v-on="on")
+									v-icon mdi-dots-vertical
+							v-list
+								v-list-item(
+									v-for="(item, i) in menuOptions"
+									:key="i"
+									@click="takeMenuAction(item)"
+								)
+									v-list-item-title {{ item }}          
+					v-col(cols=6 align='start').
+						#[h4 Posted:] {{ formattedDate }}
+					v-col(cols=6 align='end')
+						router-link(:to="`/user/vacancy/${vacancy.id}`")
+							v-btn(icon )
+								v-icon( large :color="blueColor") mdi-chevron-right
+					
 </template>
 
 <script>
@@ -69,4 +71,5 @@ export default {
 </script>
 
 <style lang='sass'>
+
 </style>

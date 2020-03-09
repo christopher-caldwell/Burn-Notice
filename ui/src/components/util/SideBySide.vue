@@ -1,12 +1,10 @@
 <template lang='pug'>
 	v-row(:justify="rowJustification")
 		v-col(:class="denseClass" :cols="titleCols" align-self='center' align='start') 
-			h2(:class="titleClass") {{ title }}
+			h5(:class="titleClass") {{ title }}
 		v-col(:class="denseClass" :cols="contentCols" align-self='center' align='start')
-			h3(v-if="!useSlot" :class="contentClass") {{ content }}
+			h5(v-if="!useSlot" :class="contentClass") {{ content }}
 			slot(v-slot:content v-else)
-		v-col(cols=12)
-			v-divider
 </template>
 
 <script>

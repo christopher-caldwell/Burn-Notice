@@ -26,14 +26,14 @@ const routes = [
     path: '/user',
     name: 'UserRoot',
     component: () => import('@/views/authenticated/Root.vue'),
-    beforeEnter(to, from, next) {
-			const isAuthenticated = store.getters['session/isAuthenticated']
-			if(isAuthenticated || isRunningLocally){
-				next()
-			} else {
-				next('/login')
-			}
-    },
+    // beforeEnter(to, from, next) {
+		// 	const isAuthenticated = store.getters['session/isAuthenticated']
+		// 	if(isAuthenticated || isRunningLocally){
+		// 		next()
+		// 	} else {
+		// 		next('/login')
+		// 	}
+    // },
     children: [
 			{
 				path: 'profile',

@@ -9,6 +9,14 @@ CREATE TYPE type_of_incident AS ENUM (
   'medical',
   'building'
 );
+
+CREATE TYPE vacancy_status AS ENUM (
+  'filled',
+  'pending',
+  'cancelled',
+	'active'
+);
+
 CREATE TABLE account (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "sap" int unique,
@@ -19,6 +27,7 @@ CREATE TABLE account (
   "first_name" varchar,
   "last_name" varchar,
   "password" varchar,
+	"is_eligible_for_transfer" boolean DEFAULT true
   "account_role" account_role
 );
 
@@ -54,9 +63,11 @@ CREATE TABLE vacancy (
   "station" int NOT NULL REFERENCES fire_station(id),
   "is_engine" boolean,
   "is_temporary" boolean,
+	"status" vacancy_status DEFAULT 'active'
   "post_date" date DEFAULT (now()),
   "fill_date" date DEFAULT null,
 	"num_of_applicants" int DEFAULT 0
+	"notes" text
 );
 
 CREATE TABLE transfer_request (
