@@ -1,21 +1,3 @@
-export const routes = [
-  {
-    path: '/',
-    icon: 'mdi-home',
-    title: 'Home',
-  },
-  {
-    path: '/build',
-    icon: 'mdi-rocket',
-    title: 'Build a Fleet',
-  },
-  {
-    path: '/test',
-    icon: 'mdi-gamepad-variant',
-    title: 'Test',
-  },
-]
-
 export const visitorRoutes = [
 	{
     path: '/',
@@ -24,12 +6,12 @@ export const visitorRoutes = [
   },
 	{
     path: '/login',
-    icon: 'mdi-person',
+    icon: 'mdi-account',
     title: 'Login',
   },
 	{
     path: '/register',
-    icon: 'mdi-person-add',
+    icon: 'mdi-account-plus',
     title: 'Sign Up',
   },
 ]

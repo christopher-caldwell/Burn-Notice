@@ -68,24 +68,6 @@ export default {
 </script>
 
 <style lang='sass'>
-	.menu-open
-		top: 8px !important
-		left: 200px !important
-	.menu-toggle
-		transition: all 0.25s
-		color: white
-		position: fixed
-		top: 20px
-		left: 7px
-		font-size: 50px
-		z-index: 100
-		background-color: rgba(52, 52, 52, 0.53)
-		border-radius: 2px
-		height: 30px
-		width: 30px
-		display: flex
-		justify-content: center
-		align-items: center
 	.find-me
 		height: 40px
 		width: 130px

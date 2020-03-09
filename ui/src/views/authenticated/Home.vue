@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Vacancy from '@/components/vacancies/Vacancy.vue'
+import Vacancy from '@/components/vacancy/Vacancy.vue'
 import Update from '@/components/updates/Update.vue'
 import { vacancies, mockUpdate } from '@/data/mockData'
 export default {

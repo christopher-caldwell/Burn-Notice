@@ -18,6 +18,11 @@ const routes = [
 		component: () => import('@/views/visitor/Register.vue'),
   },  
   {
+    path: '/skeleton',
+    name: 'skeleton',
+		component: () => import('@/components/skeleton-loaders/Station.vue'),
+  },  
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/visitor/Login.vue'),
@@ -26,14 +31,14 @@ const routes = [
     path: '/user',
     name: 'UserRoot',
     component: () => import('@/views/authenticated/Root.vue'),
-    // beforeEnter(to, from, next) {
-		// 	const isAuthenticated = store.getters['session/isAuthenticated']
-		// 	if(isAuthenticated || isRunningLocally){
-		// 		next()
-		// 	} else {
-		// 		next('/login')
-		// 	}
-    // },
+    beforeEnter(to, from, next) {
+			const isAuthenticated = store.getters['session/isAuthenticated']
+			if(isAuthenticated || isRunningLocally){
+				next()
+			} else {
+				next('/login')
+			}
+    },
     children: [
 			{
 				path: 'profile',
@@ -50,6 +55,12 @@ const routes = [
 				path: 'vacancy/:id',
 				name: 'Vacancy',
 				component: () => import('@/views/authenticated/vacancy/Vacancy.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
+				path: 'station/:id',
+				name: 'FireStation',
+				component: () => import('@/views/authenticated/fire-station/FireStation.vue'),
 				meta: { transitionName: 'slide' }
 			},
     ]

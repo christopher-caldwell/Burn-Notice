@@ -95,3 +95,13 @@ CREATE TABLE report (
   "team_one_members" int[],
   "team_two_members" int[]
 );
+
+CREATE TABLE account_update (
+	"id" SERIAL PRIMARY KEY NOT NULL,
+	"account" int NOT NULL REFERENCES account(id)
+	"title" varchar
+	"table_name_of_update" varchar
+	"id_of_update_source" int
+	"is_actionable" boolean
+	"post_date" date DEFAULT (now())
+)

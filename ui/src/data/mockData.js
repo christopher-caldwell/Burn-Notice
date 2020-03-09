@@ -59,3 +59,17 @@ export const mockUpdate = {
 	name: 'Your request was denied',
 	hasAction: true
 }
+
+export const fireStation = {
+	id: 1,
+	name: 'Bandera',
+	district: {
+		name: '14',
+	},
+	captain: {
+		id: 2,
+		firstName: 'Willy',
+		lastName: 'Nilly',
+	},
+	vacancies
+}
