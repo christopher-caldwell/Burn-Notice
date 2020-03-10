@@ -1,30 +1,26 @@
-const { knexSnakeCaseMappers } = require('objection')
-const knex = require('knex')({
-  client: process.env.DB_CLIENT,
-  connection: {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
-	},
-	...knexSnakeCaseMappers()
-})
+const { putItem } = require('simple-lambda-actions/dist/dynamo/')
 
-const role = 'fire_fighter'
+const TableName = process.env.TABLE_NAME
+const partitionKey = process.env.TABLE_PARTITION_KEY
+const rangeKey = process.env.TABLE_RANGE_KEY
 
-const constructWriteParams = ( hashedPassword, userInformation) => {
+const role = 'full-user'
+
+const constructWriteParams = (sap, hashedPassword, userInformation) => {
 	const params = {
+		[partitionKey]: sap,
+		[rangeKey]: 'user',
 		password: hashedPassword,
-		accountRole: role,
+		role,
 		...userInformation
 	}
 	return params
 }
 
-const writeUser = (hashedPassword, userInformation) => {
-	const writeParams = constructWriteParams(hashedPassword, userInformation)
-	return knex('account').insert(writeParams)
+const writeUser = async (sap, hashedPassword, userInformation) => {
+	const writeParams = constructWriteParams(sap, hashedPassword, userInformation)
+	await putItem(TableName, writeParams)
+	return writeParams
 }
 
 module.exports = writeUser
