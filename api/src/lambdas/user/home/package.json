@@ -7,6 +7,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "simple-array-shuffler": "0.0.5",
     "simple-lambda-actions": "^1.2.58"
   }
 }
