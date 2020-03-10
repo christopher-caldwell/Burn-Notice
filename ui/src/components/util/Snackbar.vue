@@ -13,16 +13,6 @@
 <script>
   export default {
     name: 'SnackBar',
-    data(){
-      return {
-        isSnackBarShown: false
-      }
-    },
-    watch: {
-      isShown(newValue){
-        this.isSnackBarShown = newValue
-      }
-    },
     props: {
       isShown: {
         type: Boolean,
@@ -41,12 +31,22 @@
       color: {
         type: String,
         required: false,
-        defualt: 'success'
+        default: 'success'
       },
       timeout: {
         type: Number,
         required: false,
         default: 2000
+      }
+    },
+    data(){
+      return {
+        isSnackBarShown: false
+      }
+    },
+    watch: {
+      isShown(newValue){
+        this.isSnackBarShown = newValue
       }
     }
   }

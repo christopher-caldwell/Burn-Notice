@@ -14,12 +14,10 @@
 export default {
   name: 'NavMenuItem',
   props: {
-    route: Object
-  },
-  computed: {
-    institutionId() {
-      return '123'
-    }
+		route: {
+			type: Object,
+			required: true
+		}
   },
 }
 </script>

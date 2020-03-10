@@ -1,16 +1,14 @@
-const STAGE = process.env.STAGE
-
-const stageEnum = {
-	'local': 'off',
-	'dev': 'off',
-	'qa': 'error',
-	'prod': 'error'
-}
-
-const consoleLogError = stageEnum[STAGE]
-
 module.exports = {
+	root: true,
+	env: {
+		node: true
+	},
+	extends: ['plugin:vue/recommended', 'eslint:recommended'],
+	parserOptions: {
+		parser: 'babel-eslint'
+	},
 	rules: {
-    'no-console': consoleLogError
-  }
+		'no-console': process.env.STAGE === 'prod' ? 'error' : 'off'
+	}
 }
+

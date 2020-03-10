@@ -56,14 +56,15 @@ export default {
 				: 'mdi-chevron-right'
 		}
 	},
+	mounted() {
+		this.$vuetify.theme.dark = true
+	},
 	methods: {
 		saveDarkModeSetting() {
 			this.$vuetify.theme.dark = !this.$vuetify.theme.dark
 		},
 	},
-	mounted() {
-		this.$vuetify.theme.dark = true
-	}
+	
 }
 </script>
 

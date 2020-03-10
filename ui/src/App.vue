@@ -16,9 +16,6 @@ export default {
 	computed: {
 		...mapGetters('session', ['isReadyToShow'])
 	},
-	methods: {
-		...mapActions('session', ['restoreSessionFromLocalStorage'])
-	},
 	created(){
 		// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 		let vh = window.innerHeight * 0.01
@@ -27,7 +24,10 @@ export default {
 	},
 	async mounted(){
 		await this.restoreSessionFromLocalStorage()
-	}
+	},
+	methods: {
+		...mapActions('session', ['restoreSessionFromLocalStorage'])
+	},
 }
 </script>
 
