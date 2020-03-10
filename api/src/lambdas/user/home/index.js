@@ -1,5 +1,5 @@
 const Responder = require('simple-lambda-actions/dist/util/responseHandler')
-const queryUpdates = require('./lib/query')
+const query = require('./lib/query')
 const shuffle = require('simple-array-shuffler')
 
 const corsUrl = process.env.CORS_URL
@@ -12,8 +12,8 @@ exports.handler = async event => {
 		const { sap } = event.queryStringParameters
 		
 		const [ updates, vacancies ] = await Promise.all([
-			await queryUpdates(sap, 'update'),
-			await queryUpdates('vacancy')
+			await query(sap, 'update'),
+			await query('vacancy')
 		])
 		const shuffledVacancies = shuffle(vacancies)
 		shuffledVacancies.splice(numOfVacanciesToReturn)

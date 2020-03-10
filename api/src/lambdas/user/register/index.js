@@ -11,7 +11,7 @@ const corsUrl = process.env.CORS_URL
 exports.handler = async event => {
 	const ResponseHandler = new Responder(corsUrl, event.httpMethod)
 	try {
-		const { userInformation } = bodyParser(event.body)
+		const userInformation = bodyParser(event.body)
 		const { sap, password } = userInformation
 		const hashedPassword = await hash(password, numberOfSaltRounds)
 		const tokenParams = { id: sap, role }

@@ -7,7 +7,7 @@ Globals:
       Variables:
         CORS_URL: !Ref CorsUrl
 
-				TABLE_NAME: !Ref TableName
+        TABLE_NAME: !Ref TableName
         TABLE_PARTITION_KEY: !Ref TablePartitionKey
         TABLE_RANGE_KEY: !Ref TableRangeKey
 
@@ -41,7 +41,7 @@ Parameters:
   DatabaseName:
     Description: Name of db
     Type: String
-	TableName:
+  TableName:
     Description: Name of the table
     Type: String
   TablePartitionKey:
@@ -150,7 +150,7 @@ Resources:
             Location: !Sub s3://${S3Bucket}/swagger-api-template.json
 
   ######## DB #########
-	FireDb:
+  FireDb:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: !Sub ${Stage}-${TableName}
@@ -170,30 +170,6 @@ Resources:
 
 
   ######## Roles #########
-  GraphQLRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Action:
-              - sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-      Policies:
-        - PolicyName: !Sub ${Stage}-fire-graphql-role
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Effect: Allow
-                Resource: '*'
-  
   AuthRole:
     Type: AWS::IAM::Role
     Properties:
@@ -230,8 +206,8 @@ Resources:
                     - Ref: AWS::AccountId
                     - :secret/
                     - Ref: SigningKeyName
-	
-	DynamoSearchRole:
+  
+  DynamoSearchRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:

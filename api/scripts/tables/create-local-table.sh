@@ -2,7 +2,17 @@
 
 source .env.local
 
-docker run -p 8000:8000 amazon/dynamodb-local &
+docker run \
+	--name local-dynamo \
+	--rm \
+	-p 8000:8000 \
+	-d \
+	amazon/dynamodb-local
+
+if [ $? != 0 ]
+then
+	exit 1
+fi
 
 aws dynamodb create-table \
   --table-name $TABLE_NAME \
