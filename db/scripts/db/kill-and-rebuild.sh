@@ -2,9 +2,9 @@
 
 source .env.local
 
-docker container kill postgres_test
+docker container kill $DB_CONTAINER_NAME
 
-docker container rm postgres_test
+docker container rm $DB_CONTAINER_NAME
 
 sh scripts/build-container.sh
 

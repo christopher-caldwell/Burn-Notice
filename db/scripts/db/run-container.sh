@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# mkdir -p data/
+source .env.local
 
 # -p: Expose the containers port to your own localhost
 # -e: Environmnet variables
