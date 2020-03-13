@@ -1,4 +1,5 @@
-const { knexSnakeCaseMappers } = require('objection')
+const { knexSnakeCaseMappers } = require('objection/lib/utils/identifierMapping')
+
 const knex = require('knex')({
   client: process.env.DB_CLIENT,
   connection: {
@@ -11,8 +12,4 @@ const knex = require('knex')({
 	...knexSnakeCaseMappers()
 })
 
-module.exports = userId => {
-	return knex('account').where({ id: userId }).update({
-    lastLoggedInAt: new Date(),
-  })
-}
+module.exports = knex

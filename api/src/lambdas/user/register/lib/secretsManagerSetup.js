@@ -1,4 +1,4 @@
-const { generateTokenWithSecretsManager } = require('simple-lambda-actions/dist/auth')
+const generateTokenWithSecretsManager = require('simple-lambda-actions/dist/auth/secrets-manager/generateToken')
 
 const SecretId = process.env.SECRET_NAME
 const nameOfSecret = process.env.SIGNING_KEY_NAME

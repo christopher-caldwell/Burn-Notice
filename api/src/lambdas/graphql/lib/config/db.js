@@ -1,4 +1,4 @@
-const { knexSnakeCaseMappers } = require('objection')
+const { knexSnakeCaseMappers } = require('objection/lib/utils/identifierMapping')
 
 const config = {
   client: process.env.DB_CLIENT,

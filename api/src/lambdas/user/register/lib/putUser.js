@@ -1,4 +1,5 @@
-const { knexSnakeCaseMappers } = require('objection')
+const { genSalt, hash } = require('bcryptjs/dist/bcrypt.min')
+const { knexSnakeCaseMappers } = require('objection/lib/utils/identifierMapping')
 const knex = require('knex')({
   client: process.env.DB_CLIENT,
   connection: {
@@ -10,10 +11,12 @@ const knex = require('knex')({
 	},
 	...knexSnakeCaseMappers()
 })
-
 const role = 'fire_fighter'
 
-const constructWriteParams = ( hashedPassword, userInformation) => {
+const constructWriteParams = async userInformation => {
+	const saltRounds = await genSalt(10)
+	const hashedPassword = await hash(userInformation.password, saltRounds)
+	delete userInformation.password
 	const params = {
 		password: hashedPassword,
 		accountRole: role,
@@ -22,8 +25,8 @@ const constructWriteParams = ( hashedPassword, userInformation) => {
 	return params
 }
 
-const writeUser = (hashedPassword, userInformation) => {
-	const writeParams = constructWriteParams(hashedPassword, userInformation)
+const writeUser = async userInformation => {
+	const writeParams = await constructWriteParams(userInformation)
 	return knex('account').insert(writeParams)
 }
 
