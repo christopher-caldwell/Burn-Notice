@@ -14,7 +14,7 @@ CREATE TYPE vacancy_status AS ENUM (
   'filled',
   'pending',
   'cancelled',
-	'active'
+  'active'
 );
 
 CREATE TABLE account (
@@ -27,15 +27,9 @@ CREATE TABLE account (
   "first_name" varchar,
   "last_name" varchar,
   "password" varchar,
-	"is_eligible_for_transfer" boolean DEFAULT true
+  "is_eligible_for_transfer" boolean DEFAULT true,
   "account_role" account_role
 );
-
--- CREATE TABLE team (
---   "id" SERIAL PRIMARY KEY NOT NULL,
---   "leader" int NOT NULL REFERENCES account(id),
---   "name" varchar
--- );
 
 CREATE TABLE district (
   "id" SERIAL PRIMARY KEY NOT NULL,
@@ -63,11 +57,11 @@ CREATE TABLE vacancy (
   "station" int NOT NULL REFERENCES fire_station(id),
   "is_engine" boolean,
   "is_temporary" boolean,
-	"status" vacancy_status DEFAULT 'active'
+  "status" vacancy_status DEFAULT 'active',
   "post_date" date DEFAULT (now()),
   "fill_date" date DEFAULT null,
-	"num_of_applicants" int DEFAULT 0
-	"notes" text
+  "num_of_applicants" int DEFAULT 0,
+  "notes" text
 );
 
 CREATE TABLE transfer_request (
@@ -98,10 +92,10 @@ CREATE TABLE report (
 
 CREATE TABLE account_update (
 	"id" SERIAL PRIMARY KEY NOT NULL,
-	"account" int NOT NULL REFERENCES account(id)
-	"title" varchar
-	"table_name_of_update" varchar
-	"id_of_update_source" int
-	"is_actionable" boolean
+	"account" int NOT NULL REFERENCES account(id),
+	"title" varchar,
+	"table_name_of_update" varchar,
+	"id_of_update_source" int,
+	"is_actionable" boolean,
 	"post_date" date DEFAULT (now())
 )

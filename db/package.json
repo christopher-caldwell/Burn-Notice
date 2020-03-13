@@ -1,0 +1,11 @@
+{
+  "name": "fire-aurora-rds",
+  "version": "1.0.0",
+  "description": "Cloudformation stack to deploy VPC and Aurora RDS",
+  "scripts": {
+    "deploy:dev": "source .env.dev && sh scripts/build/deploy.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

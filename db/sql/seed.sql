@@ -8,10 +8,6 @@ INSERT INTO account (sap, email, phone, first_name, last_name, account_role)
    (233157, 'mail@mail.com', '(123) 456-2345)', 'Captain', 'Spongebob', 'captain'), --5
    (231157, 'mail@mail.com', '(123) 456-2345)', 'Captain', 'Snaggle-Tooth', 'captain'); --6
 
--- INSERT INTO team (leader, name)
---   VALUES
---    (1, 'Blue Team');
-
 INSERT INTO district (chief, name)
   VALUES
    (4, 'District 14');

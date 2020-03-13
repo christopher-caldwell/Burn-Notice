@@ -1,0 +1,148 @@
+Transform: 'AWS::Serverless-2016-10-31'
+
+Parameters:
+  DatabaseName:
+    Type: String
+    Description: The RDS Aurora Serverless Database Name
+  DatabaseUsername:
+    Type: String
+    Description: The RDS Aurora Serverless Master UserName
+  DatabasePassword:
+    Type: String
+    Description: The RDS Aurora Serverless Master User Password
+  S3Bucket:
+    Type: String
+  Stage:
+    Type: String
+
+Resources:
+
+# VPC
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: 'true'
+
+# Subnets
+  Subnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/25
+      AvailabilityZone: us-east-1a
+
+  Subnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.128/25
+      AvailabilityZone: us-east-1c
+  
+  DBSubnetGroup: 
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties: 
+      DBSubnetGroupDescription: "DB Subnet"
+      SubnetIds: 
+        - !Ref Subnet1
+        - !Ref Subnet2
+
+# Route Table
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+  
+  SubnetRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Subnet1
+      RouteTableId: !Ref RouteTable
+
+  SubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Subnet2
+      RouteTableId: !Ref RouteTable
+
+# Security Group
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SQL access from lambda subnets
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '5432'
+        ToPort: '5432'
+        SourceSecurityGroupId : !Ref LambdaSecurityGroup
+
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Lambda ENIs
+      VpcId: !Ref VPC
+
+# RDS Cluster
+  AuroraCluster:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      MasterUsername: !Ref DatabaseUsername
+      MasterUserPassword: !Ref DatabasePassword
+      DatabaseName: !Ref DatabaseName
+      Engine: aurora-postgresql
+      EngineMode: serverless
+      EnableHttpEndpoint: true
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref RDSSecurityGroup
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 4
+        MinCapacity: 2
+        SecondsUntilAutoPause: 500
+
+  AuroraClusterSecret:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: RDSAuroraServerlessMasterSecret
+      Description: This contains the RDS Master user credentials for RDS Aurora Serverless Cluster
+      SecretString: 
+        !Sub |
+          {
+            "username": "${DatabaseUsername}",
+            "password": "${DatabasePassword}"
+          }
+
+Outputs:
+  FireDatabaseEndPoint:
+    Value: !GetAtt AuroraCluster.Endpoint.Address
+    Description: Endpoint to connect to RDS
+    Export:
+      Name: FireDbEndPoint
+  FireDatabaseSecurityGroup:
+    Value: !Ref LambdaSecurityGroup
+    Description: Security group for Lambda to access RDS
+    Export:
+      Name: FireDbSecurityGroup
+  FireDatabaseSubnetOne:
+    Value: !Ref Subnet1
+    Description: First subnet for Lambda to access RDS
+    Export:
+      Name: FireDbSubnetOne
+  FireDatabaseSubnetTwo:
+    Value: !Ref Subnet2
+    Description: Second subnet for Lambda to access RDS
+    Export:
+      Name: FireDbSubnetTwo
+  FireDatabaseName:
+    Value: !Ref DatabaseName
+    Export:
+      Name: FireDbName
+    Description: Aurora Serverless Postgres Database
+  FireDatabaseSecretArn:
+    Value: !Ref AuroraClusterSecret
+    Description: Aurora cluster secrets ARN
+    Export:
+      Name: FireDbSecretArn
