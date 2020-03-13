@@ -3,16 +3,16 @@ Globals:
   Function:
     Runtime: nodejs12.x
     Timeout: 30
-		VpcConfig:
-			SecurityGroupIds:
-				- !ImportValue FireDbSecurityGroup
-			SubnetIds:
-				- !ImportValue FireDbSubnetOne
-				- !ImportValue FireDbSubnetTwo
+    VpcConfig:
+      SecurityGroupIds:
+        - !ImportValue FireDbSecurityGroup
+      SubnetIds:
+        - !ImportValue FireDbSubnetOne
+        - !ImportValue FireDbSubnetTwo
     Environment:
       Variables:
         CORS_URL: !Ref CorsUrl
-        
+
         SIGNING_KEY_NAME: !Ref SigningKeyName
         SECRET_NAME: !Ref SecretName
 
@@ -44,7 +44,7 @@ Parameters:
     Type: String
   AuthSecretValue:
     Type: String
-	
+
 Resources:
 # Secret
   AuthSecret:
@@ -52,7 +52,7 @@ Resources:
     Properties:
       Name: !Ref AuthSecretName
       Description: This contains the string to sign tokens
-      SecretString: 
+      SecretString:
         !Sub |
           {
             ${!Ref AuthSecretKey}: ${!Ref AuthSecretValue}
@@ -91,7 +91,7 @@ Resources:
             RestApiId: !Ref FireAPI
             Path: /register
             Method: post
-  
+
   Login:
     Type: AWS::Serverless::Function
     Properties:
@@ -127,14 +127,14 @@ Resources:
       Timeout: 30
       Events:
         http:
-          Type: Api 
+          Type: Api
           Properties:
             RestApiId: !Ref AuroraTestAPI
             Path: /graphql
             Method: post
 
 
-# API 
+# API
   FireAPI:
     Type: AWS::Serverless::Api
     Properties:
@@ -183,7 +183,7 @@ Resources:
                     - Ref: AWS::AccountId
                     - :secret/
                     - Ref: SigningKeyName
-  
+
   GraphQLRole:
     Type: AWS::IAM::Role
     Properties:
