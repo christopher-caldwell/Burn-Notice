@@ -26,14 +26,14 @@ export default {
 	},
 	actions: {
 		async registerUser({ commit, dispatch }, userPayload){
-			const { userProfile, token } = await service.register(userPayload)
+			const { userInformation, token } = await service.register(userPayload)
 			dispatch('session/beginNewSession', token, { root: true })
-			commit('UPDATE_USER', userProfile)
+			commit('UPDATE_USER', userInformation)
 		},
 		async login({ commit, dispatch }, { sap, password }){			
-			const { userProfile, token } = await service.login(sap, password)
+			const { userInformation, token } = await service.login(sap, password)
 			dispatch('session/beginNewSession', token, { root: true })
-			commit('UPDATE_USER', userProfile)
+			commit('UPDATE_USER', userInformation)
 		},
 		restoreUserToStore({ commit }){
 			const prevUser = getItemFromLocalStorage('user')
