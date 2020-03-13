@@ -1,32 +1,35 @@
 {
-	"name": "api",
-	"version": "1.0.0",
-	"description": "API for aws-exam-help",
-	"scripts": {
-		"install-helper": "sh scripts/build/update-lib-version.sh",
-		"lint": "eslint \"src/**/*.js\" --ignore-pattern node_modules/ --fix",
-		"test:unit": "jest tests/unit",
-		"test:integration": "jest tests/integration",
-		"dev": "sh scripts/build/start-local-api.sh",
-		"deploy:dev": "source .env.dev && sh scripts/build/deploy.sh",
-		"seed-questions": "sh scripts/seeder/seed.sh"
-	},
-	"keywords": [
-		"aws",
-		"lambda",
-		"api",
-		"serverless"
-	],
-	"author": "caldwell619",
-	"license": "ISC",
-	"devDependencies": {
-		"aws-sdk": "^2.623.0",
-		"babel-eslint": "^10.0.2",
-		"babel-jest": "^24.8.0",
-		"eslint": "^6.1.0",
-		"jest": "^24.8.0",
-		"simple-lambda-actions": "^1.2.56",
-		"uuid": "^3.4.0"
-	},
-	"dependencies": {}
+		"name": "api",
+		"version": "1.0.0",
+		"description": "API for SAFD Burn Notice",
+		"scripts": {
+				"install-helper": "sh scripts/build/update-lib-version.sh",
+				"lint": "eslint \"src/**/*.js\" --ignore-pattern node_modules/ --fix",
+				"test:unit": "jest tests/unit",
+				"test:integration": "jest tests/integration",
+				"start": "concurrently \"webpack-cli --config webpack.dev.js -w\" \"sh scripts/start-local-api.sh\" ",
+				"build:dev": "webpack --config webpack.dev.js",
+				"build:prod": "webpack --config webpack.prod.js",
+				"deploy:dev": "source .env.dev && sh scripts/build/deploy.sh"
+		},
+		"author": "Christopher Caldwell",
+		"license": "ISC",
+		"devDependencies": {
+				"@babel/core": "^7.8.7",
+				"@babel/preset-env": "^7.8.7",
+				"aws-sdk": "^2.623.0",
+				"aws-sam-webpack-plugin": "^0.6.0",
+				"babel-eslint": "^10.0.2",
+				"babel-loader": "^8.0.6",
+				"babel-jest": "^24.8.0",
+				"bcrypt": "^4.0.1",
+				"concurrently": "^5.1.0",
+				"eslint": "^6.1.0",
+				"jest": "^24.8.0",
+				"simple-lambda-actions": "^1.2.56",
+				"uuid": "^3.4.0",
+				"webpack": "^4.42.0",
+				"webpack-cli": "^3.3.11",
+				"webpack-merge": "^4.2.2"
+		}
 }

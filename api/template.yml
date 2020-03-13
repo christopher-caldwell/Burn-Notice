@@ -3,53 +3,20 @@ Globals:
   Function:
     Runtime: nodejs12.x
     Timeout: 30
+		VpcConfig:
+			SecurityGroupIds:
+				- !ImportValue FireDbSecurityGroup
+			SubnetIds:
+				- !ImportValue FireDbSubnetOne
+				- !ImportValue FireDbSubnetTwo
     Environment:
       Variables:
         CORS_URL: !Ref CorsUrl
-
-        TABLE_NAME: !Ref TableName
-        TABLE_PARTITION_KEY: !Ref TablePartitionKey
-        TABLE_RANGE_KEY: !Ref TableRangeKey
-
-        DB_CLIENT: !Ref DatabaseClient
-        DB_HOST: !Ref DatabaseHost
-        DB_PORT: !Ref DatabasePort
-        DB_USER: !Ref DatabaseUser
-        DB_PASSWORD: !Ref DatabasePassword
-        DB_NAME: !Ref DatabaseName
-
-        # These will eventually be only in the authorizer
+        
         SIGNING_KEY_NAME: !Ref SigningKeyName
         SECRET_NAME: !Ref SecretName
 
 Parameters:
-  DatabaseClient:
-    Description: Name of the client used to interact with DB
-    Type: String
-  DatabaseHost:
-    Description: Host name of the DB instance
-    Type: String
-  DatabasePort:
-    Description: Port of the host DB is running on
-    Type: String
-  DatabaseUser:
-    Description: Username of the db
-    Type: String
-  DatabasePassword:
-    Description: Password of the db user
-    Type: String
-  DatabaseName:
-    Description: Name of db
-    Type: String
-  TableName:
-    Description: Name of the table
-    Type: String
-  TablePartitionKey:
-    Description: Name of the tables partition key
-    Type: String
-  TableRangeKey:
-    Description: Name of the tables range key
-    Type: String
   TokenDuration:
     Description: Length of life for normal token
     Type: String
@@ -71,8 +38,27 @@ Parameters:
   ApiName:
     Description: Name of the API
     Type: String
-
+  AuthSecretName:
+    Type: String
+  AuthSecretKey:
+    Type: String
+  AuthSecretValue:
+    Type: String
+	
 Resources:
+# Secret
+  AuthSecret:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: !Ref AuthSecretName
+      Description: This contains the string to sign tokens
+      SecretString: 
+        !Sub |
+          {
+            ${!Ref AuthSecretKey}: ${!Ref AuthSecretValue}
+          }
+
+# Lambdas
   LambdaLocalCorsStub:
     Type: AWS::Serverless::Function
     Properties:
@@ -89,20 +75,6 @@ Resources:
             Path: /{cors+}
             Method: OPTIONS
 
-  HomeFeed:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: src/lambdas/user/home
-      Handler: index.handler
-      Role: !GetAtt "DynamoSearchRole.Arn"
-      Events:
-        http:
-          Type: Api
-          Properties:
-            RestApiId: !Ref FireAPI
-            Path: /home
-            Method: get
-  
   Register:
     Type: AWS::Serverless::Function
     Properties:
@@ -137,7 +109,32 @@ Resources:
             Path: /login
             Method: post
 
-  ######## API #########
+  GraphQL:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 512
+      CodeUri: src/lambdas/graphql
+      Handler: index.handler
+      Role: !GetAtt GraphQLRole.Arn
+      Environment:
+        Variables:
+          DB_CLIENT: 'pg'
+          DB_HOST: !ImportValue  FireDbEndPoint
+          DB_PORT: 5432
+          DB_USER: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:username}}' ]]
+          DB_PASSWORD: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:password}}' ]]
+          DB_NAME: !ImportValue FireDbName
+      Timeout: 30
+      Events:
+        http:
+          Type: Api 
+          Properties:
+            RestApiId: !Ref AuroraTestAPI
+            Path: /graphql
+            Method: post
+
+
+# API 
   FireAPI:
     Type: AWS::Serverless::Api
     Properties:
@@ -149,27 +146,7 @@ Resources:
           Parameters:
             Location: !Sub s3://${S3Bucket}/swagger-api-template.json
 
-  ######## DB #########
-  FireDb:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Sub ${Stage}-${TableName}
-      AttributeDefinitions:
-        - AttributeName: !Ref TablePartitionKey
-          AttributeType: S
-        - AttributeName: !Ref TableRangeKey
-          AttributeType: S
-      KeySchema:
-        - AttributeName: !Ref TablePartitionKey
-          KeyType: HASH
-        - AttributeName: !Ref TableRangeKey
-          KeyType: RANGE
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
-
-
-  ######## Roles #########
+# Roles
   AuthRole:
     Type: AWS::IAM::Role
     Properties:
@@ -207,7 +184,7 @@ Resources:
                     - :secret/
                     - Ref: SigningKeyName
   
-  DynamoSearchRole:
+  GraphQLRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -220,7 +197,7 @@ Resources:
             Service:
             - lambda.amazonaws.com
       Policies:
-      - PolicyName: !Sub ${Stage}-fire-dynamo-search-role
+      - PolicyName: !Sub ${Stage}-rds-test-role
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -230,8 +207,5 @@ Resources:
             - logs:PutLogEvents
             Effect: Allow
             Resource: '*'
-          - Action:
-            - dynamodb:GetItem
-            - dynamodb:Query
-            Effect: Allow
-            Resource: !Ref FireDb.arn
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole

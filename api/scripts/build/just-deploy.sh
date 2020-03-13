@@ -11,24 +11,18 @@ printf "\n\n$BICyan$( echo Deploying the latest artifact to the $STAGE bucket.. 
 printf "\n\n"
 
 sam deploy \
-  --template-file build/.$STAGE-template.yaml \
+  --s3-bucket $S3_BUCKET \
+  --template-file .aws-sam/build/template.yaml \
   --no-fail-on-empty-changeset \
-  --stack-name $STAGE-safd \
+  --stack-name $STAGE-$STACK_NAME \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides \
-			Stage=$STAGE \
-			CorsUrl=$CORS_URL \
 			S3Bucket=$S3_BUCKET \
-			TokenDuration=$TOKEN_DURATION \
-			SigningKeyName=$SIGNING_KEY_NAME \
-			SecretName=$SECRET_NAME \
 			ApiName=$API_NAME \
-			DatabaseClient=$DB_CLIENT \
-			DatabaseHost=$DB_HOST \
-			DatabasePort=$DB_PORT \
-			DatabaseUser=$DB_USER \
-			DatabasePassword=$DB_PASSWORD \
-			DatabaseName=$DB_NAME
+			Stage=$STAGE \
+			DatabaseName=$DB_NAME \
+			DatabaseUsername=$DB_USER \
+			DatabasePassword=$DB_PASSWORD
 
 
 if [ $? == 0 ]

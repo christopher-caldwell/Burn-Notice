@@ -9,6 +9,6 @@ BICyan="\033[1;96m"    # Bold Cyan
 Color_Off="\033[0m"    # Text Reset
 
 # sh scripts/run-tests.sh
-sh scripts/build/upload-swagger.sh
-sh scripts/build/sam-build.sh
-sh scripts/build/just-deploy.sh
+sh scripts/upload-swagger.sh
+sh scripts/sam-build.sh
+sh scripts/just-deploy.sh
