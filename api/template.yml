@@ -124,12 +124,11 @@ Resources:
           DB_USER: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:username}}' ]]
           DB_PASSWORD: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:password}}' ]]
           DB_NAME: !ImportValue FireDbName
-      Timeout: 30
       Events:
         http:
           Type: Api
           Properties:
-            RestApiId: !Ref AuroraTestAPI
+            RestApiId: !Ref FireAPI
             Path: /graphql
             Method: post
 
@@ -139,7 +138,7 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Ref ApiName
-      StageName: !Sub ${Stage}-new-new
+      StageName: !Sub ${ApiName}-${Stage}
       DefinitionBody:
         Fn::Transform:
           Name: 'AWS::Include'

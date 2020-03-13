@@ -6,5 +6,5 @@ module.exports = merge(common, {
   externals: {
     ...common.externals,
     'aws-sdk': 'aws-sdk'
-  }
-});
+	}
+})

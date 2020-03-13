@@ -34,6 +34,7 @@ module.exports = {
     new webpack.IgnorePlugin(/pg-query-stream/, /\/knex\//),
     new webpack.IgnorePlugin(/sqlite3/, /\/knex\//),
     new webpack.IgnorePlugin(/strong-oracle/, /\/knex\//),
+    new webpack.IgnorePlugin(/redshift/, /\/knex\//),
     new webpack.IgnorePlugin(/pg-native/, /\/pg\//)
   ]
 }
