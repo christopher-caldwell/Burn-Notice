@@ -15,6 +15,7 @@
 						:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 						:type="showPassword ? 'text' : 'password'"
 						label="Password"
+						:disabled="isLoading"
 						counter
 						@click:append="showPassword = !showPassword"
 				)
