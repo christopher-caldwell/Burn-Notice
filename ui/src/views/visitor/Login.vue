@@ -1,6 +1,6 @@
 <template lang='pug'>
 	v-container
-		form(v-on:submit.prevent="attemptLogin")
+		form(@submit="attemptLogin")
 			v-row
 				v-col(align='center')
 					h1.login-header Login
@@ -30,7 +30,7 @@
 					router-link(to='/forgot-password') Forgot your password?
 			v-row
 				v-col(align='center')
-					v-btn(:color="lightBlueColor" :loading="isLoading" @click.prevent="attemptLogin") Login
+					v-btn(:color="lightBlueColor" type='submit' :loading="isLoading" @click.prevent="attemptLogin") Login
 		
 </template>
 
