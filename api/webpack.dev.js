@@ -8,6 +8,7 @@ module.exports = merge(common, {
 	devtool: 'source-map',
 	plugins: [
 		...common.plugins,
-    new BundleAnalyzerPlugin()
+		// uncomment to see your bundle analysis
+    // new BundleAnalyzerPlugin()
   ]
 })
