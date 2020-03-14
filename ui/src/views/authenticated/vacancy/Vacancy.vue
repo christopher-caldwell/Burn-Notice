@@ -1,5 +1,5 @@
 <template lang='pug'>
-	ApolloQuery(@result="mapDataToState" :query="require('@/graphql/Vacancy.gql')" :variables="{ id: vacancyId }" :notifyOnNetworkStatusChange="true")
+	ApolloQuery(@result="mapDataToState" :query="require('@/graphql/vacancy/Vacancy.gql')" :variables="{ id: vacancyId }" :notifyOnNetworkStatusChange="true")
 		template(v-slot="{ result: { loading, data } }")
 			SkeletonLoader(v-if="loading")
 			v-container(v-if="data")

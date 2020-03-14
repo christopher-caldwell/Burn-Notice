@@ -6,6 +6,7 @@ const { schema, resolvers } = require('./lib')
 const corsUrl = process.env.CORS_URL
 
 exports.handler = async event => {
+	console.log('event', event)
 	const ResponseHandler = new Responder({corsUrl, httpMethod: event.httpMethod})
 	const { query, variables, operationName } = bodyParser(event.body)
 	const result = await graphql(schema, query, resolvers, null, variables, operationName)

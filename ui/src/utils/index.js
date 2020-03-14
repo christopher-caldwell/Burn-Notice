@@ -9,3 +9,26 @@ export const mapBoolToText = bool => {
 		? 'Yes'
 		: 'No'
 }
+
+export const filterObjects = (objects, searchTerm) => {
+	return new Promise((res, reject) => {
+		try {
+			const filteredSet = objects.filter(individualObject => {
+				let doesPass = false
+				const keysOfObject = Object.keys(individualObject) 
+				for(let key of keysOfObject){
+					// coerce to string for numeric values
+					const stringVersionOfDataProperty = individualObject[key].toString().toLowerCase()
+					if(stringVersionOfDataProperty.includes(searchTerm.toLowerCase())){
+						doesPass = true
+						break
+					}
+				}
+				return doesPass
+			})
+			return res(filteredSet)
+		} catch(error){
+			return reject(error)
+		}
+	})
+}

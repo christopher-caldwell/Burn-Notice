@@ -7,13 +7,16 @@ module.exports = {
 		})
 		return account
   },
-	async accountBySap({ sap }){
-    const [ account ] = await db('account').where({
-			sap
-		})
-		return account
+	accountBySap({ sap }){
+    return db('account').where({ sap }).first()
   },
 	accounts(){
     return db('account')
+  },
+	accountsByStation({ stationId }){
+		return db('account')
+			.join('assignment', 'assignment.account', 'account.id')
+			.where({ assignedStation: stationId })
+			.andWhere('assignment.endDate', null)
   },
 }

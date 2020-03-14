@@ -117,5 +117,6 @@ module.exports = buildSchema(`
 		homeFeed(id: ID): HomeFeed
 		vacancy(id: ID): Vacancy
 		fireStation(id: ID): FireStation
+		accountsByStation(stationId: ID): [Account]
 	}
 `)

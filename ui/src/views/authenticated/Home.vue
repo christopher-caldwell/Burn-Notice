@@ -1,5 +1,5 @@
 <template lang='pug'>
-	ApolloQuery(:query="require('@/graphql/Feed.gql')" :variables="{ id: 7 }" :notifyOnNetworkStatusChange="true")
+	ApolloQuery(:query="require('@/graphql/feed/Feed.gql')" :variables="{ id: 7 }" :notifyOnNetworkStatusChange="true")
 		template(v-slot="{ result: { loading, data } }")
 			HomeSkeleton(v-if="loading")
 			v-container(v-if="data")
