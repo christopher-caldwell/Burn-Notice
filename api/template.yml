@@ -10,7 +10,7 @@ Globals:
         SECRET_NAME: !Ref SecretName
         TOKEN_DURATION: !Ref TokenDuration
         DB_HOST: !ImportValue FireDbEndPoint
-        DB_USER: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:username}}' ]]
+        DB_USERNAME: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:username}}' ]]
         DB_PASSWORD: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:password}}' ]]
         DB_NAME: !ImportValue FireDbName
     VpcConfig:

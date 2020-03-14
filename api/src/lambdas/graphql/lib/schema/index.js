@@ -6,8 +6,8 @@ type Account {
 	sap: Int
 	email: String
 	phone: String
-	created_at: String
-	lastLogged_in_at: String
+	created_at: Date
+	lastLogged_in_at: Date
 	firstName: String
 	lastName: String
 	accountRole: String
@@ -15,57 +15,61 @@ type Account {
 
 const districtSchema = `
 type District {
-	id: ID!
+	id: ID
 	chief: Account
 	name: String
 }`
 
 const fireStationSchema = `
 type FireStation {
-	id: ID!
+	id: ID
 	district: District
 	captain: Account
 	name: String
+	vacancies: [Vacancy]
 }`
 
 const assignmentSchema = `
 type Assignment {
-	id: ID!
-	startDate: String
-	endDate: String
+	id: ID
+	startDate: Date
+	endDate: Date
 	assignedStation: FireStation
 	account: Account
 }`
 
 const vacancySchema = `
 type Vacancy {
-	id: ID!
+	id: ID
 	station: FireStation
 	isEngine: Boolean
 	isTemporary: Boolean
-	postDate: String
-	fillDate: String
+	postDate: Date
+	fillDate: Date
+	notes: String
+	numOfApplicants: Int
+	status: String
 }`
 
 const transferRequestSchema = `
 type TransferRequest {
-	id: ID!
+	id: ID
 	vacancy: Vacancy
 	requestSubmitter: Account
 	applicationStatus: String
 	approvingAuthority: Account
-	sentDate: String
-	approvalDate: String
+	sentDate: Date
+	approvalDate: Date
 }`
 
 const reportSchema = `
 type Report {
-	id: ID!
+	id: ID
 	submitter: Account
 	typeOfIncident: String
-	createdAt: String
-	timeDispatched: String
-	timeArrived: String
+	createdAt: Date
+	timeDispatched: Date
+	timeArrived: Date
 	wasExposedToChem: Boolean
 	wasFireRetardantPresent: Boolean
 	actionsOfPrimaryTeam: String
@@ -73,6 +77,23 @@ type Report {
 	descriptionOfEvents: String
 	teamOneMembers: [Account]
 	teamTwoMembers: [Account]
+}`
+
+const accountUpdateSchema = `
+type AccountUpdate {
+	id: ID!
+	account: Account
+	title: String
+	tableNameOfUpdate: String
+	idOfUpdateSource: ID
+	isActionable: Boolean
+	postDate: Date
+}`
+
+const homeFeedSchema = `
+type HomeFeed {
+	updates: [AccountUpdate]
+	vacancies: [Vacancy]
 }`
 
 module.exports = buildSchema(`
@@ -83,12 +104,18 @@ module.exports = buildSchema(`
  ${vacancySchema}
  ${transferRequestSchema}
  ${reportSchema}
+ ${accountUpdateSchema}
+ ${homeFeedSchema}
+ scalar Date
   type Query {
     account(id: ID): Account,
 		accounts: [Account],
 		accountBySap(sap: Int!): Account,
 		district(id: ID!): District
 		districts: [District],
-		districtChief(districtId: ID!): Account
+		districtChief(districtId: ID): Account
+		homeFeed(id: ID): HomeFeed
+		vacancy(id: ID): Vacancy
+		fireStation(id: ID): FireStation
 	}
 `)

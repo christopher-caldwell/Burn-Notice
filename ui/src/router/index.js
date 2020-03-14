@@ -11,17 +11,18 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import('@/views/Home.vue'),
-  },
+	},
+	{
+		path: '/skeleton',
+		name: 'SkeletonTest',
+		component: () => import('@/components/skeleton-loaders/Vacancy.vue'),
+		meta: { transitionName: 'slide' }
+	},
   {
     path: '/register',
     name: 'Register',
 		component: () => import('@/views/visitor/Register.vue'),
-  },  
-  {
-    path: '/skeleton',
-    name: 'skeleton',
-		component: () => import('@/components/skeleton-loaders/Station.vue'),
-  },  
+  },
   {
     path: '/login',
     name: 'Login',
@@ -62,7 +63,7 @@ const routes = [
 				name: 'FireStation',
 				component: () => import('@/views/authenticated/fire-station/FireStation.vue'),
 				meta: { transitionName: 'slide' }
-			},
+			}			
     ]
   },
   {

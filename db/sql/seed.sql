@@ -24,6 +24,7 @@ INSERT INTO assignment (assigned_station, account)
 INSERT INTO vacancy (station, is_engine, is_temporary)
   VALUES
    (2, true, false);
+   (1, true, false);
 
 INSERT INTO transfer_request (vacancy, request_submitter)
   VALUES

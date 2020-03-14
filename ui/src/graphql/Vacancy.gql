@@ -1,0 +1,17 @@
+query Vacancy($id: ID){
+	vacancy(id: $id){
+		postDate
+		fillDate
+		notes
+		numOfApplicants
+		isTemporary
+		isEngine
+		status
+		station {
+			name
+			district {
+				name
+			}
+		}
+	}
+}

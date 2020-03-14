@@ -1,6 +1,4 @@
 #!/bin/sh
-source .env.local
-
 rm -r .aws-sam
 
 concurrently \

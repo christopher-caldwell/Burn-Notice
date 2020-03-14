@@ -1,69 +1,80 @@
 <template lang='pug'>
-	v-container
-		v-row(justify='center' align-items='center')
-			v-col(cols=10)
-				v-row
-					v-col(cols=8)
-						h1 {{ vacancy.station.name }}
-						h3(:class="formattedStatus.className") {{ formattedStatus.text }}
-						h5(v-if="vacancy.fillDate") Filled on: {{ vacancy.fillDate }}
-						h5 {{ formattedDate }}
-						h5 District {{ vacancy.district.name }}
-					v-col(cols=4)
-				v-row.login-cont(justify='center')
-					v-col
-						h4 Details
-						v-divider.divider-spacer
-				v-row
-					v-col
-						SideBySide(
-							title='Engine?' content='Yes' rowJustification='space-between' 
-							titleCols=4 contentCols=8
-						)
-						SideBySide(
-							title='Temporary?' content='Yes' rowJustification='space-between' 
-							titleCols=4 contentCols=8
-						)
-						SideBySide(
-							title='Applicants:' content='14' rowJustification='space-between' 
-							titleCols=4 contentCols=8
-						)
-				v-row
-					v-col
-						h4 Notes
-						v-divider.divider-spacer
-				v-row
-					v-col.notes-col {{ vacancy.notes }}
+	ApolloQuery(@result="mapDataToState" :query="require('@/graphql/Vacancy.gql')" :variables="{ id: vacancyId }" :notifyOnNetworkStatusChange="true")
+		template(v-slot="{ result: { loading, data } }")
+			SkeletonLoader(v-if="loading")
+			v-container(v-if="data")
+				v-row(justify='center' align-items='center')
+					v-col(cols=10)
+						v-row
+							v-col(cols=8)
+								h1 {{ data.vacancy.station.name }}
+								h3(:class="formattedStatus.className") {{ formattedStatus.text }}
+								h5(v-if="data.vacancy.fillDate") Filled on: {{ data.vacancy.fillDate }}
+								h5 {{ formattedPostDate }}
+								h5 District {{ data.vacancy.station.district.name }}
+							v-col(cols=4)
+						v-row.login-cont(justify='center')
+							v-col
+								h4 Details
+								v-divider.divider-spacer
+						v-row
+							v-col
+								SideBySide(
+									title='Engine?' :content="mapBoolToText(data.vacancy.isEngine)" rowJustification='space-between' 
+									titleCols=4 contentCols=8
+								)
+								SideBySide(
+									title='Temporary?' :content="mapBoolToText(data.vacancy.isEngine)" rowJustification='space-between' 
+									titleCols=4 contentCols=8
+								)
+								SideBySide(
+									title='Applicants:' :content="data.vacancy.numOfApplicants" rowJustification='space-between' 
+									titleCols=4 contentCols=8
+								)
+						v-row
+							v-col
+								h4 Notes
+								v-divider.divider-spacer
+						v-row
+							v-col.notes-col(v-if="data.vacancy.notes") {{ data.vacancy.notes }}
+							v-col.notes-col(v-else) N/A
 
-		div.apply-button-cont
-			button.apply-button 
-				h3 Apply
-					
+				div.apply-button-cont
+					button.apply-button 
+						h3 Apply
+							
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+
 import { format } from 'date-fns'
 import SideBySide from '@/components/util/SideBySide.vue'
+import SkeletonLoader from '@/components/skeleton-loaders/Vacancy.vue'
 import { lightRed, blueColor, statusColorEnum } from '@/data/constants'
-import { vacancy } from '@/data/mockData'
+// import { vacancy } from '@/data/mockData'
 import { capitalize } from '@/utils'
 
 export default {
 	name: 'Vacancy',
 	components: {
-		SideBySide
+		SideBySide,
+		SkeletonLoader
 	},
 	data(){
 		return {
 			lightRed,
 			blueColor,
-			vacancy
+			vacancy: null,
+			vacancyId: null
 		}
-	},computed: {
-		formattedDate(){
-			const dateToFormat = new Date(this.vacancy.postDate)
-			return format(dateToFormat, 'MMMM do, yyyy')
+	},
+	created(){
+		this.vacancyId = this.$route.params.id
+	},
+	computed: {
+		formattedPostDate(){
+			const parsedDate = new Date(this.vacancy.postDate)
+			return format(parsedDate, 'MMMM do, yyyy')
 		},
 		formattedStatus(){
 			return {
@@ -73,20 +84,25 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions('user', ['login']),
-		async attemptLogin(){
-			this.isLoading = true
-			const payload = {
-				sap: this.sap,
-				password: this.password
+		mapDataToState({ data }){
+			if(data && data.vacancy){
+				this.vacancy = data.vacancy
 			}
-			try {
-				await this.login(payload)
-				this.$router.push('/user/home')
-			} catch(error){
-				console.log('error', error)
-				this.isLoading = false
+		},
+		formatDate(postDate){
+			const parsedDate = new Date(postDate)
+			return format(parsedDate, 'MMMM do, yyyy')
+		},
+		formatStatus(status){
+			return {
+				text: capitalize(status),
+				className: statusColorEnum[status]
 			}
+		},
+		mapBoolToText(bool){
+			return bool 
+				? 'Yes'
+				: 'No'
 		}
 	}
 }

@@ -13,8 +13,6 @@ const config = {
 	...knexSnakeCaseMappers()
 }
 
-console.log('config', config)
-
 const knex = require('knex')(config)
 
 

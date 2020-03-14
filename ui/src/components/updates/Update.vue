@@ -7,7 +7,7 @@
 				v-container
 					v-row(align='center')
 						v-col(cols=10 align='start')
-							h3.card-header {{ update.name }}
+							h3.card-header {{ update.title }}
 						v-col(cols=2 align='start')
 							v-btn(icon small)
 								v-icon(small) mdi-close
@@ -37,7 +37,7 @@ export default {
 	},
 	computed: {
 		formattedDate(){
-			const dateToFormat = new Date(this.update.timeStamp)
+			const dateToFormat = new Date(this.update.postDate)
 			return format(dateToFormat, 'MMMM do, yyyy')
 		}
 	},
