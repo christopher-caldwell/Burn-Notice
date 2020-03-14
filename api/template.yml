@@ -3,20 +3,36 @@ Globals:
   Function:
     Runtime: nodejs12.x
     Timeout: 30
-    VpcConfig:
-      SecurityGroupIds:
-        - !ImportValue FireDbSecurityGroup
-      SubnetIds:
-        - !ImportValue FireDbSubnetOne
-        - !ImportValue FireDbSubnetTwo
     Environment:
       Variables:
         CORS_URL: !Ref CorsUrl
-
         SIGNING_KEY_NAME: !Ref SigningKeyName
         SECRET_NAME: !Ref SecretName
+        TOKEN_DURATION: !Ref TokenDuration
+        # DB_HOST: !ImportValue FireDbEndPoint
+        # DB_USER: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:username}}' ]]
+        # DB_PASSWORD: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:password}}' ]]
+        # DB_NAME: !ImportValue FireDbName
+    # VpcConfig:
+    #   SecurityGroupIds:
+    #     - !ImportValue FireDbSecurityGroup
+    #   SubnetIds:
+    #     - !ImportValue FireDbSubnetOne
+    #     - !ImportValue FireDbSubnetTwo
 
 Parameters:
+  FireDbSecurityGroup:
+    Type: String
+  FireDbSubnetOne:
+    Type: String
+  FireDbSubnetTwo:
+    Type: String
+  FireDbEndPoint:
+    Type: String
+  FireDbSecretArn:
+    Type: String
+  FireDbName:
+    Type: String
   TokenDuration:
     Description: Length of life for normal token
     Type: String
@@ -81,9 +97,6 @@ Resources:
       CodeUri: src/lambdas/user/register
       Handler: index.handler
       Role: !GetAtt "AuthRole.Arn"
-      Environment:
-        Variables:
-          TOKEN_DURATION: !Ref TokenDuration
       Events:
         http:
           Type: Api
@@ -116,14 +129,6 @@ Resources:
       CodeUri: src/lambdas/graphql
       Handler: index.handler
       Role: !GetAtt GraphQLRole.Arn
-      Environment:
-        Variables:
-          DB_CLIENT: 'pg'
-          DB_HOST: !ImportValue  FireDbEndPoint
-          DB_PORT: 5432
-          DB_USER: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:username}}' ]]
-          DB_PASSWORD: !Join ['', ['{{resolve:secretsmanager:', !ImportValue  FireDbSecretArn, ':SecretString:password}}' ]]
-          DB_NAME: !ImportValue FireDbName
       Events:
         http:
           Type: Api
