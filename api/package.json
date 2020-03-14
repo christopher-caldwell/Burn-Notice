@@ -6,8 +6,8 @@
 				"install-helper": "sh scripts/build/update-lib-version.sh",
 				"lint": "eslint \"src/**/*.js\" --ignore-pattern node_modules/ --fix",
 				"test:unit": "jest tests/unit",
-				"test:integration": "jest tests/integration",
-				"start": "concurrently \"webpack-cli --config webpack.dev.js -w\" \"sh scripts/build/start-local-api.sh\" ",
+				"test:integration": "jest tests/integration",			
+				"start-api": "sh scripts/build/start-local-api.sh",
 				"build:dev": "webpack --config webpack.dev.js",
 				"build:prod": "webpack --config webpack.prod.js",
 				"deploy:dev": "source .env.dev && sh scripts/build/deploy.sh"
@@ -28,6 +28,7 @@
 				"jest": "^24.8.0",
 				"simple-lambda-actions": "^1.2.56",
 				"uuid": "^3.4.0",
+				"wait-on": "^4.0.1",
 				"webpack": "^4.42.0",
 				"webpack-bundle-analyzer": "^3.6.1",
 				"webpack-cli": "^3.3.11",
