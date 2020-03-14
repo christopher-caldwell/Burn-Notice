@@ -3,3 +3,9 @@ export const capitalize = lowerCasedWord => {
   const restOfWord = lowerCasedWord.substr(1).toLowerCase()
   return firstLetter + restOfWord
 }
+
+export const mapBoolToText = bool => {
+	return bool 
+		? 'Yes'
+		: 'No'
+}

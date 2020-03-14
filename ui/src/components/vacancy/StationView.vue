@@ -7,7 +7,8 @@
 			v-container
 				v-row(align='center')
 					v-col(cols=10 align='start')
-						h3.card-header {{ vacancy.postDate }}
+						h3.card-header Posted:
+						h5.card-header {{ formattedDate }}
 					v-col(cols=2 align='start')
 						v-menu.menu-icon(bottom left)
 							template(v-slot:activator="{ on }")
@@ -20,9 +21,11 @@
 									@click="takeMenuAction(item)"
 								)
 									v-list-item-title {{ item }}          
-					v-col(cols=6 align='start').
-						#[h4 Number of Applicants:] {{ vacancy.numberOfApplicants }}
-					v-col(cols=6 align='end')
+					v-col(cols=5 align='start').
+						#[h4 Applicants:] {{ vacancy.numOfApplicants }}
+					v-col(cols=5 align='start').
+						#[h4 Engine:] {{ mapBoolToText(vacancy.isEngine) }}
+					v-col(cols=2 align='end')
 						router-link(:to="`/user/vacancy/${vacancy.id}`")
 							v-btn(icon )
 								v-icon( large :color="blueColor") mdi-chevron-right
@@ -30,6 +33,7 @@
 </template>
 
 <script>
+import { mapBoolToText } from '@/utils'
 import { blueColor } from '@/data/constants'
 import { format } from 'date-fns'
 const menuActionEnum = {
@@ -58,6 +62,7 @@ export default {
 		}
 	},
 	methods: {
+		mapBoolToText,
 		takeMenuAction(event){
 			const routeToNavTo = menuActionEnum[event](this.vacancy)
 			this.$router.push(routeToNavTo)
@@ -68,5 +73,7 @@ export default {
 </script>
 
 <style lang='sass'>
-
+.side-by-side
+	display: inline-block
+	margin-right: 14px
 </style>

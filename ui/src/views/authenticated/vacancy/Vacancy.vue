@@ -52,7 +52,7 @@ import SideBySide from '@/components/util/SideBySide.vue'
 import SkeletonLoader from '@/components/skeleton-loaders/Vacancy.vue'
 import { lightRed, blueColor, statusColorEnum } from '@/data/constants'
 // import { vacancy } from '@/data/mockData'
-import { capitalize } from '@/utils'
+import { capitalize, mapBoolToText } from '@/utils'
 
 export default {
 	name: 'Vacancy',
@@ -84,6 +84,7 @@ export default {
 		}
 	},
 	methods: {
+		mapBoolToText,
 		mapDataToState({ data }){
 			if(data && data.vacancy){
 				this.vacancy = data.vacancy
@@ -99,11 +100,7 @@ export default {
 				className: statusColorEnum[status]
 			}
 		},
-		mapBoolToText(bool){
-			return bool 
-				? 'Yes'
-				: 'No'
-		}
+		
 	}
 }
 </script>
