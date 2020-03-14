@@ -1,0 +1,10 @@
+{
+	"Parameters": {
+		"DB_HOST": "host.docker.internal",
+		"DB_USERNAME": "postgres",
+		"DB_PASSWORD": "password1",
+		"DB_NAME": "fire_db",
+		"TOKEN_DURATION": "12h",
+		"AWS_SAM_LOCAL": true
+	}
+}
