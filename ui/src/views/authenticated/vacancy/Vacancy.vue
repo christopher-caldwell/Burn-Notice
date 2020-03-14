@@ -4,7 +4,7 @@
 			SkeletonLoader(v-if="loading")
 			v-container(v-if="data")
 				v-row(justify='center' align-items='center')
-					v-col(cols=10)
+					v-col(cols=11)
 						v-row
 							v-col(cols=8)
 								h1 {{ data.vacancy.station.name }}
