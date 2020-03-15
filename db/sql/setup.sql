@@ -31,6 +31,14 @@ CREATE TABLE account (
   "account_role" account_role
 );
 
+CREATE TABLE assignment (
+  "id" SERIAL PRIMARY KEY NOT NULL,
+  "start_date" date DEFAULT (now()),
+  "end_date" date DEFAULT null,
+  "assigned_station" int NOT NULL REFERENCES fire_station(id),
+  "account" int not null REFERENCES account(id)
+);
+
 CREATE TABLE district (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "chief" int NOT NULL REFERENCES account(id),
@@ -42,14 +50,6 @@ CREATE TABLE fire_station (
   "district" int NOT NULL REFERENCES district(id),
   "captain" int NOT NULL REFERENCES account(id),
   "name" varchar
-);
-
-CREATE TABLE assignment (
-  "id" SERIAL PRIMARY KEY NOT NULL,
-  "start_date" date DEFAULT (now()),
-  "end_date" date DEFAULT null,
-  "assigned_station" int NOT NULL REFERENCES fire_station(id),
-  "account" int not null REFERENCES account(id)
 );
 
 CREATE TABLE vacancy (
