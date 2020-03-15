@@ -1,0 +1,24 @@
+query FireStation($id: ID){
+	fireStation(id: $id){
+    name
+    vacancies {
+      id
+			postDate
+			isEngine
+			numOfApplicants
+    }
+    captain{
+      id
+			lastName
+    }
+    district{
+      id
+      name
+      chief{
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+}

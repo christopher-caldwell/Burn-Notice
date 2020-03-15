@@ -1,0 +1,6 @@
+query accounts{
+  accounts {
+    id
+    firstName
+  }
+}

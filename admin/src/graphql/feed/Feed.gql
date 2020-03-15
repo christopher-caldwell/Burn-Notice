@@ -1,0 +1,20 @@
+query homeFeed($id: ID) {
+  homeFeed(id: $id){
+		updates{
+			id
+      title
+			tableNameOfUpdate
+			postDate,
+			isActionable
+			idOfUpdateSource
+    }
+  	vacancies{
+    	id
+			postDate
+      station{
+        id
+        name
+      }
+  	}
+	}
+}

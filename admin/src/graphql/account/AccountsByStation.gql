@@ -1,0 +1,7 @@
+query accountsByStation($stationId: ID){
+	accountsByStation(stationId: $stationId){
+		id
+    firstName
+    lastName
+  }
+}
