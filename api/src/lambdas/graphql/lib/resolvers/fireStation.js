@@ -1,5 +1,5 @@
 const db = require('../config/db')
-const mapAccountToResource = require('../utils/mapAccountToResource')
+const mapAccountToResource = require('../utils/mapEntityToResource')
 
 const findDistrict = districtId => {
 	return db('district')
@@ -29,7 +29,10 @@ module.exports = {
 		station.vacancies = vacancies
 		return station
 	},
-	stations() {
+	fireStations() {
 		return db('fireStation')
 	},
+	fireStationsByDistrict({ districtId }){
+		return db('fireStation').where({ district: districtId })
+	}
 }

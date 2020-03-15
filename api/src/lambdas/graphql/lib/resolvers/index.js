@@ -1,9 +1,11 @@
-const { GraphQLScalarType, Kind } = require('graphql')
 const accountResolvers = require('./account')
+const assignmentResolver = require('./assignment')
 const districtResolvers = require('./district')
 const stationResolvers = require('./station')
 const homeFeedResolvers = require('./homeFeed')
 const vacancyResolvers = require('./vacancy')
+const transferRequestResolver = require('./transferRequest')
+const Date = require('./date')
 
 const resolvers = {
 	...accountResolvers,
@@ -11,24 +13,8 @@ const resolvers = {
 	...stationResolvers,
 	...homeFeedResolvers,
 	...vacancyResolvers,
-	Date: new GraphQLScalarType({
-			name: 'Date',
-			description: 'Date custom scalar type',
-			// value from the client
-			parseValue(value) {
-				return new Date(value) 
-			},
-			// value sent to the client
-			serialize(value) {
-				return new Date(value) 
-			},
-			// ast value is always in string format
-			parseLiteral(ast) {
-				if (ast.kind === Kind.INT) {
-					return new Date(ast.value) 
-				}
-				return null
-			},
-	}),
+	...assignmentResolver,
+	...transferRequestResolver,
+	Date
 }
 module.exports = resolvers

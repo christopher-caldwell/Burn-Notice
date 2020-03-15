@@ -1,13 +1,5 @@
 const db = require('../config/db')
-
-const formatVacancy = async vacancy => {
-	const station = {
-		id: vacancy.station,
-		name: vacancy.name
-	}
-	vacancy.station = station
-	return vacancy
-}
+const { mapVacancyToResource } =require('../utils/mapEntityToResource')
 
 module.exports = {
 	async vacancy({ id }) {
@@ -15,11 +7,12 @@ module.exports = {
 			.join('fireStation', 'vacancy.station', 'fireStation.id')
 			.where('vacancy.id', id)
 			.first()
-		const [ district, formattedVacancy ] = await Promise.all([
-			db('district').where({ id: vacancyFound.district }).first(),
-			formatVacancy(vacancyFound)
-		])
-		formattedVacancy.station.district = district
-		return formattedVacancy
+		const district = await db('district').where({ id: vacancyFound.district }).first()
+		mapVacancyToResource(vacancyFound)
+		vacancyFound.station.district = district
+		return vacancyFound
+	},
+	vacancies() {
+		return db('vacancy')
 	}
 }
