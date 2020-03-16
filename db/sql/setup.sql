@@ -78,6 +78,7 @@ CREATE TABLE transfer_request (
 CREATE TABLE report (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "submitter" int NOT NULL REFERENCES account(id),
+	"fire_station": int NOT NULL REFERENCES fire_station(id),
   "type_of_incident" type_of_incident,
   "created_at" date DEFAULT (now()),
   "time_dispatched" date DEFAULT (now()),
