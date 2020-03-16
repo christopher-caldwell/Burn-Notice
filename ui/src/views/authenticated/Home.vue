@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import Vacancy from '@/components/vacancy/Vacancy.vue'
-import Update from '@/components/updates/Update.vue'
+import Vacancy from '@/components/cards/Vacancy.vue'
+import Update from '@/components/cards/Update.vue'
 import HomeSkeleton from '@/components/skeleton-loaders/Home.vue'
 import { vacancies, mockUpdate } from '@/data/mockData'
 export default {

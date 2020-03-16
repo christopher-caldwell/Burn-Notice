@@ -1,0 +1,10 @@
+query assignmentsByAccountId($accountId: ID){
+	assignmentsByAccountId(accountId: $accountId) {
+		startDate
+		endDate
+		isEngine
+		assignedStation {
+			name
+		}
+	}
+}

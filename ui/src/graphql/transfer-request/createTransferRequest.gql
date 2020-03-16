@@ -1,0 +1,6 @@
+mutation createTransferRequest($params: TransferRequestInput) {
+	createTransferRequest(params: $params) {
+		# Dont need anything back, so putting id
+		id
+	}
+}

@@ -7,7 +7,7 @@
 			v-container
 				v-row(align='center')
 					v-col(cols=10 align='start')
-						h3.card-header {{ vacancy.station.name }}
+						h3.card-header {{ vacancy.fireStation.name }}
 					v-col(cols=2 align='start')
 						v-menu.menu-icon(bottom left)
 							template(v-slot:activator="{ on }")

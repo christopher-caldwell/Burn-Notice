@@ -7,7 +7,8 @@
 			v-row.login-cont(justify='center')
 				v-col(cols='10' align='center')
 					v-text-field(
-						outlined 
+						outlined
+						mask='######'
 						label='SAP' 
 						:color="lightBlueColor" 
 						:disabled="isLoading"
@@ -35,6 +36,7 @@
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
 import { lightRed, lightBlueColor } from '@/data/constants'
 import LineThroughText from '@/components/util/LineThroughText.vue'
 import { mapActions } from 'vuex'
@@ -43,6 +45,9 @@ export default {
 	name: 'Login',
 	components: {
 		LineThroughText,
+	},
+	directives: {
+		mask
 	},
 	data(){
 		return {

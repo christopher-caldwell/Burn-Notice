@@ -24,7 +24,6 @@
 
 <script>
 import NavMenuItem from '@/components/header/NavMenuItem.vue'
-import { routes } from '@/router/routes'
 import { lightRed } from '@/data/constants'
 import { mapGetters } from 'vuex'
 export default {
@@ -33,7 +32,6 @@ export default {
 	},
 	data() {
 		return {
-			routes,
 			drawer: false,
 			isDarkMode: true,
 			lightRed

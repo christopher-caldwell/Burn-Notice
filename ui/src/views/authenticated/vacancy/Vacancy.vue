@@ -7,11 +7,11 @@
 					v-col(cols=11)
 						v-row
 							v-col(cols=8)
-								h1 {{ data.vacancy.station.name }}
+								h1 {{ data.vacancy.fireStation.name }}
 								h3(:class="formattedStatus.className") {{ formattedStatus.text }}
 								h5(v-if="data.vacancy.fillDate") Filled on: {{ data.vacancy.fillDate }}
 								h5 {{ formattedPostDate }}
-								h5 District {{ data.vacancy.station.district.name }}
+								h5 District {{ data.vacancy.fireStation.district.name }}
 							v-col(cols=4)
 						v-row.login-cont(justify='center')
 							v-col
@@ -38,11 +38,22 @@
 						v-row
 							v-col.notes-col(v-if="data.vacancy.notes") {{ data.vacancy.notes }}
 							v-col.notes-col(v-else) N/A
-
-				div.apply-button-cont
-					button.apply-button 
-						h3 Apply
-							
+					ApolloMutation(
+						:mutation="require('@/graphql/transfer-request/createTransferRequest.gql')" 
+						:notifyOnNetworkStatusChange="true"
+						@done="afterRequestHandler"
+						:variables="{ params: transferRequestParams }"
+					).apply-button-cont
+						template(v-slot="{ mutate, loading, error }")
+							div.error--text(v-if="error") {{ error }}
+							div.apply-button-cont(:class="isEligibleForTransfer ? '' : 'grey'")
+								button.apply-button(
+									:disabled="!isEligibleForTransfer || loading"
+									@click="mutate()"
+								)
+									h3(v-if="!loading") {{ eligibleForTransferText }}
+									v-fade-transition(leave-absolute v-if="loading")
+											v-progress-circular(indeterminate size='28' :color="lightBlueColor")
 </template>
 
 <script>
@@ -53,6 +64,7 @@ import SkeletonLoader from '@/components/skeleton-loaders/Vacancy.vue'
 import { lightRed, blueColor, statusColorEnum } from '@/data/constants'
 // import { vacancy } from '@/data/mockData'
 import { capitalize, mapBoolToText } from '@/utils'
+import { mapActions } from 'vuex'
 
 export default {
 	name: 'Vacancy',
@@ -68,10 +80,15 @@ export default {
 			vacancyId: null
 		}
 	},
-	created(){
-		this.vacancyId = this.$route.params.id
-	},
 	computed: {
+		isEligibleForTransfer(){
+			return this.$store.state.user.isEligibleForTransfer
+		},
+		eligibleForTransferText(){
+			return this.isEligibleForTransfer	
+				? 'Apply'
+				: 'You are not eligible'
+		},
 		formattedPostDate(){
 			const parsedDate = new Date(this.vacancy.postDate)
 			return format(parsedDate, 'MMMM do, yyyy')
@@ -81,9 +98,20 @@ export default {
 				text: capitalize(this.vacancy.status),
 				className: statusColorEnum[this.vacancy.status]
 			}
+		},
+		transferRequestParams(){
+			const requestSubmitter = this.$store.state.user.id
+			return {
+				vacancy: this.vacancyId,
+				requestSubmitter
+			}
 		}
 	},
+	created(){
+		this.vacancyId = this.$route.params.id
+	},
 	methods: {
+		...mapActions('user', ['updateEligibility']),
 		mapBoolToText,
 		mapDataToState({ data }){
 			if(data && data.vacancy){
@@ -100,19 +128,16 @@ export default {
 				className: statusColorEnum[status]
 			}
 		},
-		
+		afterRequestHandler(){
+			this.updateEligibility()
+		}
 	}
 }
 </script>
 
 <style lang='sass' scoped>
-@import '@/styles/variables'
-a
-	color: $red-4
 
 .login-cont
-	margin-top: 10%
-.login-header
 	margin-top: 10%
 .apply-button-cont
 	display: flex

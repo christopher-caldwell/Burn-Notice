@@ -23,7 +23,7 @@
 
 <script>
 import ExpansionPanelList from '@/components/util/ExpansionPanelList.vue'
-import TeamMember from './TeamMember'
+import TeamMember from '@/components/cards/TeamMember'
 import { lightBlueColor } from '@/data/constants'
 import { filterObjects } from '@/utils/'
 export default {

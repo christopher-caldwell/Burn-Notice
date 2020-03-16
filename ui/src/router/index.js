@@ -29,6 +29,11 @@ const routes = [
     component: () => import('@/views/visitor/Login.vue'),
   },
   {
+    path: '/logout',
+    name: 'LogOut',
+    component: () => import('@/views/visitor/Logout.vue'),
+  },
+  {
     path: '/user',
     name: 'UserRoot',
     component: () => import('@/views/authenticated/Root.vue'),
@@ -53,10 +58,23 @@ const routes = [
 				meta: { transitionName: 'slide' }
 			},
 			{
+				path: 'assignment-history',
+				name: 'AssignmentHistory',
+				component: () => import('@/views/authenticated/assignments/AssignmentHistory.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
 				path: 'vacancy/:id',
 				name: 'Vacancy',
 				component: () => import('@/views/authenticated/vacancy/Vacancy.vue'),
-				meta: { transitionName: 'slide' }
+				meta: { transitionName: 'slide' },
+				children: [
+					{
+						path: 'confirmation',
+						name: 'ApplicationConfirmation',
+						component: () => import('@/views/authenticated/vacancy/Confirmation.vue'),
+					}
+				]
 			},
 			{
 				path: 'station/:id',

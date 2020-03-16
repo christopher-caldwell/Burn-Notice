@@ -23,14 +23,19 @@ export const authenticatedRoutes = [
     title: 'Home',
   },
 	{
-    path: '/user/quiz/settings',
-    icon: 'mdi-help',
-    title: 'Practice',
+    path: '/user/vacancy-search',
+    icon: 'mdi-transfer',
+    title: 'Vacancies',
   },
 	{
-    path: '/user/flash-cards/settings',
-    icon: 'mdi-help',
-    title: 'Flash Cards',
+    path: '/user/report',
+    icon: 'mdi-clipboard-text',
+    title: 'Reports',
+  },
+	{
+    path: '/user/assignment-history',
+    icon: 'mdi-ambulance',
+    title: 'Assignment History',
   },
 	{
     divider: true
@@ -39,7 +44,10 @@ export const authenticatedRoutes = [
     path: '/user/profile',
     icon: 'mdi-account',
     title: 'Profile',
+  },
+	{
+    path: '/logout',
+    icon: 'mdi-logout',
+    title: 'Log Out',
   }
 ]
-
-export const regularAdminRoutes = []

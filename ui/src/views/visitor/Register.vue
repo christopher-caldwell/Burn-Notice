@@ -6,7 +6,15 @@
 			v-col(align='center')
 		v-row(justify='center')
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='SAP' v-model="sap" :color="lightBlueColor" :disabled="isLoading" required)
+				v-text-field(
+					outlined 
+					label='SAP' 
+					v-model="sap" 
+					:color="lightBlueColor" 
+					:disabled="isLoading" 
+					required
+					v-mask="sapMask"
+				)
 			v-col(cols='10' align='center')
 				v-text-field(
 						outlined
@@ -26,7 +34,7 @@
 			v-col(cols='10' align='center')
 				v-text-field(outlined label='Email' :color="lightBlueColor" :disabled="isLoading" v-model="email")
 			v-col(cols='10' align='center')
-				v-text-field(outlined label='Phone' :color="lightBlueColor" :disabled="isLoading" v-model="phone")
+				v-text-field(v-mask="phoneMask" outlined label='Phone' :color="lightBlueColor" :disabled="isLoading" v-model="phone")
 		v-row
 			v-col(align='center')
 				v-btn(:color="lightBlueColor" :loading="isLoading" @click="beginSignUp") Sign Up
@@ -36,8 +44,12 @@
 <script>
 import { lightRed, lightBlueColor } from '@/data/constants'
 import { mapActions } from 'vuex'
+import { mask } from 'vue-the-mask'
 export default {
-	name: 'Register',	
+	name: 'Register',
+	directives: {
+		mask,
+	},
 	data(){
 		return {
 			sap: null,
@@ -51,6 +63,8 @@ export default {
 			lightRed,
 			isLoading: false,
 			showPassword: false,
+			sapMask: '######',
+			phoneMask: '(###) ###-####'
 		}
 	},
 	methods: {

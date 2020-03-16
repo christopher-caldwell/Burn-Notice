@@ -10,7 +10,8 @@ export default {
 		locale: 'en',
 		email: '',
 		sap: '',
-		id: ''
+		id: '',
+		isEligibleForTransfer: false
 	},
 	getters: {
 		allowedRoutes(state){
@@ -28,6 +29,7 @@ export default {
 		async registerUser({ commit, dispatch }, userPayload){
 			const { userInformation, token } = await service.register(userPayload)
 			dispatch('session/beginNewSession', token, { root: true })
+			userInformation.isEligibleForTransfer = true
 			commit('UPDATE_USER', userInformation)
 		},
 		async login({ commit, dispatch }, { sap, password }){			
@@ -40,6 +42,9 @@ export default {
 			if(prevUser){
 				commit('UPDATE_USER', prevUser)
 			}
+		},
+		updateEligibility({ commit }){
+			commit('UPDATE_ELIGIBILITY')
 		}
 	},
 	mutations: {
@@ -48,6 +53,9 @@ export default {
 				state[key] = userInformation[key]
 			})
 			writeToLocalStorage('user', userInformation)
+		},
+		UPDATE_ELIGIBILITY(state){
+			state.isEligibleForTransfer = false
 		}
 	}
 }
