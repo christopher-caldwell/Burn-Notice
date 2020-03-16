@@ -13,7 +13,12 @@ module.exports = {
 		vacancyFound.fireStation.district = district
 		return vacancyFound
 	},
-	vacancies() {
-		return db('vacancy')
+	async vacancies({ limit }) {
+		const vacancies =  await db('vacancy').join('fireStation', 'vacancy.fireStation', 'fireStation.id')
+		vacancies.forEach(vacancy => mapFireStationToResource(vacancy))
+		if(limit){
+			vacancies.splice(limit)
+		}
+		return vacancies
 	}
 }

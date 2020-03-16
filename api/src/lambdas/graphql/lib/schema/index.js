@@ -1,6 +1,6 @@
 const { buildSchema } = require('graphql')
 const { accountSchema, accountQuery, accountMutation } = require('./account')
-const { assignmentSchema, assignmentQuery, assignmentMutation } = require('./assignment')
+const { assignmentSchema, assignmentQuery } = require('./assignment')
 const { districtSchema, districtQuery } = require('./district')
 const { fireStationSchema, fireStationQuery } = require('./fireStation')
 const { homeFeedSchema, homeFeedQuery } = require('./homeFeed')
@@ -30,7 +30,6 @@ module.exports = buildSchema(`
 	}
 	type Mutation {
 		${accountMutation}
-
 		${reportMutation}
 		${transferRequestMutation}
 	}

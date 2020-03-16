@@ -6,5 +6,14 @@ module.exports = {
 	},
 	reports() {
 		return db('report')
+	},
+	reportsByAccountId({ id }) {
+		return db('report').where({ submitter: id })
+	},
+	createReport(argumentos){
+		const { params } = JSON.parse(JSON.stringify(argumentos))
+		return db('report')
+			.returning(['id'])
+			.insert(params)
 	}
 }

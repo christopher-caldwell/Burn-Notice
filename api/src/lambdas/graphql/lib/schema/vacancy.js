@@ -14,7 +14,7 @@ const vacancySchema = `
 
 const vacancyQuery = `
 	vacancy(id: ID): Vacancy
-	vacancies: [Vacancy]
+	vacancies(limit: Int): [Vacancy]
 `
 
 const vacancyMutation = `
