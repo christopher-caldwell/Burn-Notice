@@ -3,37 +3,49 @@ export const vacancies = [
 		id: 1,
 		postDate: '2020-03-04',
 		numOfApplicants: 12,
-		station: {
+		fireStation: {
 			id: 4,
 			name: 'Bandera'
-		}
+		},
+		isEngine: true,
+		isTemporary: false,
+		status: 'approved'
 	},
 	{
 		id: 2,
 		postDate: '2020-03-04',
 		numOfApplicants: 14,
-		station: {
+		fireStation: {
 			id: 4,
 			name: 'Stone Oak'
-		}
+		},
+		isEngine: false,
+		isTemporary: false,
+		status: 'approved'
 	},
 	{
 		id: 3,
 		postDate: '2020-03-04',
 		numOfApplicants: 2,
-		station: {
+		fireStation: {
 			id: 4,
 			name: 'De Zevala'
-		}
+		},
+		isEngine: true,
+		isTemporary: true,
+		status: 'approved'
 	},
 	{
 		id: 4,
 		postDate: '2020-03-04',
 		numOfApplicants: 122,
-		station: {
+		fireStation: {
 			id: 4,
 			name: 'Station 14'
-		}
+		},
+		isEngine: false,
+		isTemporary: true,
+		status: 'approved'
 	},
 ]
 

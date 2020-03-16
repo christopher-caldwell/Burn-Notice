@@ -19,11 +19,6 @@ const routes = [
 		meta: { transitionName: 'slide' }
 	},
   {
-    path: '/register',
-    name: 'Register',
-		component: () => import('@/views/visitor/Register.vue'),
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/visitor/Login.vue'),
@@ -45,6 +40,11 @@ const routes = [
 				path: 'profile',
 				name: 'UserProfile',
 				component: () => import('@/views/authenticated/profile/Profile.vue'),
+			},
+			{
+				path: 'table',
+				name: 'Table',
+				component: () => import('@/views/authenticated/fire-station/TableView.vue'),
 			},
 			{
 				path: 'home',
