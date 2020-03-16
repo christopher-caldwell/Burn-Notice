@@ -28,7 +28,7 @@ const constructWriteParams = async userInformation => {
 
 const writeUser = async userInformation => {
 	const writeParams = await constructWriteParams(userInformation)
-	return knex('account').insert(writeParams)
+	return knex('account').insert(writeParams).returning('id')
 }
 
 module.exports = writeUser

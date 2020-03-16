@@ -31,9 +31,9 @@ exports.mapDistrictToResource = resource => {
 	}
 }
 
-exports.mapStationToResource = resource => {
-	resource['fireStation'] = {
-		id: resource['fireStation'],
+exports.mapFireStationToResource = (resource, keyName = 'fireStation') => {
+	resource[keyName] = {
+		id: resource[keyName],
 		captain: resource.captain,
 		district: resource.district,
 		name: resource.name,

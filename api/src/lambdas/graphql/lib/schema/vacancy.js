@@ -1,7 +1,7 @@
 const vacancySchema = `
 	type  Vacancy {
 		id: ID
-		station: FireStation
+		fireStation: FireStation
 		isEngine: Boolean
 		isTemporary: Boolean
 		postDate: Date

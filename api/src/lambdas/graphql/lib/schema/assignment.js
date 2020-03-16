@@ -4,6 +4,7 @@ const assignmentSchema = `
 		startDate: Date
 		endDate: Date
 		assignedStation: FireStation
+		isEngine: Boolean
 		account: Account
 	}
 	input AssignmentInput {
@@ -17,7 +18,7 @@ const assignmentSchema = `
 const assignmentQuery = `
 	assignment(id: ID): Assignment
 	assignments: [Assignment]
-	assignmentsBySAP(sap: ID): [Assignment]
+	assignmentsByAccountId(accountId: ID): [Assignment]
 `
 
 module.exports = { assignmentSchema, assignmentQuery }

@@ -10,18 +10,18 @@ exports.handler = async event => {
 	const ResponseHandler = new Responder(corsUrl, event.httpMethod)
 	try {
 		const { sap, password } = bodyParser(event.body)
-		const userProfile = await findAndVerify(sap, password)
-		const { id } = userProfile
-		const tokenParams = { id: userProfile.sap, role: userProfile.role }
+		const userInformation = await findAndVerify(sap, password)
+		const { id } = userInformation
+		const tokenParams = { id: userInformation.sap, role: userInformation.role }
 
 		const [ token ] = await	Promise.all([
 			generateToken(tokenParams),
 			updateLogin(id)
 		])
 
-		userProfile.lastLoggedInAt = new Date()
+		userInformation.lastLoggedInAt = new Date()
 
-		return ResponseHandler.respond({ userProfile, token }, 200)
+		return ResponseHandler.respond({ userInformation, token }, 200)
 	} catch(error){
 		console.log('error', error)
 		return ResponseHandler.respond(error.message, error.statusCode || 500)

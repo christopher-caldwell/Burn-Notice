@@ -11,11 +11,13 @@ exports.handler = async event => {
 	try {
 		const userInformation = bodyParser(event.body)
 		const tokenParams = { id: userInformation.sap, role }
-		const [ token ] = await Promise.all([
+		const [ token, userId ] = await Promise.all([
 			generateToken(tokenParams),
 			putUser(userInformation)
 		])
 		delete userInformation.password
+		userInformation.id = userId[0]
+		userInformation.role = role
 		return ResponseHandler.respond({ userInformation, token }, 200)
 	} catch (error) {
 		console.log('error: ', error)

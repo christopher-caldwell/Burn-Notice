@@ -16,7 +16,7 @@ const formatVacancies = vacancies => {
 	chopArray(vacancies, maxNumOfVacancies)
 	return vacancies.map(vacancy => ({
 		...vacancy,
-		station: {
+		fireStation: {
 			id: vacancy.station,
 			district: vacancy.district,
 			captain: vacancy.captain,
@@ -25,16 +25,25 @@ const formatVacancies = vacancies => {
 	}))
 }
 
+const fetchAccountUpdates = async id => {
+	try {
+		const updates = db('accountUpdate').where({ account: id }).orderBy('postDate', 'desc')
+		return updates
+	} catch(error){
+		console.log('err fetching updates', error)
+		return null
+	}
+}
+
 module.exports = {
 	async homeFeed({ id }){
 		try {
 			const [ allUpdates, vacancies ] = await Promise.all([
-				db('accountUpdate').where({ account: id }), //.orderBy('postDate', 'desc')
-				db('vacancy').join('fireStation', 'vacancy.station', 'fireStation.id')
+				fetchAccountUpdates(id),
+				db('vacancy').join('fireStation', 'vacancy.fireStation', 'fireStation.id')
 			])
 			
 			const shuffledVacancies = shuffleArray(vacancies)
-			console.log('vacancies', shuffledVacancies)
 			chopArray(allUpdates, maxNumOfUpdates)
 			const vacanciesToReturn = formatVacancies(shuffledVacancies)
 
