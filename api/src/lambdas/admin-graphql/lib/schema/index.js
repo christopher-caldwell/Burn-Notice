@@ -1,34 +1,37 @@
 const { buildSchema } = require('graphql')
-const typeDefs = require('./typeDefs')
-const inputTypes = require('./inputs')
-
+const { accountSchema, accountQuery, accountMutation } = require('./account')
+const { assignmentSchema, assignmentQuery, assignmentMutation } = require('./assignment')
+const { districtSchema, districtQuery } = require('./district')
+const { fireStationSchema, fireStationQuery } = require('./fireStation')
+const { homeFeedSchema, homeFeedQuery } = require('./homeFeed')
+const { reportSchema, reportQuery, reportMutation } = require('./report')
+const { transferRequestSchema, transferRequestQuery, transferRequestMutation } = require('./transferRequest')
+const { vacancySchema, vacancyQuery } = require('./vacancy')
 
 module.exports = buildSchema(`
-	${typeDefs}
-	${inputTypes}
+	${accountSchema}
+	${assignmentSchema}
+	${districtSchema}
+	${fireStationSchema}
+	${homeFeedSchema}
+	${reportSchema}
+	${transferRequestSchema}
+	${vacancySchema}	
 	scalar Date
-  type Query {
-    account(id: ID): Account,
-		accounts: [Account],
-		accountBySap(sap: Int!): Account,
-		accountsByStation(stationId: ID): [Account]
-		assignment(id: ID): Assignment
-		assignments: [Assignment]
-		assignmentsBySAP(sap: ID): [Assignment]
-		district(id: ID!): District
-		districts: [District],
-		vacancy(id: ID): Vacancy
-		vacancies: [Vacancy]
-		transferRequest(id: ID): TransferRequest
-		transferRequests: [TransferRequest]
-		fireStation(id: ID): FireStation
-		fireStations: [FireStation]
-		report(id: ID): Report
-		reports: [Report]
-		
+	type Query {
+		${accountQuery}
+		${assignmentQuery}
+		${districtQuery}
+		${fireStationQuery}
+		${homeFeedQuery}
+		${reportQuery}
+		${transferRequestQuery}
+		${vacancyQuery}
 	}
 	type Mutation {
-		createAssignment(params: AssignmentInput): Assignment
-		createTransferRequest(params: TransferRequestInput): TransferRequest
+		${accountMutation}
+
+		${reportMutation}
+		${transferRequestMutation}
 	}
 `)

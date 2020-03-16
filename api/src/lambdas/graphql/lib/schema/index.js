@@ -30,7 +30,7 @@ module.exports = buildSchema(`
 	}
 	type Mutation {
 		${accountMutation}
-		${assignmentMutation}
+
 		${reportMutation}
 		${transferRequestMutation}
 	}
