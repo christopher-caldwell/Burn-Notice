@@ -17,13 +17,13 @@ INSERT INTO fire_station (district, captain, name)
    (1, 5, 'Bandera'),
    (1, 6, 'Stone Oak');
 
-INSERT INTO assignment (assigned_station, account)
+INSERT INTO assignment (assigned_station, account, is_engine)
   VALUES
-   (2, 2);
+   (2, 2, false);
 
-INSERT INTO vacancy (station, is_engine, is_temporary)
+INSERT INTO vacancy (fire_station, is_engine, is_temporary)
   VALUES
-   (2, true, false);
+   (2, true, false),
    (1, true, false);
 
 INSERT INTO transfer_request (vacancy, request_submitter)
