@@ -1,0 +1,10 @@
+query Vacacnies($limit: Int){
+  vacancies(limit: $limit) {
+    id
+		postDate
+		fireStation {
+			id
+			name
+		}
+  }
+}

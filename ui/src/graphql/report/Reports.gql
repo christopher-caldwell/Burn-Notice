@@ -1,0 +1,5 @@
+query reportsByAccountId($id: ID){
+	reportsByAccountId(id: $id) {
+		
+	}
+}

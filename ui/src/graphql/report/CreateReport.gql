@@ -1,0 +1,5 @@
+mutation CreateReport($params: ReportInput){
+	createReport(params: $params) {
+		id
+	}
+}

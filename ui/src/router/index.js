@@ -58,23 +58,34 @@ const routes = [
 				meta: { transitionName: 'slide' }
 			},
 			{
+				path: 'report',
+				name: 'ReportHome',
+				component: () => import('@/views/authenticated/report/Report.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
 				path: 'assignment-history',
 				name: 'AssignmentHistory',
 				component: () => import('@/views/authenticated/assignments/AssignmentHistory.vue'),
 				meta: { transitionName: 'slide' }
 			},
 			{
+				path: 'vacancy-search',
+				name: 'VacancySearch',
+				component: () => import('@/views/authenticated/vacancy/VacancySearch.vue'),
+				meta: { transitionName: 'slide' },
+			},
+			{
 				path: 'vacancy/:id',
 				name: 'Vacancy',
 				component: () => import('@/views/authenticated/vacancy/Vacancy.vue'),
 				meta: { transitionName: 'slide' },
-				children: [
-					{
-						path: 'confirmation',
-						name: 'ApplicationConfirmation',
-						component: () => import('@/views/authenticated/vacancy/Confirmation.vue'),
-					}
-				]
+			},
+			{
+				path: 'vacancy/:id/confirmation',
+				name: 'ApplicationConfirmation',
+				component: () => import('@/views/authenticated/vacancy/Confirmation.vue'),
+				meta: { transitionName: 'slide' },
 			},
 			{
 				path: 'station/:id',
@@ -83,27 +94,7 @@ const routes = [
 				meta: { transitionName: 'slide' }
 			}			
     ]
-  },
-  {
-    path: '/admin',
-    name: 'AdminRoot',
-    component: () => import('@/views/authenticated/Root.vue'),
-    beforeEnter(to, from, next) {
-			const isAuthenticated = store.getters['session/isAdmin']
-			if(isAuthenticated || isRunningLocally){
-				next()
-			} else {
-				next('/login')
-			}
-    },
-    children: [
-			{
-				path: 'home',
-				name: 'AdminHome',
-				component: () => import('@/views/admin/Home.vue'),
-			},
-    ]
-  },
+  }
 ]
 
 export default new VueRouter({
