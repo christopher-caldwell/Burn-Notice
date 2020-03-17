@@ -1,7 +1,7 @@
 <template lang='pug'>
 	v-text-field(
 		outlined
-		v-model.number="time"
+		v-model="time"
 		:label="label"
 		hint='24 hour format: 1430'
 		@blur="validateTime"
@@ -31,7 +31,7 @@ export default {
 	data(){
 		return {
 			time: null,
-			timeMask: '####',
+			timeMask: '##:##',
 			errors: []
 		}
 	},
@@ -43,18 +43,19 @@ export default {
 	},
 	methods: {
 		validateTime(){
-			this.errors = []
-			if(this.time > 2400 || this.time < 0){
-				this.errors.push('Invalid Time')
-			}
-			const stringTime = this.time.toString()
-			const hours = stringTime.slice(0,2)
-			const minutes = stringTime.slice(2,4)
-			const areHoursValid = parseInt(hours) < 24
-			const areMinutesValid = parseInt(minutes) < 60
-			if(areHoursValid && areMinutesValid){
-				this.$emit('timeUpdate', this.time)
-			}
+			// this.errors = []
+			// const
+			// if(this.time > 2400 || this.time < 0){
+			// 	this.errors.push('Invalid Time')
+			// }
+			// const stringTime = this.time.toString()
+			// const hours = stringTime.slice(0,2)
+			// const minutes = stringTime.slice(2,4)
+			// const areHoursValid = parseInt(hours) < 24
+			// const areMinutesValid = parseInt(minutes) < 60
+			// if(areHoursValid && areMinutesValid){
+			// 	}
+			this.$emit('timeUpdate', this.time)
 		}
 	}
 }

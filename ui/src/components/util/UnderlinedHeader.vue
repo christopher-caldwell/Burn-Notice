@@ -1,8 +1,10 @@
 <template lang='pug'>
-	v-row
+span
+	v-row(align='center')
 		v-col
 			h5 {{ header }}
-			v-divider.divider-spacer
+		slot(name='side-piece')
+	v-divider
 </template>
 
 <script>
@@ -17,6 +19,6 @@ export default {
 }
 </script>
 
-<style>
+<style >
 
 </style>

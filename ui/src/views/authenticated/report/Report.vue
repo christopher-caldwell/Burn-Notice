@@ -1,39 +1,50 @@
 <template lang='pug'>
-	ApolloQuery(:query="require('@/graphql/feed/Feed.gql')" :variables="{ id: 7 }" :notifyOnNetworkStatusChange="true")
-		template(v-slot="{ result: { loading, data } }")
-			HomeSkeleton(v-if="loading")
+	ApolloQuery(
+		:query="require('@/graphql/report/ReportsByAccountId.gql')" 
+		:variables="{ id: accountId }" 
+		:notifyOnNetworkStatusChange="true"
+	)
+		template(v-slot="{ result: { loading, data, error } }")
+			SkeletonLoader(v-if="loading")
+			div(v-if="error") {{ error }}
 			v-container(v-if="data")
 				v-row
 					v-col(align='start')
 						h1.update-header Reports
 						v-divider
-				v-row
+				v-row.reports-display
 					v-col(align='center')
-						Vacancy( v-for="(vacancy, index) in data.homeFeed.vacancies" :vacancy="vacancy" :key="`${index}-${vacancy.id}`")
+						Report( v-for="(report, index) in data.reportsByAccountId" :report="report" :key="`${index}-${report.id}`")
+						h3(v-if="!data.reportsByAccountId.length") It looks like you haven't filed any reports yet.
 				v-row
 					v-col(align='start')
 						router-link(to='/user/report/file')
-							div.apply-button-cont
-								button.apply-button
-									h3 File Report
+							FullWidthButton(text='File Report')
 </template>
 
 <script>
-import Vacancy from '@/components/cards/Vacancy.vue'
+import Report from '@/components/cards/Report.vue'
 import Update from '@/components/cards/Update.vue'
-import HomeSkeleton from '@/components/skeleton-loaders/Home.vue'
+import FullWidthButton from '@/components/util/FullWidthButton.vue'
+import SkeletonLoader from '@/components/skeleton-loaders/Report.vue'
 import { vacancies, mockUpdate } from '@/data/mockData'
 export default {
 	Name: 'ReportHome',
 	components: {
-		Vacancy,
+		Report,
 		Update,
-		HomeSkeleton
+		SkeletonLoader,
+		FullWidthButton
 	},
 	data(){
 		return {
 			vacancies,
 			mockUpdate
+		}
+	},
+	computed: {
+		accountId(){
+			return this.$store.state.user.id
 		}
 	}
 }
@@ -50,22 +61,9 @@ a
 	margin-bottom: 3%
 .login-cont
 	margin-top: 10%
-.apply-button-cont
-	display: flex
-	justify-content: center
-	align-items: center
-	position: fixed
-	bottom: 10px
-	width: 95%
-	background-color: $blue-0
-	border-radius: 10px
-.apply-button
-	padding: 7px
-	width: 95%
-	&:focus
-		outline: none
-	&:active
-		transform: scale(0.95)
 .notes-col
 	white-space: pre-wrap
+.reports-display
+	max-height: 70vh
+	overflow: scroll
 </style>

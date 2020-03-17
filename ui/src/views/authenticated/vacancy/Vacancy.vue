@@ -46,19 +46,19 @@
 					).apply-button-cont
 						template(v-slot="{ mutate, loading, error }")
 							div.error--text(v-if="error") {{ error }}
-							div.apply-button-cont(:class="isEligibleForTransfer ? '' : 'grey'")
-								button.apply-button(
-									:disabled="!isEligibleForTransfer || loading"
-									@click="mutate()"
-								)
-									h3(v-if="!loading") {{ eligibleForTransferText }}
-									v-fade-transition(leave-absolute v-if="loading")
-											v-progress-circular(indeterminate size='28' :color="lightBlueColor")
+							FullWidthButton(
+								:isLoading="loading"
+								:disabled="!isEligibleForTransfer || loading"
+								:text="eligibleForTransferText"
+								:customClass="isEligibleForTransfer ? '' : 'grey'"
+								@buttonClicked="mutate()"
+							)
 </template>
 
 <script>
 
 import { format } from 'date-fns'
+import FullWidthButton from '@/components/util/FullWidthButton.vue'
 import SideBySide from '@/components/util/SideBySide.vue'
 import SkeletonLoader from '@/components/skeleton-loaders/Vacancy.vue'
 import { lightRed, blueColor, statusColorEnum } from '@/data/constants'
@@ -70,7 +70,8 @@ export default {
 	name: 'Vacancy',
 	components: {
 		SideBySide,
-		SkeletonLoader
+		SkeletonLoader,
+		FullWidthButton
 	},
 	data(){
 		return {
@@ -139,22 +140,6 @@ export default {
 
 .login-cont
 	margin-top: 10%
-.apply-button-cont
-	display: flex
-	justify-content: center
-	align-items: center
-	position: fixed
-	bottom: 10px
-	width: 95%
-	background-color: $blue-0
-	border-radius: 10px
-.apply-button
-	padding: 7px
-	width: 95%
-	&:focus
-		outline: none
-	&:active
-		transform: scale(0.95)
 .notes-col
 	white-space: pre-wrap
 </style>

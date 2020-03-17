@@ -4,11 +4,21 @@
 		v-row.switch-spacer(justify='space-between' align='center')
 			v-col Exposed to Chemicals?
 			v-col(cols=4)
-				v-switch.no-margin( v-model="exposedToChemicals" :color="greenColor" hide-details)
+				v-switch.no-margin( 
+					v-model="wasExposedToChem" 
+					:color="greenColor" 
+					hide-details 
+					@change="emitUpdate('wasExposedToChem')"
+				)
 		v-row.switch-spacer(justify='space-between' align='center')
 			v-col Exposed to Fire Retardant?
 			v-col(cols=4)
-				v-switch.no-margin( v-model="exposedToChemicals" :color="greenColor" hide-details)
+				v-switch.no-margin( 
+					v-model="wasFireRetardantPresent" 
+					:color="greenColor" 
+					hide-details
+					@change="emitUpdate('wasFireRetardantPresent')"
+				)
 		UnderlinedHeader.category-spacer(header='Additional Notes')
 		v-row
 			v-col
@@ -17,8 +27,9 @@
 					outlined
 					label="More info about chemical exposure"
 					auto-grow
-					v-model="chemicalNotes"
+					v-model="chemicalExposureNotes"
 					rows='3'
+					@blur="emitUpdate('chemicalExposureNotes')"
 				)
 </template>
 
@@ -32,9 +43,17 @@ export default {
 	},
 	data(){
 		return {
-			exposedToChemicals: true,
+			wasExposedToChem: true,
+			wasFireRetardantPresent: true,
 			greenColor,
-			chemicalNotes: null
+			chemicalExposureNotes: null
+		}
+	},
+	methods: {
+		emitUpdate(keyOfUpdate){
+			const emitPayload = { key: keyOfUpdate, value: this[keyOfUpdate] }
+			console.log('emit payload ', emitPayload)
+			this.$emit('fieldUpdate', emitPayload)
 		}
 	}
 }

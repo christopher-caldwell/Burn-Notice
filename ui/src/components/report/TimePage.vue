@@ -5,9 +5,9 @@
 			v-col
 				v-autocomplete(
 					outlined
-					v-model="incidentType"
+					v-model="typeOfIncident"
 					:items="incidentTypes"
-					@change="emitUpdate('incidentType')"
+					@change="emitUpdate('typeOfIncident')"
 				)
 		UnderlinedHeader(header='Time Dispatched')
 		v-row
@@ -24,12 +24,16 @@
 </template>
 
 <script>
+import { mask } from 'vue-the-mask'
 import { incidentTypes } from '@/data/constants'
 import InlineDatePicker from '@/components/util/InlineDatePicker.vue'
 import InlineTimePicker from '@/components/util/InlineTimePicker.vue'
 import UnderlinedHeader from '@/components/util/UnderlinedHeader.vue'
 export default {
 	name: 'TimePage',
+	directives: {
+		mask
+	},
 	components: {
 		InlineDatePicker,
 		InlineTimePicker,
@@ -38,7 +42,7 @@ export default {
 	data(){
 		return {
 			incidentTypes: Object.values(incidentTypes),
-			incidentType: null,
+			typeOfIncident: null,
 			dateDispatched: null,
 			timeDispatched: null,
 			dateArrived: null,
@@ -51,6 +55,7 @@ export default {
 			const emitPayload = payload 
 				? { key: keyOfUpdate, value: payload }
 				: { key: keyOfUpdate, value: this[keyOfUpdate] }
+			console.log('emitPayload', emitPayload)
 			this.$emit('fieldUpdate', emitPayload)
 		}
 	}

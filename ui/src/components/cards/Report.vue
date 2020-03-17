@@ -7,7 +7,7 @@
 			v-container
 				v-row(align='center')
 					v-col(cols=10 align='start')
-						h3.card-header {{ vacancy.fireStation.name }}
+						h3.card-header {{ report.fireStation.name }}
 					v-col(cols=2 align='start')
 						v-menu.menu-icon(bottom left)
 							template(v-slot:activator="{ on }")
@@ -21,9 +21,9 @@
 								)
 									v-list-item-title {{ item }}          
 					v-col(cols=6 align='start').
-						#[h4 Posted:] {{ formattedDate }}
+						#[h4 Submitted:] {{ formattedDate }}
 					v-col(cols=6 align='end')
-						router-link(:to="`/user/vacancy/${vacancy.id}`")
+						router-link(:to="`/user/report/${report.id}`")
 							v-btn(icon )
 								v-icon( large :color="blueColor") mdi-chevron-right	
 </template>
@@ -36,13 +36,13 @@ const menuActionEnum = {
 		return `/user/station/${id}`
 		},
 	'Report an issue': ({ id }) => {
-		return `/user/report-issue?type=vacancy&id=${id}`
+		return `/user/report-issue?type=report&id=${id}`
 	}
 }
 export default {
 	name: 'Report',
 	props: {
-		vacancy: {
+		report: {
 			type: Object,
 			required: true
 		}
@@ -55,12 +55,12 @@ export default {
 	},
 	computed: {
 		formattedDate(){
-			return formatDate(this.vacancy.postDate)
+			return formatDate(this.report.createdAt)
 		}
 	},
 	methods: {
 		takeMenuAction(event){
-			const routeToNavTo = menuActionEnum[event](this.vacancy)
+			const routeToNavTo = menuActionEnum[event](this.report)
 			this.$router.push(routeToNavTo)
 		},
 		

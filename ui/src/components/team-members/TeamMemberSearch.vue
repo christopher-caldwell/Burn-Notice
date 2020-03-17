@@ -62,7 +62,6 @@ export default {
 			}
 		},
 		emitSelected(member){
-			console.log('member mid level', member)
 			this.$emit('memberSelected', member)
 		}
 	}
