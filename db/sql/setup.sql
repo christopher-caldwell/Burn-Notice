@@ -78,24 +78,25 @@ CREATE TABLE transfer_request (
 CREATE TABLE report (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "submitter" int NOT NULL REFERENCES account(id),
-	"fire_station": int NOT NULL REFERENCES fire_station(id),
+	"fire_station" int NOT NULL REFERENCES fire_station(id),
   "type_of_incident" type_of_incident,
   "created_at" date DEFAULT (now()),
   "time_dispatched" date DEFAULT (now()),
   "time_arrived" date DEFAULT (now()),
   "was_exposed_to_chem" boolean,
   "was_fire_retardant_present" boolean,
+	"chemical_exposure_notes" text,
   "actions_of_primary_team" text,
   "actions_of_secondary_team" text,
-  "description_of_events" text
+  "description_of_event" text
 );
 
 CREATE TABLE report_to_account(
 	"id" SERIAL PRIMARY KEY NOT NULL,
-	"report": int NOT NULL REFERENCES report(id),
-	"account": int NOT NULL REFERENCES account(id),
-	"team": varchar
-)
+	"report" int NOT NULL REFERENCES report(id),
+	"account" int NOT NULL REFERENCES account(id),
+	"team" varchar
+);
 
 CREATE TABLE account_update (
 	"id" SERIAL PRIMARY KEY NOT NULL,
@@ -105,4 +106,4 @@ CREATE TABLE account_update (
 	"id_of_update_source" int,
 	"is_actionable" boolean,
 	"post_date" date DEFAULT (now())
-)
+);

@@ -5,6 +5,7 @@ const stationResolvers = require('./fireStation')
 const homeFeedResolvers = require('./homeFeed')
 const vacancyResolvers = require('./vacancy')
 const transferRequestResolver = require('./transferRequest')
+const reportResolvers = require('./report')
 const Date = require('./date')
 
 const resolvers = {
@@ -15,6 +16,7 @@ const resolvers = {
 	...vacancyResolvers,
 	...assignmentResolver,
 	...transferRequestResolver,
+	...reportResolvers,
 	Date
 }
 module.exports = resolvers

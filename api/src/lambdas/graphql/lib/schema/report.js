@@ -9,9 +9,10 @@ const reportSchema = `
 		timeArrived: Date
 		wasExposedToChem: Boolean
 		wasFireRetardantPresent: Boolean
+		chemicalExposureNotes: String
 		actionsOfPrimaryTeam: String
 		actionsOfSecondaryTeam: String
-		descriptionOfEvents: String
+		descriptionOfEvent: String
 		teamOneMembers: [Account]
 		teamTwoMembers: [Account]
 	}
@@ -24,9 +25,10 @@ const reportSchema = `
 		timeArrived: Date
 		wasExposedToChem: Boolean
 		wasFireRetardantPresent: Boolean
+		chemicalExposureNotes: String
 		actionsOfPrimaryTeam: String
 		actionsOfSecondaryTeam: String
-		descriptionOfEvents: String
+		descriptionOfEvent: String
 		teamOneMembers: [Int]
 		teamTwoMembers: [Int]
 	}
