@@ -2,7 +2,7 @@
 	v-container
 		v-row
 			v-col
-				h2 Fire Stations
+				h2 Vacancies
 			v-col
 				v-text-field(
 					v-model="search"
@@ -15,35 +15,41 @@
 			v-col
 				ApolloQuery(
 					@result="mapDataToState"
-					:query="require('@/graphql/fire-station/FireStations.gql')" 
+					:query="require('@/graphql/vacancy/Vacancies.gql')" 
 					:notifyOnNetworkStatusChange="true"
 				)
 					template(v-slot="{ result: { loading, data } }")
 						v-data-table( 
 							@click:row="selectItem" 
-							:headers="headers" 
+							:headers="vacancyHeaders" 
 							:loading="loading" 
-							:items="fireStations" 
+							:items="vacancies" 
 							:search="search"
 						)
-							template(v-slot:item.district="{ item }")
-								div {{ item.district.name }}
-							template(v-slot:item.captain="{ item }")
-								div {{ item.captain.firstName }} {{ item.captain.lastName }}
+							template(v-slot:item.postDate="{ item }")
+								div {{ formatDate(item.postDate) }}
+							template(v-slot:item.fireStation="{ item }")
+								div {{ item.fireStation.name }}
+							template(v-slot:item.isEngine="{ item }")
+								div {{ mapBoolToText(item.isEngine) }}
+							template(v-slot:item.isTemporary="{ item }")
+								div {{ mapBoolToText(item.isTemporary) }}
+							template(v-slot:item.status="{ item }")
+								div {{ capitalize(item.status) }}
 							
 
 </template>
 
 <script>
-import { fireStationHeaders } from '@/data/constants'
+import { vacancyHeaders } from '@/data/constants'
 import { formatDate, mapBoolToText, capitalize } from '@/utils/'
 export default {
-	name: 'FireStationTable',
+	name: 'VacancyTable',
 	data(){
 		return {
 			search: null,
-			fireStations: [],
-			headers: Object.values(fireStationHeaders)
+			vacancies: [],
+			vacancyHeaders: Object.values(vacancyHeaders)
 		}
 	},
 	methods: {
@@ -54,8 +60,8 @@ export default {
 			console.log('item', item)
 		},
 		mapDataToState({ data }){
-			if(data.fireStations){
-				this.fireStations = data.fireStations
+			if(data.vacancies){
+				this.vacancies = data.vacancies
 			}
 		}
 	}

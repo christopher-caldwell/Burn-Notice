@@ -1,0 +1,15 @@
+query vacancies {
+	vacancies {
+		id
+		fireStation{
+			name
+		}
+		isEngine
+		isTemporary
+		postDate
+		fillDate
+		notes
+		numOfApplicants
+		status
+	}
+}

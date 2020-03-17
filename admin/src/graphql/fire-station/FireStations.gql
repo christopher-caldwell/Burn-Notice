@@ -1,0 +1,13 @@
+query fireStations {
+	fireStations{
+		id
+		name
+		district {
+			name
+		}
+		captain {
+			firstName
+			lastName
+		}
+	}
+}

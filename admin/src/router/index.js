@@ -44,7 +44,19 @@ const routes = [
 			{
 				path: 'table',
 				name: 'Table',
-				component: () => import('@/views/authenticated/fire-station/TableView.vue'),
+				component: () => import('@/views/authenticated/table/TableView.vue'),
+				children: [
+					{
+						path: 'vacancy',
+						name: 'VacancyTable',
+						component: () => import('@/views/authenticated/vacancy/TableView.vue'),
+					},
+					{
+						path: 'fire-station',
+						name: 'FireStationTable',
+						component: () => import('@/views/authenticated/fire-station/TableView.vue'),
+					},
+				]
 			},
 			{
 				path: 'home',
@@ -65,27 +77,7 @@ const routes = [
 				meta: { transitionName: 'slide' }
 			}			
     ]
-  },
-  {
-    path: '/admin',
-    name: 'AdminRoot',
-    component: () => import('@/views/authenticated/Root.vue'),
-    beforeEnter(to, from, next) {
-			const isAuthenticated = store.getters['session/isAdmin']
-			if(isAuthenticated || isRunningLocally){
-				next()
-			} else {
-				next('/login')
-			}
-    },
-    children: [
-			{
-				path: 'home',
-				name: 'AdminHome',
-				component: () => import('@/views/admin/Home.vue'),
-			},
-    ]
-  },
+  }
 ]
 
 export default new VueRouter({

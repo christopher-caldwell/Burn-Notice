@@ -4,6 +4,10 @@
 
 <script>
 export default {
-	name: 'AdminRoot'
+	name: 'TableView'
 }
 </script>
+
+<style>
+
+</style>

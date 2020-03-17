@@ -23,23 +23,15 @@ export const authenticatedRoutes = [
     title: 'Home',
   },
 	{
-    path: '/user/quiz/settings',
+    path: '/user/table/vacancy',
     icon: 'mdi-help',
-    title: 'Practice',
+    title: 'Vacancies',
   },
 	{
-    path: '/user/flash-cards/settings',
+    path: '/user/table/report',
     icon: 'mdi-help',
-    title: 'Flash Cards',
+    title: 'Reports',
   },
-	{
-    divider: true
-  },
-	{
-    path: '/user/profile',
-    icon: 'mdi-account',
-    title: 'Profile',
-  }
 ]
 
 export const regularAdminRoutes = []

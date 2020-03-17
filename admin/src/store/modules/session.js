@@ -1,7 +1,6 @@
 import { timeSessionIsValid } from '@/store/constants'
 import { authenticatedRoutes, visitorRoutes, regularAdminRoutes } from '@/router/routes'
 import { getItemFromLocalStorage, writeToLocalStorage } from '@/utils/localStorage'
-import router from '@/router'
 
 export default {
 	namespaced: true,
@@ -38,7 +37,6 @@ export default {
 				// fetch new token - update with new
 				commit('UPDATE_SESSION', previousSession.token)
 				dispatch('user/restoreUserToStore', null, { root: true })
-				router.push('/user/home')
 			}
 			commit('MAKE_APP_READY')
 		},

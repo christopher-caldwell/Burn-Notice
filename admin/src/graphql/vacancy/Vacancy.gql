@@ -7,7 +7,7 @@ query Vacancy($id: ID){
 		isTemporary
 		isEngine
 		status
-		station {
+		fireStation {
 			name
 			district {
 				name

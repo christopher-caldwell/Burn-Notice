@@ -11,10 +11,10 @@ query homeFeed($id: ID) {
   	vacancies{
     	id
 			postDate
-      station{
-        id
+      fireStation {
+			 	id
         name
-      }
+			}
   	}
 	}
 }

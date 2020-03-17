@@ -29,8 +29,23 @@ module.exports = {
 		station.vacancies = vacancies
 		return station
 	},
-	fireStations() {
-		return db('fireStation')
+	async fireStations() {
+		const stations = await db.select('fireStation.id', 'fireStation.name as fireName', 'district.name', 'account.firstName', 'account.lastName', 'account.id as accountId', 'district').from('fireStation')
+			.join('account', 'fireStation.captain', 'account.id')
+			.join('district', 'fireStation.district', 'district.id')
+		stations.forEach(station => {
+			station.district = {
+				name: station.name
+			}
+			station.name = station.fireName
+			station.captain = {
+				id: station.accountId,
+				firstName: station.firstName,
+				lastName: station.lastName
+			}
+		})
+		console.log('stations', stations)
+		return stations
 	},
 	fireStationsByDistrict({ districtId }){
 		return db('fireStation').where({ district: districtId })
