@@ -124,6 +124,21 @@ Resources:
             RestApiId: !Ref FireAPI
             Path: /graphql
             Method: post
+						
+  GraphQLAdmin:
+    Type: AWS::Serverless::Function
+    Properties:
+      MemorySize: 512
+      CodeUri: src/lambdas/graphql-admin
+      Handler: index.handler
+      Role: !GetAtt GraphQLRole.Arn
+      Events:
+        http:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FireAPI
+            Path: /graphql/admin
+            Method: post
 
 
 # API
