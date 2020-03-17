@@ -28,18 +28,3 @@ export default {
 	name: 'VacancySkeleton',
 }
 </script>
-
-<style lang='sass'>
-.v-skeleton-loader__article
-	background: none !important
-.header-spacer
-	margin-bottom: 3%
-.header-spacer-side-by-side
-	margin-bottom: 10%
-.card-spacer
-	margin-bottom: 7%
-.apply-button-skeleton
-	width: 100%
-	position: fixed !important
-	bottom: 10px
-</style>

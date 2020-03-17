@@ -14,12 +14,3 @@ export default {
 	name: 'AssignmentSkeleton',
 }
 </script>
-
-<style lang='sass'>
-.v-skeleton-loader__article
-	background: none !important
-.header-spacer
-	margin-bottom: 3%
-.card-spacer
-	margin-bottom: 7%
-</style>
