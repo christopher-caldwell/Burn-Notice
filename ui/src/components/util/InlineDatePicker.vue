@@ -13,10 +13,10 @@
 				v-model="formattedDate"
 				label="Date"
 				hint="MM/DD/YYYY format"
-				@change="formattedDate = formatDate(date)"
+				@change="dateUpdate"
 				v-on="on"
 			)
-		v-date-picker(v-model="date" no-title)
+		v-date-picker(v-model="date" no-title @change="dateUpdate")
 </template>
 
 <script>
@@ -32,7 +32,11 @@ export default {
 		}
 	},
 	methods: {
-		formatDate
+		formatDate,
+		dateUpdate(){
+			this.formattedDate = formatDate(this.date)
+			this.$emit('dateUpdate', this.formattedDate)
+		}
 	}
 }
 </script>

@@ -6,20 +6,21 @@
 				v-autocomplete(
 					outlined
 					v-model="incidentType"
-					:items="incidentTypes"	
+					:items="incidentTypes"
+					@change="emitUpdate('incidentType')"
 				)
 		UnderlinedHeader(header='Time Dispatched')
 		v-row
 			v-col
-				InlineDatePicker
+				InlineDatePicker(@dateUpdate="newDate => emitUpdate('dateDispatched', newDate)")
 			v-col
-				InlineTimePicker(errorTrackingKey="timeDispatched")
+				InlineTimePicker(@timeUpdate="newTime => emitUpdate('timeDispatched', newTime)" errorTrackingKey="timeDispatched")
 		UnderlinedHeader(header='Time Arrived')
 		v-row
 			v-col
-				InlineDatePicker
+				InlineDatePicker(@dateUpdate="newDate => emitUpdate('dateArrived', newDate)")
 			v-col
-				InlineTimePicker(errorTrackingKey="timeDispatched")
+				InlineTimePicker(@timeUpdate="newTime => emitUpdate('timeArrived', newTime)" errorTrackingKey="timeDispatched")
 </template>
 
 <script>
@@ -38,6 +39,19 @@ export default {
 		return {
 			incidentTypes: Object.values(incidentTypes),
 			incidentType: null,
+			dateDispatched: null,
+			timeDispatched: null,
+			dateArrived: null,
+			timeArrived: null,
+		}
+	},
+	methods: {
+		emitUpdate(keyOfUpdate, payload){
+			// if a payload is given, send that. If not, send the data prop of the key name
+			const emitPayload = payload 
+				? { key: keyOfUpdate, value: payload }
+				: { key: keyOfUpdate, value: this[keyOfUpdate] }
+			this.$emit('fieldUpdate', emitPayload)
 		}
 	}
 }

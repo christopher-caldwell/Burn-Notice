@@ -1,7 +1,7 @@
 <template lang='pug'>
 	v-text-field(
 		outlined
-		v-model="time"
+		v-model.number="time"
 		:label="label"
 		hint='24 hour format: 1430'
 		@blur="validateTime"
@@ -50,9 +50,11 @@ export default {
 			const stringTime = this.time.toString()
 			const hours = stringTime.slice(0,2)
 			const minutes = stringTime.slice(2,4)
-			const areHoursValid = parseInt(hours) > 24
-			const areMinutesValid = parseInt(minutes) > 60
-			return areHoursValid && areMinutesValid
+			const areHoursValid = parseInt(hours) < 24
+			const areMinutesValid = parseInt(minutes) < 60
+			if(areHoursValid && areMinutesValid){
+				this.$emit('timeUpdate', this.time)
+			}
 		}
 	}
 }

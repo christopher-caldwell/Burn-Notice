@@ -13,11 +13,11 @@
 					v-tab Review
 				v-tabs-items(v-model="activeTab") 
 					v-tab-item
-						TimePage
+						TimePage(@fieldUpdate="updateField")
 					v-tab-item
-						ConditionsPage
+						ConditionsPage(@fieldUpdate="updateField")
 					v-tab-item
-						TeamPage
+						TeamPage(@fieldUpdate="updateField")
 			
 </template>
 
@@ -35,6 +35,21 @@ export default {
 	data(){
 		return {
 			activeTab: null,
+			typeOfIncident: null,
+			dateDispatched: null,
+			dateArrived: null,
+			timeDispatched: null,
+			timeArrived: null,
+			wasExposedToChem: null,
+			wasFireRetardantPresent: null,
+			actionsOfPrimaryTeam: null,
+			actionsOfSecondaryTeam: null,
+			descriptionOfEvent: null
+		}
+	},
+	methods: {
+		updateField({ value, key }){
+			this[key] = value
 		}
 	}
 }
