@@ -2,7 +2,6 @@
 	v-col
 		v-card(
 			class="mx-auto"
-			max-width="345"
 		)
 			v-container
 				v-row(align='center')

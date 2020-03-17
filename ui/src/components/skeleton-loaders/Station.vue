@@ -10,8 +10,8 @@
 				v-skeleton-loader(type="text")
 		v-row(justify='center')
 			v-col(cols=11)
-				v-skeleton-loader.card-spacer(type="image" max-width='345' height='120')
-				v-skeleton-loader(type="image" max-width='345' height='120')
+				v-skeleton-loader.card-spacer(type="image" height='120')
+				v-skeleton-loader(type="image" height='120')
 </template>
 
 <script>

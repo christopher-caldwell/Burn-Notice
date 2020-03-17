@@ -10,3 +10,18 @@ export const statusColorEnum = {
   'pending': 'yellow-color',
   'cancelled': 'lightest-red'
 }
+
+export const incidentTypes = {
+	'fire': {
+		text: 'Fire',
+		value: 'fire'
+	},
+  'medical': {
+		text: 'Medical',
+		value: 'medical'
+	},
+  'building': {
+		text: 'Building',
+		value: 'building'
+	}
+}

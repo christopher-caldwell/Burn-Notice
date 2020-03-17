@@ -87,10 +87,15 @@ CREATE TABLE report (
   "was_fire_retardant_present" boolean,
   "actions_of_primary_team" text,
   "actions_of_secondary_team" text,
-  "description_of_events" text,
-  "team_one_members" int[],
-  "team_two_members" int[]
+  "description_of_events" text
 );
+
+CREATE TABLE report_to_account(
+	"id" SERIAL PRIMARY KEY NOT NULL,
+	"report": int NOT NULL REFERENCES report(id),
+	"account": int NOT NULL REFERENCES account(id),
+	"team": varchar
+)
 
 CREATE TABLE account_update (
 	"id" SERIAL PRIMARY KEY NOT NULL,

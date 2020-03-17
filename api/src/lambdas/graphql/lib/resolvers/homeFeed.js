@@ -17,7 +17,7 @@ const formatVacancies = vacancies => {
 	return vacancies.map(vacancy => ({
 		...vacancy,
 		fireStation: {
-			id: vacancy.station,
+			id: vacancy.fireStation,
 			district: vacancy.district,
 			captain: vacancy.captain,
 			name: vacancy.name

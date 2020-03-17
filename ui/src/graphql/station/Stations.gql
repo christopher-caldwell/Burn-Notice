@@ -1,0 +1,6 @@
+query FireStations {
+	fireStations {
+		id
+		name
+	}
+}

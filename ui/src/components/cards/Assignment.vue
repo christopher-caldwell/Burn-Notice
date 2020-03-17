@@ -34,7 +34,7 @@
 
 <script>
 import { blueColor } from '@/data/constants'
-import { format } from 'date-fns'
+import { formatDate } from '@/utils/'
 const menuActionEnum = {
 	'See station': ({ assignedStation: { id } }) => {
 		return `/user/station/${id}`
@@ -59,13 +59,11 @@ export default {
 	},
 	computed: {
 		formattedStartDate(){
-			const dateToFormat = new Date(this.assignment.startDate)
-			return format(dateToFormat, 'MM/dd/yyyy')
+			return formatDate(this.assignment.startDate)
 		},
 		formattedEndDate(){
 			try {
-				const dateToFormat = new Date(this.assignment.endDate)
-				return format(dateToFormat, 'MM/dd/yyyy')
+				return formatDate(this.assignment.endDate)
 			} catch(e){
 				return null
 			}

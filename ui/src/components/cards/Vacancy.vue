@@ -33,7 +33,7 @@
 import { blueColor } from '@/data/constants'
 import { format } from 'date-fns'
 const menuActionEnum = {
-	'See station': ({ station: { id } }) => {
+	'See station': ({ fireStation: { id } }) => {
 		return `/user/station/${id}`
 		},
 	'Report an issue': ({ id }) => {

@@ -26,8 +26,17 @@ export default {
 		await this.restoreSessionFromLocalStorage()
 	},
 	methods: {
-		...mapActions('session', ['restoreSessionFromLocalStorage'])
+		...mapActions('session', ['restoreSessionFromLocalStorage']),
+		...mapActions('fireStation', ['updateFireStations'])
 	},
+	apollo: {
+		fireStations: {
+			query: require('@/graphql/station/Stations.gql'),
+			update({ fireStations }) {
+				this.updateFireStations(fireStations)
+			}
+		}
+	}
 }
 </script>
 

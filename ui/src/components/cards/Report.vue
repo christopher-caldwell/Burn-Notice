@@ -30,7 +30,7 @@
 
 <script>
 import { blueColor } from '@/data/constants'
-import { format } from 'date-fns'
+import { formatDate } from '@/utils/'
 const menuActionEnum = {
 	'See station': ({ station: { id } }) => {
 		return `/user/station/${id}`
@@ -55,8 +55,7 @@ export default {
 	},
 	computed: {
 		formattedDate(){
-			const dateToFormat = new Date(this.vacancy.postDate)
-			return format(dateToFormat, 'MMMM do, yyyy')
+			return formatDate(this.vacancy.postDate)
 		}
 	},
 	methods: {

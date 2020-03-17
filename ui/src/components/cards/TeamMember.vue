@@ -6,7 +6,7 @@
 					v-icon(dark) mdi-account-circle
 			v-col(:cols="colsOfName").
 				{{ member.firstName }} {{ member.lastName }}
-			v-col(cols=3 v-if="hasAddButton")
+			v-col(cols=3 v-if="hasAddButton" @click="emitSelected")
 				v-btn(text)
 					v-icon(:color="greenColor") mdi-plus
 				
@@ -37,6 +37,11 @@ export default {
 			return this.hasAddButton
 				? 6
 				: 10
+		}
+	},
+	methods: {
+		emitSelected(){
+			this.$emit('memberSelected', this.member)
 		}
 	}
 }

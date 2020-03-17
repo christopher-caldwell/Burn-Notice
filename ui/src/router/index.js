@@ -64,6 +64,12 @@ const routes = [
 				meta: { transitionName: 'slide' }
 			},
 			{
+				path: 'report/file',
+				name: 'ReportFile',
+				component: () => import('@/views/authenticated/report/FileReport.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
 				path: 'assignment-history',
 				name: 'AssignmentHistory',
 				component: () => import('@/views/authenticated/assignments/AssignmentHistory.vue'),

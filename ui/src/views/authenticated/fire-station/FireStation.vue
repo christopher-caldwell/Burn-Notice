@@ -17,8 +17,11 @@
 									v-col
 										Vacancy(v-for="vacancy in fireStation.vacancies" :vacancy="vacancy" v-if="fireStation.vacancies.length" :key="vacancy.id")
 										h5(v-else) No openings at this time
-				TeamMemberSearch(:stationId="stationId")
-				
+				v-row.openings-cont(justify='center')
+					v-col
+						ExpansionPanelList(title='Team Mambers' v-model="isTeamMembersOpen")
+							template(slot='content')
+								TeamMemberSearch(:stationId="stationId")
 </template>
 
 <script>
@@ -50,7 +53,8 @@ export default {
 			fireStation: null,
 			stationId: null,
 			accountsByStation: [],
-			filteredAccounts: []
+			filteredAccounts: [],
+			isTeamMembersOpen: 1,
 		}
 	},
 	created(){

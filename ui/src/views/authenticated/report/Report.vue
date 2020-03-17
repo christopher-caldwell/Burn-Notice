@@ -12,11 +12,10 @@
 						Vacancy( v-for="(vacancy, index) in data.homeFeed.vacancies" :vacancy="vacancy" :key="`${index}-${vacancy.id}`")
 				v-row
 					v-col(align='start')
-						div.apply-button-cont
-							button.apply-button(
-								@click=""
-							)
-								h3 Create Report
+						router-link(to='/user/report/file')
+							div.apply-button-cont
+								button.apply-button
+									h3 File Report
 </template>
 
 <script>
@@ -40,15 +39,15 @@ export default {
 }
 </script>
 
-<style lang='sass'>
+<style lang='sass' scoped>
+a
+	color: white
 .user-home-actions
 	margin-top: 15%
 .user-home-action
 	margin-top: 5%
 .update-header
 	margin-bottom: 3%
-
-
 .login-cont
 	margin-top: 10%
 .apply-button-cont
