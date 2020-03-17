@@ -1,4 +1,4 @@
-mutation CreateReport($params: ReportInput){
+mutation createReport($params: ReportInput){
 	createReport(params: $params) {
 		id
 	}

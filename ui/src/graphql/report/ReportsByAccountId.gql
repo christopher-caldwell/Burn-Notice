@@ -1,5 +1,9 @@
 query reportsByAccountId($id: ID){
 	reportsByAccountId(id: $id) {
-		
+		id
+		createdAt
+		fireStation {
+			name
+		}
 	}
 }
