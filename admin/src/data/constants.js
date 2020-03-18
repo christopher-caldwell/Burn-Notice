@@ -42,6 +42,29 @@ export const tableHeaders = {
 	},
 }
 
+export const transferRequestHeaders = {
+	'fireStation': {
+		text: 'Fire Station',
+		value: 'fireStation'
+	},
+	'submitter': {
+		text: 'Submitter',
+		value: 'submitter'
+	},
+	'applicationStatus': {
+		text: 'Application Status',
+		value: 'applicationStatus'
+	},
+	'sentDate': {
+		text: 'Sent Date',
+		value: 'sentDate'
+	},
+	'approvalDate': {
+		text: 'Approval Date',
+		value: 'approvalDate'
+	},
+}
+
 export const fireStationHeaders = {
 	'name': {
 		text: 'Name',

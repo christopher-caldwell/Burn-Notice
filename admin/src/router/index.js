@@ -62,6 +62,11 @@ const routes = [
 						component: () => import('@/views/authenticated/report/TableView.vue'),
 					},
 					{
+						path: 'transfer-request',
+						name: 'TransferRequestTable',
+						component: () => import('@/views/authenticated/transfer-request/TableView.vue'),
+					},
+					{
 						path: 'fire-station',
 						name: 'FireStationTable',
 						component: () => import('@/views/authenticated/fire-station/TableView.vue'),

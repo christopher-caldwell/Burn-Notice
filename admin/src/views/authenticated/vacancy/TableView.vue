@@ -1,73 +1,44 @@
 <template lang='pug'>
-	v-container
-		v-row
-			v-col
-				h2 Vacancies
-			v-col
-				v-text-field(
-					v-model="search"
-					append-icon="mdi-magnify"
-					label="Search"
-					single-line
-					hide-details
-				)
-		v-row
-			v-col
-				ApolloQuery(
-					@result="mapDataToState"
-					:query="require('@/graphql/vacancy/Vacancies.gql')" 
-					:notifyOnNetworkStatusChange="true"
-				)
-					template(v-slot="{ result: { loading, data } }")
-						v-data-table( 
-							@click:row="selectItem" 
-							:headers="vacancyHeaders" 
-							:loading="loading" 
-							:items="vacancies" 
-							:search="search"
-						)
-							template(v-slot:item.postDate="{ item }")
-								div {{ formatDate(item.postDate) }}
-							template(v-slot:item.fireStation="{ item }")
-								div {{ item.fireStation.name }}
-							template(v-slot:item.isEngine="{ item }")
-								div {{ mapBoolToText(item.isEngine) }}
-							template(v-slot:item.isTemporary="{ item }")
-								div {{ mapBoolToText(item.isTemporary) }}
-							template(v-slot:item.status="{ item }")
-								div {{ capitalize(item.status) }}
-							
-
+	Table(
+		header='Vacancies'
+		:headers="vacancyHeaders"
+		queryPath='vacancy/Vacancies.gql'
+		keyOfQueryResult='vacancies'
+		@itemsUpdate="itemUpdate"
+		:itemsToShow="items"
+	)
 </template>
 
 <script>
+import Table from '@/components/util/Table'
 import { vacancyHeaders } from '@/data/constants'
-import { formatDate, mapBoolToText, capitalize } from '@/utils/'
+import { capitalize, formatDate, mapBoolToText } from '@/utils'
 export default {
 	name: 'VacancyTable',
+	components: {
+		Table
+	},
 	data(){
 		return {
-			search: null,
-			vacancies: [],
-			vacancyHeaders: Object.values(vacancyHeaders)
+			vacancyHeaders,
+			items: []
 		}
 	},
 	methods: {
-		formatDate,
-		mapBoolToText,
-		capitalize,
-		selectItem(item){
-			console.log('item', item)
-		},
-		mapDataToState({ data }){
-			if(data.vacancies){
-				this.vacancies = data.vacancies
-			}
+		itemUpdate(newItems){
+			newItems.forEach(item => {
+				item.postDate = formatDate(item.postDate)
+				item.fireStation = item.fireStation.name
+				item.isEngine = mapBoolToText(item.isEngine)
+				item.isTemporary = mapBoolToText(item.isTemporary)
+				item.postDate = formatDate(item.postDate )
+				item.status = capitalize(item.status)
+			})
+			this.items = newItems
 		}
 	}
 }
 </script>
 
-<style>
-
+<style lang='sass'>
 </style>

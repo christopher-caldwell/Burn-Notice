@@ -1,9 +1,9 @@
 <template lang='pug'>
 	v-container
-		v-row
-			v-col
-				h2 {{ header }}
-			v-col
+		v-row(justify='space-between')
+			v-col(cols=5)
+				DropdownHeader(:currentHeader="header" :availableOptions="availableHeaders" @clickedHeader="handleClickedHeader")
+			v-col(cols=5)
 				v-text-field(
 					v-model="search"
 					append-icon="mdi-magnify"
@@ -15,15 +15,15 @@
 			v-col
 				ApolloQuery(
 					@result="mapDataToState"
-					:query="require(queryPath)" 
+					:query="require(`@/graphql/${queryPath}`)" 
 					:notifyOnNetworkStatusChange="true"
 				)
 					template(v-slot="{ result: { loading, data } }")
 						v-data-table( 
 							@click:row="selectItem" 
-							:headers="headers" 
+							:headers="tableHeaders" 
 							:loading="loading" 
-							:items="items" 
+							:items="itemsToShow" 
 							:search="search"
 						)
 							slot(name='table-variations')
@@ -32,8 +32,13 @@
 </template>
 
 <script>
+import DropdownHeader from './HeaderDropdown'
+import { tableHeaders } from '@/data/constants'
 export default {
 	name: 'Table',
+	components: {
+		DropdownHeader
+	},
 	props: {
 		header: {
 			type: String,
@@ -51,21 +56,30 @@ export default {
 			type: String,
 			required: true
 		},
+		itemsToShow: {
+			type: Array,
+			required: true
+		},
 	},
 	data(vm){
 		return {
 			search: null,
 			items: [],
-			headers: Object.values(vm.headers)
+			tableHeaders: Object.values(vm.headers),
+			availableHeaders: Object.values(tableHeaders),
 		}
 	},
 	methods: {
+		handleClickedHeader({ value }){
+			this.$router.push(`/user/table/${value}`)
+		},
 		selectItem(item){
 			console.log('item', item)
 		},
 		mapDataToState({ data }){
-			if(data[this.keyOfQueryResult]){
-				this.items = data[keyOfQueryResult]
+			if(data && data[this.keyOfQueryResult]){
+				this.$emit('itemsUpdate', data[this.keyOfQueryResult])
+				this.items = data[this.keyOfQueryResult]
 			}
 		}
 	}
