@@ -1,0 +1,17 @@
+query transferRequests {
+	transferRequests {
+		id
+		vacancy {
+			fireStation {
+				name
+			}
+		}
+		requestSubmitter {
+			firstName
+			lastName
+		}
+		applicationStatus
+		sentDate
+		approvalDate
+	}
+}

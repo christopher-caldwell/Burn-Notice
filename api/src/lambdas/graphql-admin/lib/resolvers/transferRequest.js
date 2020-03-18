@@ -1,4 +1,5 @@
 const db = require('../config/db')
+const { mapAccountToResource, mapFireStationToResource } = require('../utils/mapEntityToResource')
 
 const createTransferRequest = (params, transactionActor) => (
 	transactionActor('transferRequest')
@@ -22,8 +23,22 @@ module.exports = {
 	async transferRequest({ id }) {
 		return db('transferRequest').where({ id }).first()
 	},
-	transferRequests() {
-		return db('transferRequest')
+	async transferRequests() {
+		const requests = await db
+			.select('transferRequest.*', 'fireStation.name', 'account.firstName', 'account.lastName')
+			.from('transferRequest')
+			.join('vacancy', 'transferRequest.vacancy', 'vacancy.id')
+			.join('fireStation', 'vacancy.fireStation', 'fireStation.id')
+			.join('account', 'transferRequest.requestSubmitter', 'account.id')
+		requests.forEach(request => {
+			mapAccountToResource(request, 'requestSubmitter')
+			request.vacancy = {
+				fireStation: {
+					name: request.name
+				}
+			}
+		})
+		return requests
 	},
 	createTransferRequest(argumentos){
 		const { params } = JSON.parse(JSON.stringify(argumentos))

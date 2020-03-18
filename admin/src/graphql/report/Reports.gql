@@ -1,0 +1,24 @@
+query Reports {
+	reports {
+		id
+		submitter {
+			id
+			firstName
+			lastName
+		}
+		fireStation{
+			id
+			name
+		}
+		typeOfIncident
+		createdAt
+		timeDispatched
+		timeArrived
+		wasExposedToChem
+		wasFireRetardantPresent
+		chemicalExposureNotes
+		actionsOfPrimaryTeam
+		actionsOfSecondaryTeam
+		descriptionOfEvent
+	}
+}

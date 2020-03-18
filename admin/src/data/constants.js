@@ -63,8 +63,43 @@ export const districtHeaders = {
 		value: 'name'
 	},
 	'chief': {
-		text: 'chief',
+		text: 'Chief',
 		value: 'chief'
+	},
+}
+
+export const reportHeaders = {	
+	'submitter': {
+		text: 'Submitter',
+		value: 'submitter'
+	},
+	'fireStation': {
+		text: 'Station',
+		value: 'fireStation'
+	},
+	'typeOfIncident': {
+		text: 'Type of Incident',
+		value: 'typeOfIncident'
+	},
+	'createdAt': {
+		text: 'Submitted',
+		value: 'createdAt'
+	},
+	'timeDispatched': {
+		text: 'Time Dispatched',
+		value: 'timeDispatched'
+	},
+	'timeArrived': {
+		text: 'Time Arrived',
+		value: 'timeArrived'
+	},
+	'wasExposedToChem': {
+		text: 'Exposed to Chemicals',
+		value: 'wasExposedToChem'
+	},
+	'wasFireRetardantPresent': {
+		text: 'Fire Retardant',
+		value: 'wasFireRetardantPresent'
 	},
 }
 

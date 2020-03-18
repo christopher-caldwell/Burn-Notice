@@ -57,6 +57,11 @@ const routes = [
 						component: () => import('@/views/authenticated/district/TableView.vue'),
 					},
 					{
+						path: 'report',
+						name: 'ReportTable',
+						component: () => import('@/views/authenticated/report/TableView.vue'),
+					},
+					{
 						path: 'fire-station',
 						name: 'FireStationTable',
 						component: () => import('@/views/authenticated/fire-station/TableView.vue'),

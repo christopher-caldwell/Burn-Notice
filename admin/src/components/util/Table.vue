@@ -2,7 +2,7 @@
 	v-container
 		v-row
 			v-col
-				h2 Districts
+				h2 {{ header }}
 			v-col
 				v-text-field(
 					v-model="search"
@@ -15,7 +15,7 @@
 			v-col
 				ApolloQuery(
 					@result="mapDataToState"
-					:query="require('@/graphql/district/Districts.gql')" 
+					:query="require(queryPath)" 
 					:notifyOnNetworkStatusChange="true"
 				)
 					template(v-slot="{ result: { loading, data } }")
@@ -23,43 +23,51 @@
 							@click:row="selectItem" 
 							:headers="headers" 
 							:loading="loading" 
-							:items="districts" 
+							:items="items" 
 							:search="search"
 						)
-							template(v-slot:item.chief="{ item }")
-								div {{ item.chief.firstName }} {{ item.chief.lastName }}
+							slot(name='table-variations')
 							
 
 </template>
 
 <script>
-import { districtHeaders } from '@/data/constants'
-import { formatDate, mapBoolToText, capitalize } from '@/utils/'
 export default {
-	name: 'DistrictTable',
-	data(){
+	name: 'Table',
+	props: {
+		header: {
+			type: String,
+			required: true
+		},
+		headers: {
+			type: Object,
+			required: true
+		},
+		queryPath: {
+			type: String,
+			required: true
+		},
+		keyOfQueryResult: {
+			type: String,
+			required: true
+		},
+	},
+	data(vm){
 		return {
 			search: null,
-			districts: [],
-			headers: Object.values(districtHeaders)
+			items: [],
+			headers: Object.values(vm.headers)
 		}
 	},
 	methods: {
-		formatDate,
-		mapBoolToText,
-		capitalize,
 		selectItem(item){
 			console.log('item', item)
 		},
 		mapDataToState({ data }){
-			if(data.districts){
-				this.districts = data.districts
+			if(data[this.keyOfQueryResult]){
+				this.items = data[keyOfQueryResult]
 			}
 		}
 	}
 }
 </script>
-
-<style>
-
-</style>

@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 
-const formatString = 'MM/dd/yy'
+const formatStringDate = 'MM/dd/yy'
+const formatStringDateTime = 'MM/dd/yy h:mm aa'
 
 export const capitalize = lowerCasedWord => {
   const firstLetter = lowerCasedWord.substr(0,1).toUpperCase()
@@ -39,5 +40,10 @@ export const filterObjects = (objects, searchTerm) => {
 
 export const formatDate = dateString => {
 	const parsedDate = new Date(dateString)
-	return format(parsedDate, formatString)
+	return format(parsedDate, formatStringDate)
+}
+
+export const formatDateTime = dateString => {
+	const parsedDate = new Date(dateString)
+	return format(parsedDate, formatStringDateTime)
 }

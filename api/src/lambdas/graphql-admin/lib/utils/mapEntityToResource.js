@@ -1,6 +1,6 @@
-exports.mapAccountToResource = (resource, keyName = 'account') => {
-	resource[keyName] = {
-		id: resource[keyName],
+exports.mapAccountToResource = (resource, keyNameOfResource = 'account', keyNameOfId = 'account') => {
+	resource[keyNameOfResource] = {
+		id: resource[keyNameOfId],
 		firstName: resource.firstName, 
 		lastName: resource.lastName, 
 		sap: resource.sap, 
@@ -31,11 +31,9 @@ exports.mapDistrictToResource = resource => {
 	}
 }
 
-exports.mapFireStationToResource = (resource, keyName = 'fireStation') => {
-	console.log('keyname', keyName)
-	console.log('resource', resource)
-	resource[keyName] = {
-		id: resource[keyName],
+exports.mapFireStationToResource = (resource, keyNameOfResource = 'fireStation', keyNameOfId = 'fireStation') => {
+	resource[keyNameOfResource] = {
+		id: resource[keyNameOfId],
 		captain: resource.captain,
 		district: resource.district,
 		name: resource.name,
