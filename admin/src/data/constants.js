@@ -57,6 +57,17 @@ export const fireStationHeaders = {
 	},
 }
 
+export const districtHeaders = {
+	'name': {
+		text: 'Name',
+		value: 'name'
+	},
+	'chief': {
+		text: 'chief',
+		value: 'chief'
+	},
+}
+
 export const vacancyHeaders = {
 	'fireStation': {
 		text: 'Fire Station',

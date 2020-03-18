@@ -1,6 +1,6 @@
-exports.mapAccountToResource = resource => {
-	resource['account'] = {
-		id: resource['account'],
+exports.mapAccountToResource = (resource, keyName = 'account') => {
+	resource[keyName] = {
+		id: resource[keyName],
 		firstName: resource.firstName, 
 		lastName: resource.lastName, 
 		sap: resource.sap, 
