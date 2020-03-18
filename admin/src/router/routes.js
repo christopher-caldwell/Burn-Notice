@@ -23,12 +23,12 @@ export const authenticatedRoutes = [
     title: 'Home',
   },
 	{
-    path: '/user/table/vacancy',
+    path: '/user/table/vacancy?header=vacancy',
     icon: 'mdi-help',
     title: 'Vacancies',
   },
 	{
-    path: '/user/table/report',
+    path: '/user/table/report?header=report',
     icon: 'mdi-help',
     title: 'Reports',
   },

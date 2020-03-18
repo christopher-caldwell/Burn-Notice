@@ -24,17 +24,17 @@ export const tableHeaders = {
 		text: 'Districts',
 		value: 'district'
 	},
-	'fireStation': {
+	'fire-station': {
 		text: 'Stations',
-		value: 'fireStation'
+		value: 'fire-station'
 	},
 	'vacancy': {
 		text: 'Vacancies',
 		value: 'vacancy'
 	},
-	'transferRequest': {
+	'transfer-request': {
 		text: 'Transfer Requests',
-		value: 'transferRequest'
+		value: 'transfer-request'
 	},
 	'report': {
 		text: 'Reports',

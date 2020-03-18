@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Table from '@/components/util/Table'
+import Table from '@/components/table/Table.vue'
 import { vacancyHeaders } from '@/data/constants'
 import { capitalize, formatDate, mapBoolToText } from '@/utils'
 export default {

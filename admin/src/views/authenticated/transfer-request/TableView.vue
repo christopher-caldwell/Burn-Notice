@@ -1,6 +1,5 @@
 <template lang='pug'>
 	Table(
-		header='Transfer Requests'
 		:headers="transferRequestHeaders"
 		queryPath='transfer-request/TransferRequests.gql'
 		keyOfQueryResult='transferRequests'
@@ -10,7 +9,7 @@
 </template>
 
 <script>
-import Table from '@/components/util/Table'
+import Table from '@/components/table/Table'
 import { transferRequestHeaders } from '@/data/constants'
 import { capitalize, formatDate } from '@/utils'
 export default {

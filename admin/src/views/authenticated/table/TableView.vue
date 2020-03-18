@@ -1,10 +1,16 @@
 <template lang='pug'>
-	router-view
+	v-container
+		TableHeader
+		router-view
 </template>
 
 <script>
+import TableHeader from '@/components/table/TableHeader.vue'
 export default {
-	name: 'TableView'
+	name: 'TableView',
+	components: {
+		TableHeader
+	}
 }
 </script>
 

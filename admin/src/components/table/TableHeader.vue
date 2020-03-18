@@ -27,19 +27,21 @@ export default {
 	},
 	data(){
 		return {
+			currentHeader: '',
 			search: null,
 			availableHeaders: Object.values(tableHeaders),
 		}
 	},
-	computed: {
-		currentHeader(){
-			return this.$route.params.header
-		}
-	},
 	methods: {
-		handleClickedHeader({ text, value }){
-			this.$router.push(`/user/table/${value}?header=${text}`)
+		handleClickedHeader({ value, text }){
+			this.currentHeader = text
+			this.$router.push(`/user/table/${value}?header=${value}`)
 		},
+	},
+	mounted(){
+		if(this.$route.query.header){
+			this.currentHeader = tableHeaders[this.$route.query.header]['text']
+		}
 	}
 }
 </script>
