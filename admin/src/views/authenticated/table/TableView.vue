@@ -1,7 +1,7 @@
 <template lang='pug'>
 	v-container
-		TableHeader
-		router-view
+		TableHeader(@searchUpdate="updateSearch")
+		router-view(:search="search")
 </template>
 
 <script>
@@ -10,6 +10,16 @@ export default {
 	name: 'TableView',
 	components: {
 		TableHeader
+	},
+	data(){
+		return {
+			search: ''
+		}
+	},
+	methods: {
+		updateSearch(newTerm){
+			this.search = newTerm
+		}
 	}
 }
 </script>

@@ -1,0 +1,7 @@
+mutation clearUpdate($id: ID, $accountId: ID){
+  clearUpdate(id: $id, accountId: $accountId) {
+		updates {
+			id
+		}
+	}
+}

@@ -5,6 +5,7 @@
 		keyOfQueryResult='transferRequests'
 		@itemsUpdate="itemUpdate"
 		:itemsToShow="items"
+		:search="search"
 	)
 </template>
 
@@ -17,6 +18,12 @@ export default {
 	components: {
 		Table
 	},
+	props: {
+		search: {
+			type: String,
+			required: false
+		}
+	},
 	data(){
 		return {
 			transferRequestHeaders,
@@ -26,9 +33,14 @@ export default {
 	methods: {
 		itemUpdate(newItems){
 			newItems.forEach(item => {
-				item.fireStation = item.vacancy.fireStation.name
+				const fillDate = item.approvalDate ? formatDate(item.approvalDate) : null
+				item.fireStation = {
+					id: item.vacancy.fireStation.id,
+					name: item.vacancy.fireStation.name
+				}
 				item.submitter = item.requestSubmitter.firstName + ' ' + item.requestSubmitter.lastName
 				item.sentDate = formatDate(item.sentDate )
+				item.approvalDate = fillDate
 				item.applicationStatus = capitalize(item.applicationStatus)
 			})
 			this.items = newItems

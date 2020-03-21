@@ -43,7 +43,13 @@ export default {
 				commit('UPDATE_USER', prevUser)
 			}
 		},
+		updateUser({ commit }, newUser){
+			commit('UPDATE_USER', newUser)
+		},
 		updateEligibility({ commit }){
+			const prevUser = getItemFromLocalStorage('user')
+			prevUser.isEligibleForTransfer = false
+			writeToLocalStorage('user', prevUser)
 			commit('UPDATE_ELIGIBILITY')
 		}
 	},

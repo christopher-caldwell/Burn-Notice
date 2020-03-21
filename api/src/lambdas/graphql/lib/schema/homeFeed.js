@@ -17,4 +17,8 @@ const homeFeedQuery = `
 	homeFeed(id: ID): HomeFeed
 `
 
-module.exports = { homeFeedSchema, homeFeedQuery }
+const homeFeedMutation = `
+	clearUpdate(id: ID, accountId: ID): [HomeFeed]
+`
+
+module.exports = { homeFeedSchema, homeFeedQuery, homeFeedMutation }

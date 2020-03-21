@@ -17,6 +17,13 @@ CREATE TYPE vacancy_status AS ENUM (
   'active'
 );
 
+CREATE TYPE transfer_request_status AS ENUM (
+  'new',
+  'denied',
+  'accepted',
+	'cancelled'
+);
+
 CREATE TABLE account (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "sap" int unique,
@@ -28,7 +35,8 @@ CREATE TABLE account (
   "last_name" varchar,
   "password" varchar,
   "is_eligible_for_transfer" boolean DEFAULT true,
-  "account_role" account_role
+  "account_role" account_role,
+	"last_transfer" date DEFAULT null
 );
 
 CREATE TABLE district (
@@ -69,7 +77,7 @@ CREATE TABLE transfer_request (
   "id" SERIAL PRIMARY KEY NOT NULL,
   "vacancy" int NOT NULL REFERENCES vacancy(id),
   "request_submitter" int NOT NULL REFERENCES account(id),
-  "application_status" varchar DEFAULT 'new',
+  "application_status" transfer_request_status DEFAULT 'new',
   "approving_authority" int DEFAULT null REFERENCES account(id),
   "sent_date" date DEFAULT (now()),
   "approval_date" date DEFAULT null

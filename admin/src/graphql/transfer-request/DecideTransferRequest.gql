@@ -1,0 +1,3 @@
+mutation decideTransferRequest ($params: TransferRequestDecisionInput){
+	decideTransferRequest(params: $params)
+}

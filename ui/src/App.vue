@@ -35,7 +35,7 @@ export default {
 			update({ fireStations }) {
 				this.updateFireStations(fireStations)
 			}
-		}
+		},
 	}
 }
 </script>

@@ -3,7 +3,7 @@ const { accountSchema, accountQuery, accountMutation } = require('./account')
 const { assignmentSchema, assignmentQuery } = require('./assignment')
 const { districtSchema, districtQuery } = require('./district')
 const { fireStationSchema, fireStationQuery } = require('./fireStation')
-const { homeFeedSchema, homeFeedQuery } = require('./homeFeed')
+const { homeFeedSchema, homeFeedQuery, homeFeedMutation } = require('./homeFeed')
 const { reportSchema, reportQuery, reportMutation } = require('./report')
 const { transferRequestSchema, transferRequestQuery, transferRequestMutation } = require('./transferRequest')
 const { vacancySchema, vacancyQuery } = require('./vacancy')
@@ -30,6 +30,7 @@ module.exports = buildSchema(`
 	}
 	type Mutation {
 		${accountMutation}
+		${homeFeedMutation}
 		${reportMutation}
 		${transferRequestMutation}
 	}

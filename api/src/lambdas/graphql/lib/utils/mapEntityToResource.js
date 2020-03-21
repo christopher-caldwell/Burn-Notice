@@ -53,9 +53,17 @@ exports.mapTransferRequestToResource = resource => {
 	}
 }
 
-exports.mapVacancyToResource = resource => {
-	resource['vacancy'] = {
-		id: resource['vacancy'],
+exports.mapVacancyToResource = (resource, keyNameOfResource = 'vacancy', keyNameOfId = 'vacancy', keyNameOfStation = 'name') => {
+	resource[keyNameOfResource] = {
+		id: resource[keyNameOfId],
 		name: resource.name,
+		fireStation: resource[keyNameOfStation],
+		isEngine: resource.isEngine,
+		isTemporary: resource.isTemporary,
+		postDate: resource.postDate,
+		fillDate: resource.fillDate,
+		notes: resource.notes,
+		numOfApplicants: resource.numOfApplicants,
+		status: resource.status,
 	}
 }

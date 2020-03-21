@@ -11,6 +11,12 @@ export const statusColorEnum = {
   'cancelled': 'lightest-red'
 }
 
+export const roleEnum = {
+	'captain': 'Captain',
+  'chief': 'Chief',
+  'fire_fighter': 'Fireman'
+}
+
 export const tableHeaders = {
 	'account': {
 		text: 'Accounts',
@@ -39,6 +45,41 @@ export const tableHeaders = {
 	'report': {
 		text: 'Reports',
 		value: 'report'
+	},
+}
+
+export const accountHeaders = {
+	'sap': {
+		text: 'SAP',
+		value: 'sap'
+	},
+	'firstName': {
+		text: 'First Name',
+		value: 'firstName'
+	},
+	'lastName': {
+		text: 'Last Name',
+		value: 'lastName'
+	},
+	'email': {
+		text: 'Email',
+		value: 'email'
+	},
+	'phone': {
+		text: 'Phone',
+		value: 'phone'
+	},
+	'accountRole': {
+		text: 'Role',
+		value: 'accountRole'
+	},
+	'isEligibleForTransfer': {
+		text: 'Can Transfer',
+		value: 'isEligibleForTransfer'
+	},
+	'lastLoggedInAt': {
+		text: 'Last Login',
+		value: 'lastLoggedInAt'
 	},
 }
 

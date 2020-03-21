@@ -4,7 +4,7 @@ const accountSchema = `
 		sap: Int
 		email: String
 		phone: String
-		created_at: Date
+		createdAt: Date
 		lastLoggedInAt: Date
 		firstName: String
 		lastName: String

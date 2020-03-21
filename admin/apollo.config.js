@@ -11,7 +11,7 @@ module.exports = {
   client: {
     service: {
       name: 'api',
-      url: 'http://localhost:5000/graphql',
+      url: 'http://localhost:5000/graphql/admin',
 
     },
     includes: ['src/**/*.{js,jsx,ts,tsx,vue,gql}']

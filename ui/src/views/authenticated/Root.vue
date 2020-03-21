@@ -1,14 +1,23 @@
 <template lang='pug'>
-	transition(:name="transitionName" mode="out-in")
-		router-view
+	ApolloQuery(
+		:query="require('@/graphql/account/Account.gql')"
+		:variables="{ id: userId }"
+		:notifyOnNetworkStatusChange="true"
+		@result="setUser"
+	)
+		template(v-slot="{ result: { data } }")
+			transition(:name="transitionName" mode="out-in")
+				router-view
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
 	name: 'UserRoot',
-	data(){
+	data(vm){
 		return {
-			transitionName: 'slide-left'
+			transitionName: 'slide-left',
+			userId: vm.$store.state.user.id
 		}
 	},
   created() {
@@ -25,6 +34,14 @@ export default {
 
       next()
 		})
-  }
+	},
+	methods: {
+		...mapActions('user', ['updateUser']),
+		setUser({ data }){
+			if(data && data.account){
+				this.updateUser(data.account)
+			}
+		}
+	},
 }
 </script>

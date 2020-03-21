@@ -47,6 +47,11 @@ const routes = [
 				component: () => import('@/views/authenticated/table/TableView.vue'),
 				children: [
 					{
+						path: 'account',
+						name: 'AccountTable',
+						component: () => import('@/views/authenticated/account/TableView.vue'),
+					},
+					{
 						path: 'vacancy',
 						name: 'VacancyTable',
 						component: () => import('@/views/authenticated/vacancy/TableView.vue'),
@@ -80,9 +85,21 @@ const routes = [
 				meta: { transitionName: 'slide' }
 			},
 			{
+				path: 'account/:id',
+				name: 'Account',
+				component: () => import('@/views/authenticated/account/Account.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
 				path: 'vacancy/:id',
 				name: 'Vacancy',
 				component: () => import('@/views/authenticated/vacancy/Vacancy.vue'),
+				meta: { transitionName: 'slide' }
+			},
+			{
+				path: 'transfer-request/:id',
+				name: 'TransferRequest',
+				component: () => import('@/views/authenticated/transfer-request/TransferRequest.vue'),
 				meta: { transitionName: 'slide' }
 			},
 			{

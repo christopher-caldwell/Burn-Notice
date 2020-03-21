@@ -65,7 +65,10 @@ export default {
 			const routeToNavTo = menuActionEnum[event](this.vacancy)
 			this.$router.push(routeToNavTo)
 		},
-		
+	},
+	mounted(){
+		console.log('vacancy station', this.vacancy.fireStation.name)
+		console.log('vacancy id', this.vacancy.id)
 	}
 }
 </script>

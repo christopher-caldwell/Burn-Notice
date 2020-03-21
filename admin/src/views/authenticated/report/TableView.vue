@@ -5,6 +5,7 @@
 		keyOfQueryResult='reports'
 		@itemsUpdate="itemUpdate"
 		:itemsToShow="items"
+		:search="search"
 	)
 </template>
 
@@ -16,6 +17,12 @@ export default {
 	name: 'ReportTable',
 	components: {
 		Table
+	},
+	props: {
+		search: {
+			type: String,
+			required: false
+		}
 	},
 	data(){
 		return {

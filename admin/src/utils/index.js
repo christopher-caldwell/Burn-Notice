@@ -39,11 +39,19 @@ export const filterObjects = (objects, searchTerm) => {
 }
 
 export const formatDate = dateString => {
-	const parsedDate = new Date(dateString)
-	return format(parsedDate, formatStringDate)
+	if(dateString){
+		const parsedDate = new Date(dateString)
+		return format(parsedDate, formatStringDate)
+	} else {
+		return 'Never'
+	}
 }
 
 export const formatDateTime = dateString => {
-	const parsedDate = new Date(dateString)
-	return format(parsedDate, formatStringDateTime)
+	if(dateString && dateString !== 'Never'){
+		const parsedDate = new Date(dateString)
+		return format(parsedDate, formatStringDateTime)
+	} else {
+		return 'Never'
+	}
 }

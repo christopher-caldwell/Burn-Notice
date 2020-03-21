@@ -12,6 +12,15 @@ const transferRequestSchema = `
 		vacancy: ID
 		requestSubmitter: ID
 	}
+	input TransferRequestDecisionInput {
+		requestSubmitterId: ID
+		targetStation: ID
+		vacancyId: ID
+		requestId: ID
+		approvingAuthId: ID
+		isNewStationEngine: Boolean
+		didApproveRequest: Boolean
+	}
 `
 
 const transferRequestQuery = `
@@ -22,6 +31,7 @@ const transferRequestQuery = `
 
 const transferRequestMutation = `
 	createTransferRequest(params: TransferRequestInput): TransferRequest
+	decideTransferRequest(params: TransferRequestDecisionInput): Boolean
 `
 
 module.exports = { transferRequestSchema, transferRequestQuery, transferRequestMutation }

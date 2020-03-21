@@ -1,21 +1,26 @@
 <template lang='pug'>
-	v-row
-		v-col
-			ApolloQuery(
-				@result="mapDataToState"
-				:query="require(`@/graphql/${queryPath}`)" 
-				:notifyOnNetworkStatusChange="true"
-			)
-				template(v-slot="{ result: { loading, data } }")
-					v-data-table( 
-						@click:row="selectItem" 
-						:headers="tableHeaders" 
-						:loading="loading" 
-						:items="itemsToShow" 
+	ApolloQuery(
+		@result="mapDataToState"
+		:query="require(`@/graphql/${queryPath}`)"
+		:notifyOnNetworkStatusChange="true"
+	)
+		template(v-slot="{ result: { loading, data }, query }")
+			v-row.no-padding
+				v-col.no-padding.extra-space-bottom
+					v-btn(text @click="query.refetch()") Refresh
+						v-icon(medium) mdi-refresh
+			v-row.no-padding
+				v-col.no-padding
+					v-data-table(
+						@click:row="selectItem"
+						:headers="tableHeaders"
+						:loading="loading"
+						:items="itemsToShow"
 						:search="search"
 					)
-						slot(name='table-variations')
-		
+						template(v-slot:item.fireStation="{ item }")
+							div {{ item.fireStation.name }}
+
 </template>
 
 <script>
@@ -38,17 +43,23 @@ export default {
 			type: Array,
 			required: true
 		},
+		search: {
+			type: String,
+			required: false,
+			default: ''
+		}
 	},
 	data(vm){
 		return {
-			search: null,
 			items: [],
 			tableHeaders: Object.values(vm.headers),
 		}
 	},
 	methods: {
-		selectItem(item){
-			console.log('item', item)
+		selectItem({ id }){
+			const category = this.$route.query.header
+			const routeToGoTo = `/user/${category}/${id}`
+			this.$router.push(routeToGoTo)
 		},
 		mapDataToState({ data }){
 			if(data && data[this.keyOfQueryResult]){
@@ -59,3 +70,8 @@ export default {
 	}
 }
 </script>
+
+<style lang='sass' scoped>
+.extra-space-bottom
+	margin-bottom: 1%
+</style>

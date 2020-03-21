@@ -1,5 +1,7 @@
-const db = require('../config/db')
 const shuffleArray = require('simple-array-shuffler')
+const CustomError = require('simple-lambda-actions/dist/util/ErrorHandler')
+const db = require('../config/db')
+const { mapFireStationToResource } = require('../utils/mapEntityToResource')
 
 const maxNumOfUpdates = 2
 const maxNumOfVacancies = 4
@@ -12,23 +14,44 @@ const chopArray = (array, maxNum) => {
 	array.splice(indexToStartChopping)
 }
 
-const formatVacancies = vacancies => {
-	chopArray(vacancies, maxNumOfVacancies)
-	return vacancies.map(vacancy => ({
-		...vacancy,
-		fireStation: {
-			id: vacancy.fireStation,
-			district: vacancy.district,
-			captain: vacancy.captain,
-			name: vacancy.name
-		}
-	}))
+const fetchAccountUpdates = id => {
+	try {
+		return db('accountUpdate').where({ account: id }).orderBy('postDate', 'desc')
+	} catch(error){
+		console.log('err fetching updates', error)
+		return null
+	}
 }
 
-const fetchAccountUpdates = async id => {
+const fetchVacancies = async () => {
 	try {
-		const updates = db('accountUpdate').where({ account: id }).orderBy('postDate', 'desc')
-		return updates
+		const vacancies = await db
+			.select('vacancy.*', 'fireStation.id as fireStationId', 'fireStation.name')
+			.from('vacancy')
+			.join('fireStation', 'vacancy.fireStation', 'fireStation.id')
+		vacancies.forEach(vacancy => {
+			mapFireStationToResource(vacancy, 'fireStation', 'fireStationId')
+		})
+		console.log('vacancies', vacancies)
+		return vacancies
+	} catch(error){
+		console.log('err fetching updates', error)
+		return null
+	}
+}
+
+const deleteTargetUpdate = id => (
+	db('accountUpdate')
+		.where({ id })
+		.del()
+)
+
+const fetchUpdatesAfterDelete = (idOfDeleted, idOfAccount) => {
+	try {
+		return db('accountUpdate')
+			.where({ account: idOfAccount })
+			.andWhereNot({ id: idOfDeleted })
+			.orderBy('postDate', 'desc')
 	} catch(error){
 		console.log('err fetching updates', error)
 		return null
@@ -40,16 +63,12 @@ module.exports = {
 		try {
 			const [ allUpdates, vacancies ] = await Promise.all([
 				fetchAccountUpdates(id),
-				db('vacancy').join('fireStation', 'vacancy.fireStation', 'fireStation.id')
+				fetchVacancies()
 			])
 			
-			const shuffledVacancies = shuffleArray(vacancies)
-			chopArray(allUpdates, maxNumOfUpdates)
-			const vacanciesToReturn = formatVacancies(shuffledVacancies)
-
 			return {
 				updates: allUpdates,
-				vacancies: vacanciesToReturn 
+				vacancies: vacancies
 			}
 		} catch(error){
 			console.log('error', error)
@@ -57,6 +76,20 @@ module.exports = {
 				updates: null,
 				vacancies: null
 			}
+		}
+	},
+	async clearUpdate({ id, accountId }){
+		try {
+			const [ updates ] = await Promise.all([
+				fetchUpdatesAfterDelete(id, accountId),
+				deleteTargetUpdate(id),
+			])
+			return updates
+		} catch(error){
+			throw new CustomError({
+				message: error.message,
+				statusCode: error.statusCode || 500
+			})
 		}
 	}
 }

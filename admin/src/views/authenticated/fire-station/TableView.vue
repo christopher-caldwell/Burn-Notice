@@ -1,67 +1,47 @@
 <template lang='pug'>
-	v-container
-		v-row
-			v-col
-				h2 Fire Stations
-			v-col
-				v-text-field(
-					v-model="search"
-					append-icon="mdi-magnify"
-					label="Search"
-					single-line
-					hide-details
-				)
-		v-row
-			v-col
-				ApolloQuery(
-					@result="mapDataToState"
-					:query="require('@/graphql/fire-station/FireStations.gql')" 
-					:notifyOnNetworkStatusChange="true"
-				)
-					template(v-slot="{ result: { loading, data } }")
-						v-data-table( 
-							@click:row="selectItem" 
-							:headers="headers" 
-							:loading="loading" 
-							:items="fireStations" 
-							:search="search"
-						)
-							template(v-slot:item.district="{ item }")
-								div {{ item.district.name }}
-							template(v-slot:item.captain="{ item }")
-								div {{ item.captain.firstName }} {{ item.captain.lastName }}
-							
-
+	Table(
+		header='Fire Stations'
+		:headers="fireStationHeaders"
+		queryPath='fire-station/FireStations.gql'
+		keyOfQueryResult='fireStations'
+		@itemsUpdate="itemUpdate"
+		:itemsToShow="items"
+		:search="search"
+	)
 </template>
 
 <script>
+import Table from '@/components/table/Table.vue'
 import { fireStationHeaders } from '@/data/constants'
-import { formatDate, mapBoolToText, capitalize } from '@/utils/'
+
 export default {
 	name: 'FireStationTable',
+	components: {
+		Table
+	},
+	props: {
+		search: {
+			type: String,
+			required: false
+		}
+	},
 	data(){
 		return {
-			search: null,
-			fireStations: [],
-			headers: Object.values(fireStationHeaders)
+			fireStationHeaders,
+			items: []
 		}
 	},
 	methods: {
-		formatDate,
-		mapBoolToText,
-		capitalize,
-		selectItem(item){
-			console.log('item', item)
-		},
-		mapDataToState({ data }){
-			if(data.fireStations){
-				this.fireStations = data.fireStations
-			}
+		itemUpdate(newItems){
+			newItems.forEach(item => {
+				item.district = item.district.name
+				item.captain = item.captain.firstName + ' ' + item.captain.lastName
+			})
+			this.items = newItems
 		}
 	}
 }
 </script>
 
-<style>
-
+<style lang='sass'>
 </style>

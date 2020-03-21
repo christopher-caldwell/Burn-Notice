@@ -1,7 +1,10 @@
-query transferRequests {
-	transferRequests {
-		id
+query transferRequest($id: ID) {
+	transferRequest(id: $id) {
 		vacancy {
+			id
+			status
+			isEngine
+			numOfApplicants
 			fireStation {
 				id
 				name
@@ -12,8 +15,8 @@ query transferRequests {
 			firstName
 			lastName
 		}
-		applicationStatus
 		sentDate
 		approvalDate
+		applicationStatus
 	}
 }

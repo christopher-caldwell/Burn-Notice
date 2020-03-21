@@ -1,5 +1,6 @@
 query assignmentsByAccountId($accountId: ID){
 	assignmentsByAccountId(accountId: $accountId) {
+		id
 		startDate
 		endDate
 		isEngine

@@ -38,10 +38,6 @@
 						v-row
 							v-col.notes-col(v-if="data.vacancy.notes") {{ data.vacancy.notes }}
 							v-col.notes-col(v-else) N/A
-
-				div.apply-button-cont
-					button.apply-button 
-						h3 Apply
 							
 </template>
 
@@ -114,22 +110,6 @@ a
 	margin-top: 10%
 .login-header
 	margin-top: 10%
-.apply-button-cont
-	display: flex
-	justify-content: center
-	align-items: center
-	position: fixed
-	bottom: 10px
-	width: 95%
-	background-color: $blue-0
-	border-radius: 10px
-.apply-button
-	padding: 7px
-	width: 95%
-	&:focus
-		outline: none
-	&:active
-		transform: scale(0.95)
 .notes-col
 	white-space: pre-wrap
 </style>

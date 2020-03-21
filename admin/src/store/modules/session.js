@@ -1,5 +1,5 @@
 import { timeSessionIsValid } from '@/store/constants'
-import { authenticatedRoutes, visitorRoutes, regularAdminRoutes } from '@/router/routes'
+import { authenticatedRoutes, visitorRoutes } from '@/router/routes'
 import { getItemFromLocalStorage, writeToLocalStorage } from '@/utils/localStorage'
 
 export default {
@@ -20,10 +20,9 @@ export default {
 		isReadyToShow(state){
 			return state.isReadyToShow
 		},
-		allowableRoutes(state, getters, rootState) {
+		allowableRoutes(state) {
 			const isSessionValid = state.expiredDate > Date.now()
-			if (state.isAuthenticated && isSessionValid && rootState.user.role === 'admin') return regularAdminRoutes
-			if (state.isAuthenticated && isSessionValid && rootState.user.role === 'full-user') return authenticatedRoutes
+			if (state.isAuthenticated && isSessionValid ) return authenticatedRoutes
 			return visitorRoutes
 		},
 	},
@@ -31,7 +30,7 @@ export default {
 		beginNewSession({ commit }, token) {
 			commit('UPDATE_SESSION', token)
 		},
-		restoreSessionFromLocalStorage({ commit, dispatch }) {
+		async restoreSessionFromLocalStorage({ commit, dispatch }) {
 			const previousSession = getItemFromLocalStorage('session')
 			if (previousSession && previousSession.expiredDate > Date.now()) {
 				// fetch new token - update with new

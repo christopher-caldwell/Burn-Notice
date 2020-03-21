@@ -1,7 +1,10 @@
 query account($id: ID){
   account(id: $id){
-    id,
+    id
+		sap
+		accountRole
     firstName
     lastName
+		isEligibleForTransfer
   }
 }

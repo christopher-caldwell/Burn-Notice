@@ -8,5 +8,5 @@ export default {
 	async register(userInformation){
 		const { data } = await client.post('/register', userInformation)
 		return data
-	}
+	},
 }

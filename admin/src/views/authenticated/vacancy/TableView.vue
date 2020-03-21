@@ -6,6 +6,7 @@
 		keyOfQueryResult='vacancies'
 		@itemsUpdate="itemUpdate"
 		:itemsToShow="items"
+		:search="search"
 	)
 </template>
 
@@ -18,6 +19,12 @@ export default {
 	components: {
 		Table
 	},
+	props: {
+		search: {
+			type: String,
+			required: false
+		}
+	},
 	data(){
 		return {
 			vacancyHeaders,
@@ -27,11 +34,14 @@ export default {
 	methods: {
 		itemUpdate(newItems){
 			newItems.forEach(item => {
+				console.log('item', item)
+				const fillDate = item.fillDate ? formatDate(item.fillDate) : null
 				item.postDate = formatDate(item.postDate)
-				item.fireStation = item.fireStation.name
+				// item.fireStation = item.fireStation.name
 				item.isEngine = mapBoolToText(item.isEngine)
 				item.isTemporary = mapBoolToText(item.isTemporary)
-				item.postDate = formatDate(item.postDate )
+				item.postDate = formatDate(item.postDate)
+				item.fillDate = fillDate
 				item.status = capitalize(item.status)
 			})
 			this.items = newItems

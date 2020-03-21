@@ -4,7 +4,7 @@
 			h5(:class="titleClass") {{ title }}
 		v-col(:class="denseClass" :cols="contentCols" align-self='center' align='start')
 			h5(v-if="!useSlot" :class="contentClass") {{ content }}
-			slot(v-slot:content v-else)
+			slot(name='content' v-else)
 </template>
 
 <script>

@@ -131,6 +131,7 @@ export default {
 		},
 		afterRequestHandler(){
 			this.updateEligibility()
+			this.$router.push(`/user/vacancy/${this.vacancyId}/confirmation`)
 		}
 	}
 }

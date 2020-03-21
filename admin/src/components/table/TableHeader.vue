@@ -1,5 +1,5 @@
 <template lang='pug'>
-	v-row(justify='space-between')
+	v-row(justify='space-between' align='center')
 		v-col(cols=5)
 			DropdownHeader(
 				:currentHeader="currentHeader" 
@@ -9,6 +9,7 @@
 		v-col(cols=5)
 			v-text-field(
 				v-model="search"
+				@input="updateSearch"
 				append-icon="mdi-magnify"
 				label="Search"
 				single-line
@@ -37,6 +38,9 @@ export default {
 			this.currentHeader = text
 			this.$router.push(`/user/table/${value}?header=${value}`)
 		},
+		updateSearch(newTerm){
+			this.$emit('searchUpdate', newTerm)
+		}
 	},
 	mounted(){
 		if(this.$route.query.header){

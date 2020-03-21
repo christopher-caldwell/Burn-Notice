@@ -1,65 +1,45 @@
 <template lang='pug'>
-	v-container
-		v-row
-			v-col
-				h2 Districts
-			v-col
-				v-text-field(
-					v-model="search"
-					append-icon="mdi-magnify"
-					label="Search"
-					single-line
-					hide-details
-				)
-		v-row
-			v-col
-				ApolloQuery(
-					@result="mapDataToState"
-					:query="require('@/graphql/district/Districts.gql')" 
-					:notifyOnNetworkStatusChange="true"
-				)
-					template(v-slot="{ result: { loading, data } }")
-						v-data-table( 
-							@click:row="selectItem" 
-							:headers="headers" 
-							:loading="loading" 
-							:items="districts" 
-							:search="search"
-						)
-							template(v-slot:item.chief="{ item }")
-								div {{ item.chief.firstName }} {{ item.chief.lastName }}
-							
-
+	Table(
+		header='Districts'
+		:headers="districtHeaders"
+		queryPath='district/Districts.gql'
+		keyOfQueryResult='districts'
+		@itemsUpdate="itemUpdate"
+		:itemsToShow="items"
+		:search="search"
+	)
 </template>
 
 <script>
+import Table from '@/components/table/Table.vue'
 import { districtHeaders } from '@/data/constants'
-import { formatDate, mapBoolToText, capitalize } from '@/utils/'
 export default {
 	name: 'DistrictTable',
+	components: {
+		Table
+	},
+	props: {
+		search: {
+			type: String,
+			required: false
+		}
+	},
 	data(){
 		return {
-			search: null,
-			districts: [],
-			headers: Object.values(districtHeaders)
+			districtHeaders,
+			items: []
 		}
 	},
 	methods: {
-		formatDate,
-		mapBoolToText,
-		capitalize,
-		selectItem(item){
-			console.log('item', item)
-		},
-		mapDataToState({ data }){
-			if(data.districts){
-				this.districts = data.districts
-			}
+		itemUpdate(newItems){
+			newItems.forEach(item => {
+				item.chief = item.chief.firstName + ' ' + item.chief.lastName
+			})
+			this.items = newItems
 		}
 	}
 }
 </script>
 
-<style>
-
+<style lang='sass'>
 </style>

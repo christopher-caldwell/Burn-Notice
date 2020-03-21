@@ -2,6 +2,7 @@ query vacancies {
 	vacancies {
 		id
 		fireStation{
+			id
 			name
 		}
 		isEngine
