@@ -31,7 +31,6 @@
 <script>
 import { blueColor } from '@/data/constants'
 import { format } from 'date-fns'
-import FeedQuery from '@/graphql/feed/Feed.gql'
 export default {
 	name: 'Update',
 	props: {
@@ -53,21 +52,10 @@ export default {
 		}
 	},
 	methods: {
-			// Update the cache with the result
-      // The query will be updated with the optimistic response
-      // and then with the real result of the mutation
-      
-		postMutationUpdate(store, { data: { addTag } }){
-			console.log('store', store)
-        // Read the data from our cache for this query.
-				const data = store.readQuery({ query: FeedQuery })
-				console.log('data', data)
-        // Add our tag from the mutation to the end
-        data.tags.push(addTag)
-        // Write our data back to the cache.
-        store.writeQuery({ query: FeedQuery, data })
-      },
-		}
+		postMutationUpdate(){
+			this.$emit('removeUpdate', this.update.id)		
+		},
+	}
 }
 </script>
 

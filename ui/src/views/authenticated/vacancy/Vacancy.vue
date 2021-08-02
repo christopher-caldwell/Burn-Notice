@@ -11,7 +11,7 @@
 								h3(:class="formattedStatus.className") {{ formattedStatus.text }}
 								h5(v-if="data.vacancy.fillDate") Filled on: {{ data.vacancy.fillDate }}
 								h5 {{ formattedPostDate }}
-								h5 District {{ data.vacancy.fireStation.district.name }}
+								h5 {{ data.vacancy.fireStation.district.name }}
 							v-col(cols=4)
 						v-row.login-cont(justify='center')
 							v-col

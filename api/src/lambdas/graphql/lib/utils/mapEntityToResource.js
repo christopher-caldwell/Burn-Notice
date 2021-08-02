@@ -32,8 +32,6 @@ exports.mapDistrictToResource = resource => {
 }
 
 exports.mapFireStationToResource = (resource, keyName = 'fireStation') => {
-	console.log('keyname', keyName)
-	console.log('resource', resource)
 	resource[keyName] = {
 		id: resource[keyName],
 		captain: resource.captain,

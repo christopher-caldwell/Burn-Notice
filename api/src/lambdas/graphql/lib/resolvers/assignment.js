@@ -1,5 +1,5 @@
 const db = require('../config/db')
-const { mapFireStationToResource } = require('../utils/mapEntityToResource')
+const { mapFireStationToResource, mapAccountToResource } = require('../utils/mapEntityToResource')
 
 module.exports = {
 	assignment({ id }){
@@ -9,12 +9,18 @@ module.exports = {
 		return db('assignment')
 	},
 	async assignmentsByAccountId({ accountId }) {
-		const assignments = await db('assignment')
+		const assignments = await db
+			.select('assignment.*', 'account.id as accountId', 'fireStation.id as fireStationId', 'fireStation.name')
+			.from('assignment')
 			.where('account.id', accountId)
 			.join('account', 'assignment.account', 'account.id')
 			.join('fireStation', 'assignment.assignedStation', 'fireStation.id')
 			.orderBy('startDate', 'desc')
-		assignments.forEach(assignment => mapFireStationToResource(assignment, 'assignedStation'))
+		
+		assignments.forEach(assignment => {
+			mapAccountToResource(assignment, 'account', 'accountId')
+			mapFireStationToResource(assignment, 'assignedStation', 'fireStationId')
+		})
 		return assignments
 	},
 	createAssignment(argumentos){

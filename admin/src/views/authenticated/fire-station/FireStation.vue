@@ -1,5 +1,10 @@
 <template lang='pug'>
-	ApolloQuery(@result="data => mapDataToState(data, 'fireStation')" :query="require('@/graphql/station/Station.gql')" :variables="{ id: stationId }" :notifyOnNetworkStatusChange="true")
+	ApolloQuery(
+		@result="data => mapDataToState(data, 'fireStation')" 
+		:query="require('@/graphql/fire-station/FireStation.gql')" 
+		:variables="{ id: stationId }" 
+		:notifyOnNetworkStatusChange="true"
+	)
 		template(v-slot="{ result: { loading, data } }")
 			FireStationSkeleton(v-if="loading")
 			v-container.station-container(v-if="data")

@@ -29,6 +29,7 @@ const fetchVacancies = async () => {
 			.select('vacancy.*', 'fireStation.id as fireStationId', 'fireStation.name')
 			.from('vacancy')
 			.join('fireStation', 'vacancy.fireStation', 'fireStation.id')
+			.where({ status: 'active' })
 		vacancies.forEach(vacancy => {
 			mapFireStationToResource(vacancy, 'fireStation', 'fireStationId')
 		})

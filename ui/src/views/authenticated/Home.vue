@@ -3,6 +3,7 @@
 		:query="require('@/graphql/feed/Feed.gql')"
 		:variables="{ id: userId }"
 		:notifyOnNetworkStatusChange="true"
+		@result="mapDataToState"
 	)
 		template(v-slot="{ result: { loading, data }, query }")
 			HomeSkeleton(v-if="loading")
@@ -11,11 +12,12 @@
 				v-row
 					v-col(align='start')
 						Update(
-							v-for="update in data.homeFeed.updates"
+							v-for="update in updates"
 							:update="update"
 							:key="`update-${update.id}`"
+							@removeUpdate="removeUpdate"
 						)
-						span(v-if="!data.homeFeed.updates.length") All caught up.
+						span(v-if="!updates.length") All caught up.
 				v-row
 					v-col(align='start')
 						h5.update-header Openings
@@ -23,7 +25,7 @@
 				v-row
 					v-col(align='center')
 						Vacancy( 
-							v-for="(vacancy, index) in data.homeFeed.vacancies" 
+							v-for="(vacancy, index) in vacancies" 
 							:vacancy="vacancy" 
 							:key="`vacancy-${vacancy.id}`"
 						)
@@ -34,7 +36,7 @@ import UnderlinedHeader from '@/components/util/UnderlinedHeader.vue'
 import Vacancy from '@/components/cards/Vacancy.vue'
 import Update from '@/components/cards/Update.vue'
 import HomeSkeleton from '@/components/skeleton-loaders/Home.vue'
-import { vacancies } from '@/data/mockData'
+// import { vacancies } from '@/data/mockData'
 export default {
 	name: 'UserHome',
 	components: {
@@ -45,8 +47,20 @@ export default {
 	},
 	data(vm){
 		return {
-			vacancies,
-			userId: vm.$store.state.user.id
+			userId: vm.$store.state.user.id,
+			updates: {},
+			vacancies: {},
+		}
+	},
+	methods: {
+		removeUpdate(updateId){
+			this.updates = this.updates.filter(update => update.id !== updateId)
+		},
+		mapDataToState({ data }){
+			if(data && data.homeFeed){
+				this.vacancies = data.homeFeed.vacancies
+				this.updates = data.homeFeed.updates
+			}
 		}
 	}
 }

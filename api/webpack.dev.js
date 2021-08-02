@@ -6,9 +6,12 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = merge(common, {
   mode: 'development',
 	devtool: 'source-map',
+	watchOptions: {
+		aggregateTimeout: 1200,
+	},
 	plugins: [
 		...common.plugins,
 		// uncomment to see your bundle analysis
-    // new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin()
   ]
 })
